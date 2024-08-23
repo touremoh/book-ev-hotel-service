@@ -1,0 +1,240 @@
+use book_ev_hotel;
+
+db.Users.drop();
+db.Hotels.drop();
+db.ChargingStations.drop();
+db.Analytics.drop();
+db.VisitorRequests.drop();
+
+
+db.createCollection("Hotels", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["hotelName", "location", "billingInformation", "amenities"],
+      properties: {
+        hotelName: {
+          bsonType: "string",
+          description: "must be a string and is required"
+        },
+        location: {
+          bsonType: "object",
+          description: "must be an object and is required",
+          properties: {
+            fullAddress: {
+              bsonType: "string",
+              description: "must be a string and is required"
+            },
+            city: {
+              bsonType: "string",
+              description: "must be a string and is required"
+            },
+            postalCode: {
+              bsonType: "string",
+              description: "must be a string and is required"
+            },
+            country: {
+              bsonType: "string",
+              description: "must be a string and is required"
+            }
+          }
+        },
+        websiteLink: {
+          bsonType: "string",
+          description: "optional string"
+        },
+        billingInformation: {
+          bsonType: "object",
+          description: "must be an object and is required"
+        },
+        amenities: {
+          bsonType: "array",
+          description: "must be an array and is required"
+        },
+        subscription: {
+          bsonType: "object",
+          required: ["currentPlan", "price", "billingCycle", "accountStatus"],
+          properties: {
+            currentPlan: {
+              bsonType: "string",
+              description: "must be a string and is required"
+            },
+            price: {
+              bsonType: "decimal",
+              description: "must be a decimal and is required"
+            },
+            billingCycle: {
+              bsonType: "string",
+              description: "must be a string and is required"
+            },
+            accountStatus: {
+              bsonType: "string",
+              description: "must be a string and is required"
+            }
+          },
+          description: "must be an object and is required"
+        },
+        paymentHistory: {
+          bsonType: "array",
+          items: {
+            bsonType: "object",
+            required: ["paymentDate", "cardLastFour", "amount"],
+            properties: {
+              paymentDate: {
+                bsonType: "date",
+                description: "must be a date and is required"
+              },
+              cardLastFour: {
+                bsonType: "string",
+                description: "must be a string and is required"
+              },
+              amount: {
+                bsonType: "decimal",
+                description: "must be a decimal and is required"
+              }
+            }
+          },
+          description: "must be an array and is required"
+        }
+      }
+    }
+  }
+});
+
+db.createCollection("Users", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["email", "password", "firstName", "lastName", "hotelId"],
+      properties: {
+        email: {
+          bsonType: "string",
+          description: "must be a string and is required"
+        },
+        password: {
+          bsonType: "string",
+          description: "must be a string and is required"
+        },
+        firstName: {
+          bsonType: "string",
+          description: "must be a string and is required"
+        },
+        lastName: {
+          bsonType: "string",
+          description: "must be a string and is required"
+        },
+        hotelId: {
+          bsonType: "objectid",
+          description: "must be an object and is required"
+        }
+      }
+    }
+  }
+});
+
+db.createCollection("ChargingStations", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["hotelId", "numberOfConnectors", "maxPower", "availabilityTime", "accessibility", "chargingNetwork", "energyCostPerKWh", "hotelPhoneNumber", "roadsideAssistanceNumber"],
+      properties: {
+        hotelId: {
+          bsonType: "objectId",
+          description: "must be an object and is required"
+        },
+        numberOfConnectors: {
+          bsonType: "int",
+          description: "must be an integer and is required"
+        },
+        maxPower: {
+          bsonType: "string",
+          description: "must be a string and is required"
+        },
+        availabilityTime: {
+          bsonType: "string",
+          description: "must be a string and is required"
+        },
+        accessibility: {
+          bsonType: "string",
+          description: "must be a string and is required"
+        },
+        chargingNetwork: {
+          bsonType: "string",
+          description: "must be a string and is required"
+        },
+        energyCostPerKWh: {
+          bsonType: "decimal",
+          description: "must be a decimal and is required"
+        },
+        hotelPhoneNumber: {
+          bsonType: "string",
+          description: "must be a string and is required"
+        },
+        roadsideAssistanceNumber: {
+          bsonType: "string",
+          description: "must be a string and is required"
+        }
+      }
+    }
+  }
+});
+
+db.createCollection("VisitorRequests", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["searchLocation", "timestamp"],
+      properties: {
+        searchLocation: {
+          bsonType: "string",
+          description: "must be a string and is required"
+        },
+        timestamp: {
+          bsonType: "date",
+          description: "must be a date and is required"
+        }
+      }
+    }
+  }
+});
+
+db.createCollection("Analytics", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["hotelId", "timesAppearedInSearch", "timesProfileViewed", "timesLinkClicked"],
+      properties: {
+        hotelId: {
+          bsonType: "objectId",
+          description: "must be an object and is required"
+        },
+        timesAppearedInSearch: {
+          bsonType: "int",
+          description: "must be an integer and is required"
+        },
+        timesProfileViewed: {
+          bsonType: "int",
+          description: "must be an integer and is required"
+        },
+        timesLinkClicked: {
+          bsonType: "int",
+          description: "must be an integer and is required"
+        }
+      }
+    }
+  }
+});
+
+
+db.Users.createIndex({ hotelId: 1 });
+db.Users.createIndex({ email: 1 }, { unique: true });
+db.Hotels.createIndex({ owner: 1 });
+db.Hotels.createIndex({ hotelName: 1 });
+db.Hotels.createIndex({ "location.city": 1 });
+db.ChargingStations.createIndex({ hotelId: 1 });
+db.ChargingStations.createIndex({ chargingNetwork: 1 });
+db.VisitorRequests.createIndex({ searchLocation: 1 });
+db.VisitorRequests.createIndex({ searchLocation: 1, timestamp: -1 });
+db.Analytics.createIndex({ hotelId: 1 });
+
+
