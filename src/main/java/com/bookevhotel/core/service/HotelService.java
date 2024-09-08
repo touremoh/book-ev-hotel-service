@@ -7,7 +7,7 @@ import com.bookevhotel.core.mapper.HotelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
-public class HotelService  extends AbstractBookEVHotelService<Hotel, HotelDTO> implements BookEVHotelService<HotelDTO> {
+public class HotelService  extends AbstractBookEVHotelService<Hotel, HotelDTO> {
 	public HotelService(HotelRepository repository, HotelMapper mapper) {
 		super(repository, mapper);
 	}

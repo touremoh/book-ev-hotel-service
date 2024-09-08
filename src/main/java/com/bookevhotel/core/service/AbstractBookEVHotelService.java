@@ -21,72 +21,72 @@ public class AbstractBookEVHotelService<E extends BookEVHotelEntity, D extends B
 	}
 
 	@Override
-	public D findOneDocument(D criteria) throws BookEVHotelException {
+	public D findOne(D dto) throws BookEVHotelException {
 		// Pre-process
-		this.processBeforeFindOneDocument(criteria);
+		this.processBeforeFindOne(dto);
 
 		// Process
-		E doc = this.processFindOneDocument(criteria);
+		E doc = this.findOneProcess(dto);
 
 		// Post-process
-		this.processAfterFindOneDocument(doc);
+		this.processAfterFindOne(doc);
 
 		// Result
 		return this.mapper.map(doc);
 	}
 
-	protected void processBeforeFindOneDocument(D criteria) throws BookEVHotelException {
+	protected void processBeforeFindOne(D dto) throws BookEVHotelException {
 		log.info("Before find one document: {}", 1);
 	}
-	protected E processFindOneDocument(D criteria) throws BookEVHotelException {
+	protected E findOneProcess(D dto) throws BookEVHotelException {
 		log.info("Find one document: Nb docs = {}", 1);
-		return this.repository.findOne(this.mapper.map(criteria));
+		return this.repository.findOne(this.mapper.map(dto));
 	}
-	protected void processAfterFindOneDocument(E document) throws BookEVHotelException {
+	protected void processAfterFindOne(E document) throws BookEVHotelException {
 		log.info("After find one document: {}", 1);
 	}
 
 	/**
 	 * Find multiple elements by criteria
 	 *
-	 * @param criteria criteria of the elements to find
+	 * @param dto dto of the elements to find
 	 * @return list of the found elements
 	 */
 	@Override
-	public List<D> findAllDocuments(D criteria) throws BookEVHotelException {
+	public List<D> findAll(D dto) throws BookEVHotelException {
 		return null;
 	}
 
 	/**
 	 * Create one element by criteria
 	 *
-	 * @param criteria criteria of the elements to create
+	 * @param dto criteria of the elements to create
 	 * @return the created element
 	 */
 	@Override
-	public D createOneDocument(D criteria) throws BookEVHotelException {
+	public D createOne(D dto) throws BookEVHotelException {
 		return null;
 	}
 
 	/**
 	 * Update one element by criteria
 	 *
-	 * @param criteria criteria of the elements to create
+	 * @param dto criteria of the elements to create
 	 * @return the created element
 	 */
 	@Override
-	public D updateOneDocument(D criteria) throws BookEVHotelException {
+	public D updateOne(D dto) throws BookEVHotelException {
 		return null;
 	}
 
 	/**
 	 * Delete one element by criteria
 	 *
-	 * @param criteria criteria of the element to delete
+	 * @param dto criteria of the element to delete
 	 * @return the created element
 	 */
 	@Override
-	public D deleteOneDocument(D criteria) throws BookEVHotelException {
+	public D deleteOne(D dto) throws BookEVHotelException {
 		return null;
 	}
 }

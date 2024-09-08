@@ -1,113 +1,1432 @@
 db.SubscriptionPlans.insertOne({
-  subscriptionType: "premium",
-  relatedCountry: "USA",
-  currency: "USD",
-  monthlyAmount: NumberDecimal("29.99"),
-  yearlyAmount: NumberDecimal("299.99")
+    subscriptionType: "standard",
+    relatedCountry: "USA",
+    currency: "USD",
+    monthlyAmount: NumberDecimal("10.99"),
+    yearlyAmount: NumberDecimal("99.99")
 });
 
 db.SubscriptionPlans.insertOne({
-  subscriptionType: "premium",
-  relatedCountry: "France",
-  currency: "EUR",
-  monthlyAmount: NumberDecimal("29.99"),
-  yearlyAmount: NumberDecimal("299.99")
+    subscriptionType: "basic",
+    relatedCountry: "Canada",
+    currency: "CAD",
+    monthlyAmount: NumberDecimal("8.99"),
+    yearlyAmount: NumberDecimal("80.99")
 });
 
-db.Hotels.insertOne({
-  hotelName: "Grand Plaza",
-  location: {
-    streetAddress: "123 Main St",
-    extendedAddress: "Suite 101",
-    city: "New York",
-    zipOrPostalCode: "10001",
-    stateOrProvince: "NY",
-    country: "USA"
-  },
-  websiteLink: "http://www.grandplaza.com",
-  billingInformation: {
-    nameOnCard: "John Doe",
-    cardNumber: "1234567890123456",
-    expirationDate: {
-      month: 12,
-      year: 2025
-    },
-    cvc: "123",
-    billingAddress: {
-      streetAddress: "123 Main St",
-      extendedAddress: "Suite 101",
-      city: "New York",
-      zipOrPostalCode: "10001",
-      stateOrProvince: "NY",
-      country: "USA"
-    }
-  },
-  amenities: ["pool", "spa", "gym", "wifi", "air_conditionning"],
-  subscription: {
-    currentPlan: "standard",
-    billingCycle: "monthly",
-    amount: NumberDecimal("99.99"),
-    currency: "USD",
-    accountStatus: "active",
-    subscriptionDate: new Date(),
-    nextBillingDate: new Date()
-  },
-  paymentHistory: [
+db.SubscriptionPlans.insertOne({
+    subscriptionType: "premium",
+    relatedCountry: "Germany",
+    currency: "EUR",
+    monthlyAmount: NumberDecimal("15.99"),
+    yearlyAmount: NumberDecimal("150.99")
+});
+
+db.SubscriptionPlans.insertOne({
+    subscriptionType: "standard",
+    relatedCountry: "Australia",
+    currency: "AUD",
+    monthlyAmount: NumberDecimal("12.99"),
+    yearlyAmount: NumberDecimal("120.99")
+});
+
+db.SubscriptionPlans.insertOne({
+    subscriptionType: "basic",
+    relatedCountry: "UK",
+    currency: "GBP",
+    monthlyAmount: NumberDecimal("7.99"),
+    yearlyAmount: NumberDecimal("70.99")
+});
+
+db.SubscriptionPlans.insertOne({
+    subscriptionType: "premium",
+    relatedCountry: "France",
+    currency: "EUR",
+    monthlyAmount: NumberDecimal("18.99"),
+    yearlyAmount: NumberDecimal("180.99")
+});
+
+db.SubscriptionPlans.insertOne({
+    subscriptionType: "standard",
+    relatedCountry: "Japan",
+    currency: "JPY",
+    monthlyAmount: NumberDecimal("1100"),
+    yearlyAmount: NumberDecimal("10000")
+});
+
+db.SubscriptionPlans.insertOne({
+    subscriptionType: "basic",
+    relatedCountry: "South Korea",
+    currency: "KRW",
+    monthlyAmount: NumberDecimal("9500"),
+    yearlyAmount: NumberDecimal("90000")
+});
+
+db.SubscriptionPlans.insertOne({
+    subscriptionType: "premium",
+    relatedCountry: "Brazil",
+    currency: "BRL",
+    monthlyAmount: NumberDecimal("34.99"),
+    yearlyAmount: NumberDecimal("330.99")
+});
+
+db.SubscriptionPlans.insertOne({
+    subscriptionType: "standard",
+    relatedCountry: "India",
+    currency: "INR",
+    monthlyAmount: NumberDecimal("299"),
+    yearlyAmount: NumberDecimal("2799")
+});
+
+db.Hotels.insertMany([
     {
-      paymentDate: new Date(),
-      cardLastFour: "3456",
-      chargedAmount: "USD 99.99"
-    }
-  ]
-});
-
-db.Users.insertOne({
-  email: "johndoe@example.com",
-  password: "securepassword123",
-  firstName: "John",
-  lastName: "Doe",
-  hotelId: ObjectId("66d32f551561fc1fc872598f") // Assuming you have the ObjectId
-});
-
-db.ChargingInformation.insertOne({
-  hotelId: ObjectId("66d32f551561fc1fc872598f"), // Adjust based on actual ObjectId
-  numberOfConnectors: 4,
-  maxPower: "22kW",
-  availabilityTime: "24/7",
-  accessibility: "public",
-  chargingNetwork: "Tesla",
-  energyCost: {
-    price: {
-      amount: NumberDecimal("0.20"),
-      currency: "USD"
+        hotelName: "Venice Canal Suites",
+        hotelDescription: "Charming boutique hotel right on the historic canals of Venice, offering gondola tours directly from its doors.",
+        location: {
+            country: "Italy",
+            stateOrProvince: "Veneto",
+            city: "Venice",
+            zipOrPostalCode: "30100",
+            streetAddress: "150 Via Canal",
+            extendedAddress: "Unit 20"
+        },
+        websiteLink: "https://venicecanalsuites.it",
+        amenities: ["Gondola Access", "Waterfront Restaurant", "Rooftop Bar"],
+        chargingInformation: {
+            numberOfConnectors: 2,
+            maxPower: 20,
+            availabilityTime: "24/7",
+            accessibility: "public",
+            chargingNetwork: "Enel X",
+            energyCost: {
+                price: {
+                    amount: NumberDecimal("0.45"),
+                    currency: "EUR"
+                },
+                priceUnit: "kWh"
+            },
+            messageForCustomer: "Reservations recommended due to limited spaces."
+        },
+        offers: [
+            {
+                title: "Venetian Getaway",
+                description: "Book for three nights and receive a complimentary dinner at our waterfront restaurant.",
+                code: "VENICE3"
+            }
+        ]
     },
-    priceUnit: "per kWh"
-  },
-  hotelPhoneNumber: "123-456-7890",
-  messageForCustomer: "Please bring your own charging cable."
-});
+    {
+        hotelName: "Berlin Tech Hotel",
+        hotelDescription: "Modern hotel in the heart of Berlin’s tech district, with state-of-the-art amenities for tech-savvy travelers.",
+        location: {
+            country: "Germany",
+            stateOrProvince: "Berlin",
+            city: "Berlin",
+            zipOrPostalCode: "10117",
+            streetAddress: "320 Techstraße",
+            extendedAddress: "Platz 9"
+        },
+        websiteLink: "https://berlintechhotel.de",
+        amenities: ["Smart Rooms", "Automated Check-in", "Tech Hub Lounge"],
+        chargingInformation: {
+            numberOfConnectors: 4,
+            maxPower: 50,
+            availabilityTime: "24/7",
+            accessibility: "public",
+            chargingNetwork: "Tesla",
+            energyCost: {
+                price: {
+                    amount: NumberDecimal("0.30"),
+                    currency: "EUR"
+                },
+                priceUnit: "kWh"
+            },
+            messageForCustomer: "Please use your own charging adapter."
+        },
+        offers: [
+            {
+                title: "Tech Traveller Package",
+                description: "Includes a special discount for guests attending local tech conferences.",
+                code: "TECH2023"
+            }
+        ]
+    },
+    {
+        hotelName: "The Manhattan Skyline",
+        hotelDescription: "Iconic hotel with panoramic views of New York City's skyline, located in the heart of Manhattan.",
+        location: {
+            country: "USA",
+            stateOrProvince: "New York",
+            city: "New York",
+            zipOrPostalCode: "10001",
+            streetAddress: "789 Fifth Avenue",
+            extendedAddress: "Suite 2300"
+        },
+        websiteLink: "https://manhattanskyline.us",
+        amenities: ["Skyline Views", "Executive Lounge", "Helipad"],
+        chargingInformation: {
+            numberOfConnectors: 6,
+            maxPower: 60,
+            availabilityTime: "24/7",
+            accessibility: "public",
+            chargingNetwork: "ChargePoint",
+            energyCost: {
+                price: {
+                    amount: NumberDecimal("0.50"),
+                    currency: "USD"
+                },
+                priceUnit: "kWh"
+            },
+            messageForCustomer: "VIP charging services available upon request."
+        },
+        offers: [
+            {
+                title: "NYC Explorer",
+                description: "Stay four nights and get exclusive discounts on helicopter city tours.",
+                code: "NYC2023"
+            }
+        ]
+    },
+    {
+        hotelName: "Barcelona Beach Resort",
+        hotelDescription: "Luxury resort located on the shores of Barcelona, perfect for a relaxing beach vacation and cultural experience.",
+        location: {
+            country: "Spain",
+            stateOrProvince: "Catalonia",
+            city: "Barcelona",
+            zipOrPostalCode: "08003",
+            streetAddress: "42 Playa Avenue",
+            extendedAddress: "Building C"
+        },
+        websiteLink: "https://barcelonabeachresort.es",
+        amenities: ["Beachfront", "Outdoor Pools", "Local Cuisine"],
+        chargingInformation: {
+            numberOfConnectors: 3,
+            maxPower: 30,
+            availabilityTime: "24/7",
+            accessibility: "public",
+            chargingNetwork: "Iberdrola",
+            energyCost: {
+                price: {
+                    amount: NumberDecimal("0.25"),
+                    currency: "EUR"
+                },
+                priceUnit: "kWh"
+            },
+            messageForCustomer: "Charging stations located near the main parking lot."
+        },
+        offers: [
+            {
+                title: "Spanish Sun",
+                description: "Enjoy a 10% discount on all beach activities when you book a beachfront room.",
+                code: "BEACH10"
+            }
+        ]
+    },
+    {
+        hotelName: "Montreal City Comfort",
+        hotelDescription: "A cozy hotel in downtown Montreal, blending French charm with modern amenities, close to cultural sites and restaurants.",
+        location: {
+            country: "Canada",
+            stateOrProvince: "Quebec",
+            city: "Montreal",
+            zipOrPostalCode: "H2X 1Z5",
+            streetAddress: "555 Saint Laurent Blvd",
+            extendedAddress: "Unit 18"
+        },
+        websiteLink: "https://montrealcitycomfort.ca",
+        amenities: ["Multilingual Staff", "On-site Restaurant", "Conference Facilities"],
+        chargingInformation: {
+            numberOfConnectors: 2,
+            maxPower: 20,
+            availabilityTime: "24/7",
+            accessibility: "public",
+            chargingNetwork: "Hydro-Québec",
+            energyCost: {
+                price: {
+                    amount: NumberDecimal("0.20"),
+                    currency: "CAD"
+                },
+                priceUnit: "kWh"
+            },
+            messageForCustomer: "24-hour customer support available for charging station assistance."
+        },
+        offers: [
+            {
+                title: "Montreal Delight",
+                description: "Book directly through our website and get a 15% discount on your entire stay.",
+                code: "DELIGHT15"
+            }
+        ]
+    },
+    {
+        hotelName: "London City Hotel",
+        hotelDescription: "A modern hotel in the heart of London, offering luxury accommodations and convenient access to the city's major attractions.",
+        location: {
+            country: "UK",
+            stateOrProvince: "London",
+            city: "London",
+            zipOrPostalCode: "E1 6AN",
+            streetAddress: "22 Queen Street",
+            extendedAddress: "Near Tower Bridge"
+        },
+        websiteLink: "https://londoncityhotel.uk",
+        amenities: ["Spa", "Conference Rooms", "Fitness Center", "Rooftop Bar"],
+        chargingInformation: {
+            numberOfConnectors: 5,
+            maxPower: 50,
+            availabilityTime: "24/7",
+            accessibility: "public",
+            chargingNetwork: "Polar",
+            energyCost: {
+                price: {
+                    amount: NumberDecimal("0.35"),
+                    currency: "GBP"
+                },
+                priceUnit: "kWh"
+            },
+            messageForCustomer: "Free charging for overnight guests."
+        },
+        offers: [
+            {
+                title: "London Weekender",
+                description: "Stay a weekend and get a free Sunday brunch.",
+                code: "LWEEKEND"
+            }
+        ]
+    },
+    {
+        hotelName: "Amsterdam Riverside",
+        hotelDescription: "Enjoy a peaceful stay at our riverside hotel in Amsterdam, with easy access to the city center and beautiful views of the river.",
+        location: {
+            country: "Netherlands",
+            stateOrProvince: "North Holland",
+            city: "Amsterdam",
+            zipOrPostalCode: "1019 BR",
+            streetAddress: "100 Amstel Quay",
+            extendedAddress: ""
+        },
+        websiteLink: "https://amsterdamriverside.nl",
+        amenities: ["River Views", "Bike Rentals", "Organic Breakfast"],
+        chargingInformation: {
+            numberOfConnectors: 3,
+            maxPower: 25,
+            availabilityTime: "24/7",
+            accessibility: "public",
+            chargingNetwork: "EVNetNL",
+            energyCost: {
+                price: {
+                    amount: NumberDecimal("0.25"),
+                    currency: "EUR"
+                },
+                priceUnit: "kWh"
+            },
+            messageForCustomer: "Charging slots are subject to availability."
+        },
+        offers: [
+            {
+                title: "Cyclist's Dream",
+                description: "Book a room and get free bicycle rentals throughout your stay.",
+                code: "CYCLEAMS"
+            }
+        ]
+    },
+    {
+        hotelName: "Dublin Castle Inn",
+        hotelDescription: "A historic hotel just steps away from Dublin Castle, offering old-world charm with modern amenities.",
+        location: {
+            country: "Ireland",
+            stateOrProvince: "Dublin",
+            city: "Dublin",
+            zipOrPostalCode: "D02 KF84",
+            streetAddress: "47 Castle Street",
+            extendedAddress: "Opposite the Castle Gardens"
+        },
+        websiteLink: "https://dublincastleinn.ie",
+        amenities: ["Historic Landmark", "Gourmet Dining", "Live Music Pub"],
+        chargingInformation: {
+            numberOfConnectors: 2,
+            maxPower: 22,
+            availabilityTime: "24/7",
+            accessibility: "guests only",
+            chargingNetwork: "ESB",
+            energyCost: {
+                price: {
+                    amount: NumberDecimal("0.20"),
+                    currency: "EUR"
+                },
+                priceUnit: "kWh"
+            },
+            messageForCustomer: "Please ask at reception for charging access."
+        },
+        offers: [
+            {
+                title: "Irish Heritage",
+                description: "Stay two nights and receive free entry to Dublin Castle.",
+                code: "CASTLE2"
+            }
+        ]
+    },
+    {
+        hotelName: "Toronto Lakeside Plaza",
+        hotelDescription: "A vibrant hotel with expansive views of Lake Ontario, located in the bustling heart of Toronto.",
+        location: {
+            country: "Canada",
+            stateOrProvince: "Ontario",
+            city: "Toronto",
+            zipOrPostalCode: "M5J 2N8",
+            streetAddress: "900 Bay Street",
+            extendedAddress: "Lakeside Wing"
+        },
+        websiteLink: "https://torontolakeside.ca",
+        amenities: ["Lake Views", "Indoor Pool", "Concert Hall"],
+        chargingInformation: {
+            numberOfConnectors: 4,
+            maxPower: 40,
+            availabilityTime: "24/7",
+            accessibility: "public",
+            chargingNetwork: "Flo",
+            energyCost: {
+                price: {
+                    amount: NumberDecimal("0.22"),
+                    currency: "CAD"
+                },
+                priceUnit: "kWh"
+            },
+            messageForCustomer: "Priority access for hotel residents."
+        },
+        offers: [
+            {
+                title: "Toronto Getaway",
+                description: "Book for three nights and enjoy a complimentary lake cruise.",
+                code: "TOLAKE3"
+            }
+        ]
+    },
+    {
+        hotelName: "Munich Modernity",
+        hotelDescription: "Experience the best of Munich in this sleek, contemporary hotel located near the city's arts district.",
+        location: {
+            country: "Germany",
+            stateOrProvince: "Bavaria",
+            city: "Munich",
+            zipOrPostalCode: "80337",
+            streetAddress: "250 Kunststraße",
+            extendedAddress: "Near the Gasteig"
+        },
+        websiteLink: "https://munichmodernity.de",
+        amenities: ["Art Exhibitions", "Tech Smart Rooms", "Spa & Wellness"],
+        chargingInformation: {
+            numberOfConnectors: 3,
+            maxPower: 50,
+            availabilityTime: "24/7",
+            accessibility: "public",
+            chargingNetwork: "Ionity",
+            energyCost: {
+                price: {
+                    amount: NumberDecimal("0.33"),
+                    currency: "EUR"
+                },
+                priceUnit: "kWh"
+            },
+            messageForCustomer: "Charging station located in the underground garage."
+        },
+        offers: [
+            {
+                title: "Art Lover's Weekend",
+                description: "Includes tickets to local museums and galleries with your stay.",
+                code: "ARTMUC"
+            }
+        ]
+    },
+    {
+        hotelName: "Paris Elysee Palace",
+        hotelDescription: "A prestigious hotel in the heart of Paris, steps away from the Champs-Elysees, known for its impeccable service and luxurious accommodations.",
+        location: {
+            country: "France",
+            stateOrProvince: "Île-de-France",
+            city: "Paris",
+            zipOrPostalCode: "75008",
+            streetAddress: "32 Rue du Faubourg",
+            extendedAddress: "Near the Arc de Triomphe"
+        },
+        websiteLink: "https://elyseepalaceparis.fr",
+        amenities: ["Designer Boutiques", "Michelin Star Dining", "Limousine Service"],
+        chargingInformation: {
+            numberOfConnectors: 5,
+            maxPower: 60,
+            availabilityTime: "24/7",
+            accessibility: "public",
+            chargingNetwork: "Tesla",
+            energyCost: {
+                price: {
+                    amount: NumberDecimal("0.50"),
+                    currency: "EUR"
+                },
+                priceUnit: "kWh"
+            },
+            messageForCustomer: "Exclusive Tesla charging points available."
+        },
+        offers: [
+            {
+                title: "Parisian Glamour",
+                description: "Stay in a suite and enjoy a private shopping experience at Galeries Lafayette.",
+                code: "GLAMOUR"
+            }
+        ]
+    },
+    {
+        hotelName: "The Roman Forum Hotel",
+        hotelDescription: "Located in the historical heart of Rome, this hotel offers luxury accommodations with breathtaking views of ancient Roman ruins.",
+        location: {
+            country: "Italy",
+            stateOrProvince: "Lazio",
+            city: "Rome",
+            zipOrPostalCode: "00184",
+            streetAddress: "Via Sacra 101",
+            extendedAddress: "Opposite the Colosseum"
+        },
+        websiteLink: "https://romanforumhotel.it",
+        amenities: ["Guided Tours", "Rooftop Terrace", "Fine Dining"],
+        chargingInformation: {
+            numberOfConnectors: 2,
+            maxPower: 22,
+            availabilityTime: "24/7",
+            accessibility: "public",
+            chargingNetwork: "Enel X",
+            energyCost: {
+                price: {
+                    amount: NumberDecimal("0.40"),
+                    currency: "EUR"
+                },
+                priceUnit: "kWh"
+            },
+            messageForCustomer: "Reserve your charging spot at the time of booking."
+        },
+        offers: [
+            {
+                title: "Roman Holiday",
+                description: "Experience a romantic getaway with a bespoke tour of Rome's ancient sites.",
+                code: "ROMA60"
+            }
+        ]
+    }
+]);
 
-db.VisitorSearches.insertOne({
-  searchCriteria: [
-    { key: "hotelName", value: "Grand Plaza" }
-  ],
-  userLocation: "Los Angeles, USA",
-  timestamp: new Date()
-});
 
-db.AdminDashboards.insertOne({
-  hotelId: ObjectId("66d32f551561fc1fc872598f"),
-  timesImpressions: 150,
-  timesProfileViews: 75,
-  timesCTAClicked: 25,
-  recordDate: new Date()
-});
 
-db.AddressesDictionary.insertOne({
-  key: "grand",
-  values: [ObjectId("66d32f551561fc1fc872598f")]
-});
-db.AddressesDictionary.insertOne({
-  key: "plaza",
-  values: [ObjectId("66d32f551561fc1fc872598f")]
-});
+db.PaymentsInformation.insertMany([
+    {
+        hotelId: "66dc16ddf8135a197e5f6ee7",
+        billingInformation: {
+            nameOnCard: "John Doe",
+            cardNumber: "4532951428570143",
+            expirationDate: { month: 12, year: 2025 },
+            cvc: "123",
+            billingAddress: {
+                country: "Italy",
+                stateOrProvince: "Veneto",
+                city: "Venice",
+                zipOrPostalCode: "30100",
+                streetAddress: "150 Via Canal",
+                extendedAddress: "Unit 20"
+            }
+        },
+        subscriptionInformation: {
+            currentPlan: "Premium",
+            billingCycle: "yearly",
+            amount: NumberDecimal("1999.99"),
+            currency: "EUR",
+            accountStatus: "active",
+            subscriptionDate: new Date("2022-05-15"),
+            nextBillingDate: new Date("2023-05-15")
+        },
+        paymentHistory: [
+            {
+                paymentDate: new Date("2022-05-15"),
+                cardLastFour: "0143",
+                chargedAmount: "1999.99"
+            }
+        ]
+    },
+    {
+        hotelId: "66dc16ddf8135a197e5f6ee8",
+        billingInformation: {
+            nameOnCard: "Alice Johnson",
+            cardNumber: "5486241578963210",
+            expirationDate: { month: 11, year: 2024 },
+            cvc: "321",
+            billingAddress: {
+                country: "Germany",
+                stateOrProvince: "Berlin",
+                city: "Berlin",
+                zipOrPostalCode: "10117",
+                streetAddress: "320 Techstraße",
+                extendedAddress: "Platz 9"
+            }
+        },
+        subscriptionInformation: {
+            currentPlan: "Standard",
+            billingCycle: "monthly",
+            amount: NumberDecimal("299.99"),
+            currency: "EUR",
+            accountStatus: "active",
+            subscriptionDate: new Date("2022-01-01"),
+            nextBillingDate: new Date("2022-02-01")
+        },
+        paymentHistory: [
+            {
+                paymentDate: new Date("2022-01-01"),
+                cardLastFour: "3210",
+                chargedAmount: "299.99"
+            }
+        ]
+    },
+    {
+        hotelId: "66dc16ddf8135a197e5f6ee9",
+        billingInformation: {
+            nameOnCard: "Emma Brown",
+            cardNumber: "4716453289120345",
+            expirationDate: { month: 10, year: 2026 },
+            cvc: "456",
+            billingAddress: {
+                country: "USA",
+                stateOrProvince: "New York",
+                city: "New York",
+                zipOrPostalCode: "10001",
+                streetAddress: "789 Fifth Avenue",
+                extendedAddress: "Suite 2300"
+            }
+        },
+        subscriptionInformation: {
+            currentPlan: "Standard",
+            billingCycle: "monthly",
+            amount: NumberDecimal("249.99"),
+            currency: "USD",
+            accountStatus: "active",
+            subscriptionDate: new Date("2023-03-20"),
+            nextBillingDate: new Date("2023-04-20")
+        },
+        paymentHistory: [
+            {
+                paymentDate: new Date("2023-03-20"),
+                cardLastFour: "0345",
+                chargedAmount: "249.99"
+            }
+        ]
+    },
+    {
+        hotelId: "66dc16ddf8135a197e5f6eea",
+        billingInformation: {
+            nameOnCard: "Oliver Twist",
+            cardNumber: "6011111111111117",
+            expirationDate: { month: 9, year: 2027 },
+            cvc: "789",
+            billingAddress: {
+                country: "Spain",
+                stateOrProvince: "Catalonia",
+                city: "Barcelona",
+                zipOrPostalCode: "08003",
+                streetAddress: "42 Playa Avenue",
+                extendedAddress: "Building C"
+            }
+        },
+        subscriptionInformation: {
+            currentPlan: "Deluxe",
+            billingCycle: "yearly",
+            amount: NumberDecimal("3599.99"),
+            currency: "EUR",
+            accountStatus: "active",
+            subscriptionDate: new Date("2023-01-10"),
+            nextBillingDate: new Date("2024-01-10")
+        },
+        paymentHistory: [
+            {
+                paymentDate: new Date("2023-01-10"),
+                cardLastFour: "1117",
+                chargedAmount: "3599.99"
+            }
+        ]
+    },
+    {
+        hotelId: "66dc16ddf8135a197e5f6eeb",
+        billingInformation: {
+            nameOnCard: "Charlie Mingus",
+            cardNumber: "378282246310005",
+            expirationDate: { month: 8, year: 2025 },
+            cvc: "821",
+            billingAddress: {
+                country: "Canada",
+                stateOrProvince: "Quebec",
+                city: "Montreal",
+                zipOrPostalCode: "H2X 1Z5",
+                streetAddress: "555 Saint Laurent Blvd",
+                extendedAddress: "Unit 18"
+            }
+        },
+        subscriptionInformation: {
+            currentPlan: "Standard",
+            billingCycle: "monthly",
+            amount: NumberDecimal("399.99"),
+            currency: "CAD",
+            accountStatus: "active",
+            subscriptionDate: new Date("2022-06-15"),
+            nextBillingDate: new Date("2022-07-15")
+        },
+        paymentHistory: [
+            {
+                paymentDate: new Date("2022-06-15"),
+                cardLastFour: "0005",
+                chargedAmount: "399.99"
+            }
+        ]
+    },
+    // Continue similarly for other hotels...
+]);
+
+db.PaymentsInformation.insertMany([
+    {
+        hotelId: "66dc16ddf8135a197e5f6eec",
+        billingInformation: {
+            nameOnCard: "Sophia Hart",
+            cardNumber: "4111111111111111",
+            expirationDate: { month: 7, year: 2027 },
+            cvc: "874",
+            billingAddress: {
+                country: "UK",
+                stateOrProvince: "London",
+                city: "London",
+                zipOrPostalCode: "E1 6AN",
+                streetAddress: "22 Queen Street",
+                extendedAddress: "Near Tower Bridge"
+            }
+        },
+        subscriptionInformation: {
+            currentPlan: "Business",
+            billingCycle: "yearly",
+            amount: NumberDecimal("4299.99"),
+            currency: "GBP",
+            accountStatus: "active",
+            subscriptionDate: new Date("2023-09-01"),
+            nextBillingDate: new Date("2024-09-01")
+        },
+        paymentHistory: [
+            {
+                paymentDate: new Date("2023-09-01"),
+                cardLastFour: "1111",
+                chargedAmount: "4299.99"
+            }
+        ]
+    },
+    {
+        hotelId: "66dc16ddf8135a197e5f6eed",
+        billingInformation: {
+            nameOnCard: "Lucas Grabeel",
+            cardNumber: "5555555555554444",
+            expirationDate: { month: 6, year: 2024 },
+            cvc: "992",
+            billingAddress: {
+                country: "Netherlands",
+                stateOrProvince: "North Holland",
+                city: "Amsterdam",
+                zipOrPostalCode: "1019 BR",
+                streetAddress: "100 Amstel Quay",
+                extendedAddress: ""
+            }
+        },
+        subscriptionInformation: {
+            currentPlan: "Economy",
+            billingCycle: "monthly",
+            amount: NumberDecimal("159.99"),
+            currency: "EUR",
+            accountStatus: "active",
+            subscriptionDate: new Date("2022-10-20"),
+            nextBillingDate: new Date("2022-11-20")
+        },
+        paymentHistory: [
+            {
+                paymentDate: new Date("2022-10-20"),
+                cardLastFour: "4444",
+                chargedAmount: "159.99"
+            }
+        ]
+    },
+    {
+        hotelId: "66dc16ddf8135a197e5f6eee",
+        billingInformation: {
+            nameOnCard: "Mia Wong",
+            cardNumber: "5105105105105100",
+            expirationDate: { month: 5, year: 2025 },
+            cvc: "333",
+            billingAddress: {
+                country: "Ireland",
+                stateOrProvince: "Dublin",
+                city: "Dublin",
+                zipOrPostalCode: "D02 KF84",
+                streetAddress: "47 Castle Street",
+                extendedAddress: "Opposite the Castle Gardens"
+            }
+        },
+        subscriptionInformation: {
+            currentPlan: "Deluxe",
+            billingCycle: "yearly",
+            amount: NumberDecimal("2599.99"),
+            currency: "EUR",
+            accountStatus: "active",
+            subscriptionDate: new Date("2023-08-15"),
+            nextBillingDate: new Date("2024-08-15")
+        },
+        paymentHistory: [
+            {
+                paymentDate: new Date("2023-08-15"),
+                cardLastFour: "5100",
+                chargedAmount: "2599.99"
+            }
+        ]
+    },
+    {
+        hotelId: "66dc16ddf8135a197e5f6eef",
+        billingInformation: {
+            nameOnCard: "Ethan Lee",
+            cardNumber: "378734493671000",
+            expirationDate: { month: 3, year: 2026 },
+            cvc: "410",
+            billingAddress: {
+                country: "Canada",
+                stateOrProvince: "Ontario",
+                city: "Toronto",
+                zipOrPostalCode: "M5J 2N8",
+                streetAddress: "900 Bay Street",
+                extendedAddress: "Lakeside Wing"
+            }
+        },
+        subscriptionInformation: {
+            currentPlan: "Standard",
+            billingCycle: "monthly",
+            amount: NumberDecimal("299.99"),
+            currency: "CAD",
+            accountStatus: "active",
+            subscriptionDate: new Date("2023-04-12"),
+            nextBillingDate: new Date("2023-05-12")
+        },
+        paymentHistory: [
+            {
+                paymentDate: new Date("2023-04-12"),
+                cardLastFour: "6710",
+                chargedAmount: "299.99"
+            }
+        ]
+    },
+    {
+        hotelId: "66dc16ddf8135a197e5f6ef0",
+        billingInformation: {
+            nameOnCard: "Nora Fischer",
+            cardNumber: "6011000990139424",
+            expirationDate: { month: 2, year: 2025 },
+            cvc: "779",
+            billingAddress: {
+                country: "Germany",
+                stateOrProvince: "Bavaria",
+                city: "Munich",
+                zipOrPostalCode: "80337",
+                streetAddress: "250 Kunststraße",
+                extendedAddress: "Near the Gasteig"
+            }
+        },
+        subscriptionInformation: {
+            currentPlan: "Business",
+            billingCycle: "yearly",
+            amount: NumberDecimal("4199.99"),
+            currency: "EUR",
+            accountStatus: "active",
+            subscriptionDate: new Date("2023-02-03"),
+            nextBillingDate: new Date("2024-02-03")
+        },
+        paymentHistory: [
+            {
+                paymentDate: new Date("2023-02-03"),
+                cardLastFour: "9424",
+                chargedAmount: "4199.99"
+            }
+        ]
+    },
+    {
+        hotelId: "66dc16ddf8135a197e5f6ef1",
+        billingInformation: {
+            nameOnCard: "Chloe Dupont",
+            cardNumber: "4111111111111111",
+            expirationDate: { month: 1, year: 2028 },
+            cvc: "202",
+            billingAddress: {
+                country: "France",
+                stateOrProvince: "Île-de-France",
+                city: "Paris",
+                zipOrPostalCode: "75008",
+                streetAddress: "32 Rue du Faubourg",
+                extendedAddress: "Near the Arc de Triomphe"
+            }
+        },
+        subscriptionInformation: {
+            currentPlan: "Luxury",
+            billingCycle: "yearly",
+            amount: NumberDecimal("4999.99"),
+            currency: "EUR",
+            accountStatus: "active",
+            subscriptionDate: new Date("2022-12-25"),
+            nextBillingDate: new Date("2023-12-25")
+        },
+        paymentHistory: [
+            {
+                paymentDate: new Date("2022-12-25"),
+                cardLastFour: "1111",
+                chargedAmount: "4999.99"
+            }
+        ]
+    },
+    {
+        hotelId: "66dc16ddf8135a197e5f6ef2",
+        billingInformation: {
+            nameOnCard: "Marco Rossi",
+            cardNumber: "5555555555554444",
+            expirationDate: { month: 4, year: 2027 },
+            cvc: "313",
+            billingAddress: {
+                country: "Italy",
+                stateOrProvince: "Lazio",
+                city: "Rome",
+                zipOrPostalCode: "00184",
+                streetAddress: "Via Sacra 101",
+                extendedAddress: "Opposite the Colosseum"
+            }
+        },
+        subscriptionInformation: {
+            currentPlan: "Premium",
+            billingCycle: "yearly",
+            amount: NumberDecimal("3499.99"),
+            currency: "EUR",
+            accountStatus: "active",
+            subscriptionDate: new Date("2023-07-11"),
+            nextBillingDate: new Date("2024-07-11")
+        },
+        paymentHistory: [
+            {
+                paymentDate: new Date("2023-07-11"),
+                cardLastFour: "4444",
+                chargedAmount: "3499.99"
+            }
+        ]
+    }
+]);
+
+db.Users.insertMany([
+    {
+        email: "john.doe@venicecanal.com",
+        password: "password123",
+        firstName: "John",
+        lastName: "Doe",
+        hotelId: ObjectId("66dc16ddf8135a197e5f6ee7"),
+        recordTimestamp: new Date("2023-09-01T08:00:00Z")
+    },
+    {
+        email: "alice.johnson@berlintech.com",
+        password: "alice2023",
+        firstName: "Alice",
+        lastName: "Johnson",
+        hotelId: ObjectId("66dc16ddf8135a197e5f6ee8"),
+        recordTimestamp: new Date("2023-08-21T08:00:00Z")
+    },
+    {
+        email: "emma.brown@manhattanskyline.com",
+        password: "emmaB2024",
+        firstName: "Emma",
+        lastName: "Brown",
+        hotelId: ObjectId("66dc16ddf8135a197e5f6ee9"),
+        recordTimestamp: new Date("2023-07-15T08:00:00Z")
+    },
+    {
+        email: "oliver.twist@barcelonabeach.com",
+        password: "twist1234",
+        firstName: "Oliver",
+        lastName: "Twist",
+        hotelId: ObjectId("66dc16ddf8135a197e5f6eea"),
+        recordTimestamp: new Date("2023-06-30T08:00:00Z")
+    },
+    {
+        email: "charlie.mingus@montrealcomfort.com",
+        password: "charlie2023",
+        firstName: "Charlie",
+        lastName: "Mingus",
+        hotelId: ObjectId("66dc16ddf8135a197e5f6eeb"),
+        recordTimestamp: new Date("2023-05-25T08:00:00Z")
+    },
+    {
+        email: "sophia.hart@londoncity.com",
+        password: "sophiaH321",
+        firstName: "Sophia",
+        lastName: "Hart",
+        hotelId: ObjectId("66dc16ddf8135a197e5f6eec"),
+        recordTimestamp: new Date("2023-04-20T08:00:00Z")
+    },
+    {
+        email: "lucas.grabeel@amsterdamriverside.com",
+        password: "lucasGR2023",
+        firstName: "Lucas",
+        lastName: "Grabeel",
+        hotelId: ObjectId("66dc16ddf8135a197e5f6eed"),
+        recordTimestamp: new Date("2023-03-18T08:00:00Z")
+    },
+    {
+        email: "mia.wong@dublincastle.com",
+        password: "miaW2023",
+        firstName: "Mia",
+        lastName: "Wong",
+        hotelId: ObjectId("66dc16ddf8135a197e5f6eee"),
+        recordTimestamp: new Date("2023-02-10T08:00:00Z")
+    },
+    {
+        email: "ethan.lee@torontoplaza.com",
+        password: "ethanL2024",
+        firstName: "Ethan",
+        lastName: "Lee",
+        hotelId: ObjectId("66dc16ddf8135a197e5f6eef"),
+        recordTimestamp: new Date("2023-01-05T08:00:00Z")
+    },
+    {
+        email: "nora.fischer@munichmodernity.com",
+        password: "noraF2024",
+        firstName: "Nora",
+        lastName: "Fischer",
+        hotelId: ObjectId("66dc16ddf8135a197e5f6ef0"),
+        recordTimestamp: new Date("2022-12-25T08:00:00Z")
+    },
+    {
+        email: "chloe.dupont@pariselysee.com",
+        password: "chloeD2023",
+        firstName: "Chloe",
+        lastName: "Dupont",
+        hotelId: ObjectId("66dc16ddf8135a197e5f6ef1"),
+        recordTimestamp: new Date("2022-11-30T08:00:00Z")
+    },
+    {
+        email: "marco.rossi@romanforum.com",
+        password: "marcoR2023",
+        firstName: "Marco",
+        lastName: "Rossi",
+        hotelId: ObjectId("66dc16ddf8135a197e5f6ef2"),
+        recordTimestamp: new Date("2022-10-15T08:00:00Z")
+    }
+]);
+
+db.VisitorSearches.insertMany([
+    {
+        searchTerm: "luxury hotels in Venice",
+        userLocation: "Italy",
+        requestTimestamp: new Date("2023-09-01T12:00:00Z")
+    },
+    {
+        searchTerm: "beach resorts near Barcelona",
+        userLocation: "Spain",
+        requestTimestamp: new Date("2023-09-01T13:00:00Z")
+    },
+    {
+        searchTerm: "conference facilities in Berlin",
+        userLocation: "Germany",
+        requestTimestamp: new Date("2023-09-02T10:30:00Z")
+    },
+    {
+        searchTerm: "pet friendly hotels in Paris",
+        userLocation: "France",
+        requestTimestamp: new Date("2023-09-02T11:00:00Z")
+    },
+    {
+        searchTerm: "New York hotels with parking",
+        userLocation: "USA",
+        requestTimestamp: new Date("2023-09-02T15:45:00Z")
+    },
+    {
+        searchTerm: "Montreal boutique hotels",
+        userLocation: "Canada",
+        requestTimestamp: new Date("2023-09-03T09:00:00Z")
+    },
+    {
+        searchTerm: "5-star accommodations in London",
+        userLocation: "UK",
+        requestTimestamp: new Date("2023-09-03T17:30:00Z")
+    },
+    {
+        searchTerm: "best hotels in Amsterdam",
+        userLocation: "Netherlands",
+        requestTimestamp: new Date("2023-09-04T12:15:00Z")
+    },
+    {
+        searchTerm: "Dublin hotels with large suites",
+        userLocation: "Ireland",
+        requestTimestamp: new Date("2023-09-04T19:00:00Z")
+    },
+    {
+        searchTerm: "Toronto lakeside resorts",
+        userLocation: "Canada",
+        requestTimestamp: new Date("2023-09-05T08:20:00Z")
+    },
+    {
+        searchTerm: "Munich hotels near the museum district",
+        userLocation: "Germany",
+        requestTimestamp: new Date("2023-09-05T13:30:00Z")
+    },
+    {
+        searchTerm: "luxury stays in Rome",
+        userLocation: "Italy",
+        requestTimestamp: new Date("2023-09-06T14:00:00Z")
+    },
+    {
+        searchTerm: "Vienna music theme hotels",
+        userLocation: "Austria",
+        requestTimestamp: new Date("2023-09-07T16:00:00Z")
+    },
+    {
+        searchTerm: "eco-friendly resorts in Greece",
+        userLocation: "Greece",
+        requestTimestamp: new Date("2023-09-07T18:00:00Z")
+    },
+    {
+        searchTerm: "historical inns in Istanbul",
+        userLocation: "Turkey",
+        requestTimestamp: new Date("2023-09-08T09:00:00Z")
+    },
+    {
+        searchTerm: "Sydney hotels with ocean view",
+        userLocation: "Australia",
+        requestTimestamp: new Date("2023-09-08T11:30:00Z")
+    },
+    {
+        searchTerm: "hotels near the Silicon Valley",
+        userLocation: "USA",
+        requestTimestamp: new Date("2023-09-09T10:00:00Z")
+    },
+    {
+        searchTerm: "affordable hostels in Tokyo",
+        userLocation: "Japan",
+        requestTimestamp: new Date("2023-09-10T08:45:00Z")
+    },
+    {
+        searchTerm: "Cape Town central luxury hotels",
+        userLocation: "South Africa",
+        requestTimestamp: new Date("2023-09-10T17:00:00Z")
+    },
+    {
+        searchTerm: "top rated hotels in Seoul",
+        userLocation: "South Korea",
+        requestTimestamp: new Date("2023-09-11T12:00:00Z")
+    }
+]);
+
+db.AdminDashboards.insertMany([
+    {
+        hotelId: ObjectId("66dc16ddf8135a197e5f6ee7"),
+        timesImpressions: 250,
+        timesProfileViews: 150,
+        timesCTAClicked: 80,
+        countLeads: 45,
+        recordDate: new Date("2023-09-01")
+    },
+    {
+        hotelId: ObjectId("66dc16ddf8135a197e5f6ee8"),
+        timesImpressions: 300,
+        timesProfileViews: 200,
+        timesCTAClicked: 120,
+        countLeads: 70,
+        recordDate: new Date("2023-09-02")
+    },
+    {
+        hotelId: ObjectId("66dc16ddf8135a197e5f6ee9"),
+        timesImpressions: 400,
+        timesProfileViews: 220,
+        timesCTAClicked: 150,
+        countLeads: 85,
+        recordDate: new Date("2023-09-03")
+    },
+    {
+        hotelId: ObjectId("66dc16ddf8135a197e5f6eea"),
+        timesImpressions: 180,
+        timesProfileViews: 100,
+        timesCTAClicked: 50,
+        countLeads: 30,
+        recordDate: new Date("2023-09-04")
+    },
+    {
+        hotelId: ObjectId("66dc16ddf8135a197e5f6eeb"),
+        timesImpressions: 220,
+        timesProfileViews: 140,
+        timesCTAClicked: 90,
+        countLeads: 60,
+        recordDate: new Date("2023-09-05")
+    },
+    {
+        hotelId: ObjectId("66dc16ddf8135a197e5f6eec"),
+        timesImpressions: 320,
+        timesProfileViews: 210,
+        timesCTAClicked: 110,
+        countLeads: 75,
+        recordDate: new Date("2023-09-06")
+    },
+    {
+        hotelId: ObjectId("66dc16ddf8135a197e5f6eed"),
+        timesImpressions: 230,
+        timesProfileViews: 130,
+        timesCTAClicked: 70,
+        countLeads: 40,
+        recordDate: new Date("2023-09-07")
+    },
+    {
+        hotelId: ObjectId("66dc16ddf8135a197e5f6eee"),
+        timesImpressions: 210,
+        timesProfileViews: 120,
+        timesCTAClicked: 60,
+        countLeads: 35,
+        recordDate: new Date("2023-09-08")
+    },
+    {
+        hotelId: ObjectId("66dc16ddf8135a197e5f6eef"),
+        timesImpressions: 280,
+        timesProfileViews: 170,
+        timesCTAClicked: 100,
+        countLeads: 65,
+        recordDate: new Date("2023-09-09")
+    },
+    {
+        hotelId: ObjectId("66dc16ddf8135a197e5f6ef0"),
+        timesImpressions: 350,
+        timesProfileViews: 230,
+        timesCTAClicked: 140,
+        countLeads: 90,
+        recordDate: new Date("2023-09-10")
+    },
+    {
+        hotelId: ObjectId("66dc16ddf8135a197e5f6ef1"),
+        timesImpressions: 400,
+        timesProfileViews: 260,
+        timesCTAClicked: 160,
+        countLeads: 100,
+        recordDate: new Date("2023-09-11")
+    },
+    {
+        hotelId: ObjectId("66dc16ddf8135a197e5f6ef2"),
+        timesImpressions: 300,
+        timesProfileViews: 180,
+        timesCTAClicked: 110,
+        countLeads: 70,
+        recordDate: new Date("2023-09-12")
+    }
+]);
+
+db.Dictionary.insertMany([
+    { key: "venice", values: ["66dc16ddf8135a197e5f6ee7"] },
+    { key: "canal", values: ["66dc16ddf8135a197e5f6ee7"] },
+    { key: "suites", values: ["66dc16ddf8135a197e5f6ee7"] },
+    { key: "berlin", values: ["66dc16ddf8135a197e5f6ee8"] },
+    { key: "tech", values: ["66dc16ddf8135a197e5f6ee8"] },
+    { key: "manhattan", values: ["66dc16ddf8135a197e5f6ee9"] },
+    { key: "skyline", values: ["66dc16ddf8135a197e5f6ee9"] },
+    { key: "barcelona", values: ["66dc16ddf8135a197e5f6eea"] },
+    { key: "beach", values: ["66dc16ddf8135a197e5f6eea"] },
+    { key: "resort", values: ["66dc16ddf8135a197e5f6eea"] },
+    { key: "montreal", values: ["66dc16ddf8135a197e5f6eeb"] },
+    { key: "comfort", values: ["66dc16ddf8135a197e5f6eeb"] },
+    { key: "london", values: ["66dc16ddf8135a197e5f6eec"] },
+    { key: "city", values: ["66dc16ddf8135a197e5f6eec"] },
+    { key: "amsterdam", values: ["66dc16ddf8135a197e5f6eed"] },
+    { key: "riverside", values: ["66dc16ddf8135a197e5f6eed"] },
+    { key: "dublin", values: ["66dc16ddf8135a197e5f6eee"] },
+    { key: "castle", values: ["66dc16ddf8135a197e5f6eee"] },
+    { key: "inn", values: ["66dc16ddf8135a197e5f6eee"] },
+    { key: "toronto", values: ["66dc16ddf8135a197e5f6eef"] },
+    { key: "lakeside", values: ["66dc16ddf8135a197e5f6eef"] },
+    { key: "plaza", values: ["66dc16ddf8135a197e5f6eef"] },
+    { key: "munich", values: ["66dc16ddf8135a197e5f6ef0"] },
+    { key: "modernity", values: ["66dc16ddf8135a197e5f6ef0"] },
+    { key: "paris", values: ["66dc16ddf8135a197e5f6ef1"] },
+    { key: "elysee", values: ["66dc16ddf8135a197e5f6ef1"] },
+    { key: "palace", values: ["66dc16ddf8135a197e5f6ef1"] },
+    { key: "roman", values: ["66dc16ddf8135a197e5f6ef2"] },
+    { key: "forum", values: ["66dc16ddf8135a197e5f6ef2"] },
+    { key: "hotel", values: ["66dc16ddf8135a197e5f6ee8", "66dc16ddf8135a197e5f6ee9", "66dc16ddf8135a197e5f6eec", "66dc16ddf8135a197e5f6eed", "66dc16ddf8135a197e5f6eef", "66dc16ddf8135a197e5f6ef0", "66dc16ddf8135a197e5f6ef1", "66dc16ddf8135a197e5f6ef2"] },
+    { key: "luxury", values: ["66dc16ddf8135a197e5f6ee7", "66dc16ddf8135a197e5f6ee9", "66dc16ddf8135a197e5f6eea", "66dc16ddf8135a197e5f6ef1"] },
+    { key: "business", values: ["66dc16ddf8135a197e5f6ee8", "66dc16ddf8135a197e5f6ef0"] },
+    { key: "historic", values: ["66dc16ddf8135a197e5f6eee"] },
+    { key: "family", values: ["66dc16ddf8135a197e5f6eeb", "66dc16ddf8135a197e5f6eef"] },
+    { key: "romantic", values: ["66dc16ddf8135a197e5f6ee7", "66dc16ddf8135a197e5f6eea", "66dc16ddf8135a197e5f6ef2"] },
+    { key: "eco", values: ["66dc16ddf8135a197e5f6eeb", "66dc16ddf8135a197e5f6eed"] },
+    { key: "boutique", values: ["66dc16ddf8135a197e5f6eec", "66dc16ddf8135a197e5f6eed", "66dc16ddf8135a197e5f6ef2"] },
+    { key: "spa", values: ["66dc16ddf8135a197e5f6ee7", "66dc16ddf8135a197e5f6ee9", "66dc16ddf8135a197e5f6eea"] },
+    { key: "conference", values: ["66dc16ddf8135a197e5f6ee8", "66dc16ddf8135a197e5f6ef0"] },
+    { key: "sophisticated", values: ["66dc16ddf8135a197e5f6ef1"] },
+    { key: "artistic", values: ["66dc16ddf8135a197e5f6ef0"] },
+    { key: "cultural", values: ["66dc16ddf8135a197e5f6eed"] },
+    { key: "renovated", values: ["66dc16ddf8135a197e5f6ee9"] },
+    { key: "stylish", values: ["66dc16ddf8135a197e5f6eec"] },
+    { key: "thematic", values: ["66dc16ddf8135a197e5f6ee8"] },
+    { key: "minimalist", values: ["66dc16ddf8135a197e5f6ef0"] },
+    { key: "chic", values: ["66dc16ddf8135a197e5f6ee8", "66dc16ddf8135a197e5f6ef1"] },
+    { key: "view", values: ["66dc16ddf8135a197e5f6ee9", "66dc16ddf8135a197e5f6eea"] },
+    { key: "gourmet", values: ["66dc16ddf8135a197e5f6ee7", "66dc16ddf8135a197e5f6eea"] },
+    { key: "exclusive", values: ["66dc16ddf8135a197e5f6ef1", "66dc16ddf8135a197e5f6ef2"] },
+    { key: "premier", values: ["66dc16ddf8135a197e5f6ef0"] },
+    { key: "elegant", values: ["66dc16ddf8135a197e5f6ef1"] },
+    { key: "cozy", values: ["66dc16ddf8135a197e5f6eeb"] },
+    { key: "charming", values: ["66dc16ddf8135a197e5f6eee"] },
+    { key: "modern", values: ["66dc16ddf8135a197e5f6ef0"] },
+    { key: "luxurious", values: ["66dc16ddf8135a197e5f6ef1"] },
+    { key: "trendy", values: ["66dc16ddf8135a197e5f6ee8"] },
+    { key: "popular", values: ["66dc16ddf8135a197e5f6eec"] },
+    { key: "quaint", values: ["66dc16ddf8135a197e5f6eee"] },
+    { key: "rustic", values: ["66dc16ddf8135a197e5f6eee"] },
+    { key: "seaside", values: ["66dc16ddf8135a197e5f6eea"] },
+    { key: "mountain", values: ["66dc16ddf8135a197e5f6eef"] },
+    { key: "urban", values: ["66dc16ddf8135a197e5f6ee8", "66dc16ddf8135a197e5f6eec"] },
+    { key: "countryside", values: ["66dc16ddf8135a197e5f6eee"] },
+    { key: "dockside", values: ["66dc16ddf8135a197e5f6eea"] },
+    { key: "waterfront", values: ["66dc16ddf8135a197e5f6eea"] },
+    { key: "central", values: ["66dc16ddf8135a197e5f6eec", "66dc16ddf8135a197e5f6eed"] },
+    { key: "exclusive", values: ["66dc16ddf8135a197e5f6ef1", "66dc16ddf8135a197e5f6ef2"] },
+    { key: "historic", values: ["66dc16ddf8135a197e5f6eee"] },
+    { key: "prestigious", values: ["66dc16ddf8135a197e5f6ef1"] },
+    { key: "scenic", values: ["66dc16ddf8135a197e5f6eea", "66dc16ddf8135a197e5f6eef"] },
+    { key: "famous", values: ["66dc16ddf8135a197e5f6eec", "66dc16ddf8135a197e5f6ef1"] },
+    { key: "peaceful", values: ["66dc16ddf8135a197e5f6eee", "66dc16ddf8135a197e5f6ef2"] },
+    { key: "tranquil", values: ["66dc16ddf8135a197e5f6eea"] },
+    { key: "classic", values: ["66dc16ddf8135a197e5f6eec", "66dc16ddf8135a197e5f6eee"] },
+    { key: "contemporary", values: ["66dc16ddf8135a197e5f6ef0"] },
+    { key: "unique", values: ["66dc16ddf8135a197e5f6eed", "66dc16ddf8135a197e5f6eee"] },
+    { key: "sophisticated", values: ["66dc16ddf8135a197e5f6ef1"] },
+    { key: "welcoming", values: ["66dc16ddf8135a197e5f6eeb", "66dc16ddf8135a197e5f6eef"] },
+    { key: "deluxe", values: ["66dc16ddf8135a197e5f6eea", "66dc16ddf8135a197e5f6ef1"] },
+    { key: "economy", values: ["66dc16ddf8135a197e5f6eeb"] },
+    { key: "affordable", values: ["66dc16ddf8135a197e5f6eed"] },
+    { key: "opulent", values: ["66dc16ddf8135a197e5f6ef1"] },
+    { key: "regal", values: ["66dc16ddf8135a197e5f6ef2"] },
+    { key: "vibrant", values: ["66dc16ddf8135a197e5f6ee8", "66dc16ddf8135a197e5f6eec"] },
+    { key: "polished", values: ["66dc16ddf8135a197e5f6ef0"] },
+    { key: "innovative", values: ["66dc16ddf8135a197e5f6ee8"] },
+    { key: "distinguished", values: ["66dc16ddf8135a197e5f6ef1"] },
+    { key: "captivating", values: ["66dc16ddf8135a197e5f6eea"] },
+    { key: "entertaining", values: ["66dc16ddf8135a197e5f6eef"] },
+    { key: "relaxing", values: ["66dc16ddf8135a197e5f6eea", "66dc16ddf8135a197e5f6eef"] },
+    { key: "bustling", values: ["66dc16ddf8135a197e5f6ee9"] },
+    { key: "serene", values: ["66dc16ddf8135a197e5f6eee"] },
+    { key: "picturesque", values: ["66dc16ddf8135a197e5f6eea", "66dc16ddf8135a197e5f6eef"] },
+    { key: "majestic", values: ["66dc16ddf8135a197e5f6ef2"] }
+]);
+
+
+db.MailingList.insertMany([
+    { email: "john.doe@example.com", countryOfResidence: "USA", recordDate: new Date("2023-09-01T12:00:00Z") },
+    { email: "alice.smith@example.com", countryOfResidence: "Canada", recordDate: new Date("2023-09-01T13:00:00Z") },
+    { email: "maria.lopez@example.com", countryOfResidence: "Spain", recordDate: new Date("2023-09-02T10:30:00Z") },
+    { email: "chen.li@example.com", countryOfResidence: "China", recordDate: new Date("2023-09-02T11:00:00Z") },
+    { email: "olivia.jones@example.com", countryOfResidence: "United Kingdom", recordDate: new Date("2023-09-02T15:45:00Z") },
+    { email: "noah.jensen@example.com", countryOfResidence: "Denmark", recordDate: new Date("2023-09-03T09:00:00Z") },
+    { email: "lucas.martin@example.com", countryOfResidence: "France", recordDate: new Date("2023-09-03T17:30:00Z") },
+    { email: "emma.wilson@example.com", countryOfResidence: "Australia", recordDate: new Date("2023-09-04T12:15:00Z") },
+    { email: "sophia.davis@example.com", countryOfResidence: "New Zealand", recordDate: new Date("2023-09-04T19:00:00Z") },
+    { email: "mason.miller@example.com", countryOfResidence: "USA", recordDate: new Date("2023-09-05T08:20:00Z") },
+    { email: "isabella.garcia@example.com", countryOfResidence: "Mexico", recordDate: new Date("2023-09-05T13:30:00Z") },
+    { email: "liam.murphy@example.com", countryOfResidence: "Ireland", recordDate: new Date("2023-09-06T14:00:00Z") },
+    { email: "charlotte.johnson@example.com", countryOfResidence: "Sweden", recordDate: new Date("2023-09-07T16:00:00Z") },
+    { email: "ethan.anderson@example.com", countryOfResidence: "Norway", recordDate: new Date("2023-09-07T18:00:00Z") },
+    { email: "ava.thomas@example.com", countryOfResidence: "Germany", recordDate: new Date("2023-09-08T09:00:00Z") },
+    { email: "william.jackson@example.com", countryOfResidence: "South Africa", recordDate: new Date("2023-09-08T11:30:00Z") },
+    { email: "mia.lee@example.com", countryOfResidence: "Korea", recordDate: new Date("2023-09-09T10:00:00Z") },
+    { email: "james.taylor@example.com", countryOfResidence: "Japan", recordDate: new Date("2023-09-10T08:45:00Z") },
+    { email: "amelia.moore@example.com", countryOfResidence: "Italy", recordDate: new Date("2023-09-10T17:00:00Z") },
+    { email: "ethan.brown@example.com", countryOfResidence: "India", recordDate: new Date("2023-09-11T12:00:00Z") },
+    { email: "isabelle.hart@example.com", countryOfResidence: "Canada", recordDate: new Date("2023-09-11T15:00:00Z") },
+    { email: "jacob.white@example.com", countryOfResidence: "USA", recordDate: new Date("2023-09-12T09:00:00Z") },
+    { email: "sophie.knight@example.com", countryOfResidence: "United Kingdom", recordDate: new Date("2023-09-12T10:30:00Z") },
+    { email: "michael.king@example.com", countryOfResidence: "Australia", recordDate: new Date("2023-09-12T14:30:00Z") },
+    { email: "chloe.scott@example.com", countryOfResidence: "New Zealand", recordDate: new Date("2023-09-12T17:45:00Z") },
+    { email: "daniel.clark@example.com", countryOfResidence: "Ireland", recordDate: new Date("2023-09-13T08:00:00Z") },
+    { email: "ella.evans@example.com", countryOfResidence: "USA", recordDate: new Date("2023-09-13T11:20:00Z") },
+    { email: "samuel.green@example.com", countryOfResidence: "Canada", recordDate: new Date("2023-09-13T13:50:00Z") },
+    { email: "olivia.hill@example.com", countryOfResidence: "USA", recordDate: new Date("2023-09-13T16:15:00Z") },
+    { email: "lucas.adams@example.com", countryOfResidence: "USA", recordDate: new Date("2023-09-14T09:05:00Z") },
+    { email: "emily.campbell@example.com", countryOfResidence: "Scotland", recordDate: new Date("2023-09-14T11:30:00Z") },
+    { email: "matthew.carter@example.com", countryOfResidence: "England", recordDate: new Date("2023-09-14T14:45:00Z") },
+    { email: "madison.mitchell@example.com", countryOfResidence: "USA", recordDate: new Date("2023-09-15T08:20:00Z") },
+    { email: "andrew.roberts@example.com", countryOfResidence: "United Kingdom", recordDate: new Date("2023-09-15T10:55:00Z") },
+    { email: "lily.turner@example.com", countryOfResidence: "Australia", recordDate: new Date("2023-09-15T13:30:00Z") },
+    { email: "ryan.phillips@example.com", countryOfResidence: "Canada", recordDate: new Date("2023-09-16T09:00:00Z") },
+    { email: "grace.ward@example.com", countryOfResidence: "New Zealand", recordDate: new Date("2023-09-16T12:25:00Z") },
+    { email: "benjamin.murphy@example.com", countryOfResidence: "Ireland", recordDate: new Date("2023-09-16T15:45:00Z") },
+    { email: "zoey.foster@example.com", countryOfResidence: "USA", recordDate: new Date("2023-09-17T09:15:00Z") },
+    { email: "aaron.baker@example.com", countryOfResidence: "Canada", recordDate: new Date("2023-09-17T11:40:00Z") },
+    { email: "hannah.morgan@example.com", countryOfResidence: "Wales", recordDate: new Date("2023-09-17T14:10:00Z") },
+    { email: "tyler.reed@example.com", countryOfResidence: "USA", recordDate: new Date("2023-09-18T08:30:00Z") },
+    { email: "sarah.cook@example.com", countryOfResidence: "Canada", recordDate: new Date("2023-09-18T12:00:00Z") },
+    { email: "alex.russell@example.com", countryOfResidence: "Australia", recordDate: new Date("2023-09-18T15:30:00Z") },
+    { email: "nathan.bell@example.com", countryOfResidence: "USA", recordDate: new Date("2023-09-19T09:45:00Z") },
+    { email: "jessica.gibson@example.com", countryOfResidence: "United Kingdom", recordDate: new Date("2023-09-19T12:15:00Z") },
+    { email: "adam.shaw@example.com", countryOfResidence: "England", recordDate: new Date("2023-09-19T14:50:00Z") },
+    { email: "daisy.gray@example.com", countryOfResidence: "Scotland", recordDate: new Date("2023-09-20T08:10:00Z") },
+    { email: "james.hughes@example.com", countryOfResidence: "Wales", recordDate: new Date("2023-09-20T11:35:00Z") },
+    { email: "amelia.may@example.com", countryOfResidence: "England", recordDate: new Date("2023-09-20T14:05:00Z") },
+    { email: "charlotte.sanders@example.com", countryOfResidence: "USA", recordDate: new Date("2023-09-21T09:00:00Z") },
+    { email: "logan.smith@example.com", countryOfResidence: "Canada", recordDate: new Date("2023-09-21T12:00:00Z") },
+    { email: "harper.price@example.com", countryOfResidence: "USA", recordDate: new Date("2023-09-21T15:00:00Z") },
+    { email: "ethan.howard@example.com", countryOfResidence: "United Kingdom", recordDate: new Date("2023-09-22T10:00:00Z") },
+    { email: "avery.young@example.com", countryOfResidence: "Australia", recordDate: new Date("2023-09-22T13:00:00Z") },
+    { email: "riley.king@example.com", countryOfResidence: "New Zealand", recordDate: new Date("2023-09-22T16:00:00Z") },
+    { email: "jackson.ramirez@example.com", countryOfResidence: "USA", recordDate: new Date("2023-09-23T09:00:00Z") },
+    { email: "olivia.cooper@example.com", countryOfResidence: "Canada", recordDate: new Date("2023-09-23T12:00:00Z") },
+    { email: "lucas.bailey@example.com", countryOfResidence: "England", recordDate: new Date("2023-09-23T15:00:00Z") },
+    { email: "mia.knight@example.com", countryOfResidence: "Australia", recordDate: new Date("2023-09-24T09:00:00Z") },
+    { email: "aiden.clarke@example.com", countryOfResidence: "New Zealand", recordDate: new Date("2023-09-24T12:00:00Z") },
+    { email: "scarlett.james@example.com", countryOfResidence: "USA", recordDate: new Date("2023-09-24T15:00:00Z") },
+    { email: "mason.lee@example.com", countryOfResidence: "Canada", recordDate: new Date("2023-09-25T10:00:00Z") },
+    { email: "ella.martin@example.com", countryOfResidence: "USA", recordDate: new Date("2023-09-25T13:00:00Z") },
+    { email: "carter.thomas@example.com", countryOfResidence: "England", recordDate: new Date("2023-09-25T16:00:00Z") },
+    { email: "ariana.patel@example.com", countryOfResidence: "India", recordDate: new Date("2023-09-26T09:00:00Z") },
+    { email: "wyatt.anderson@example.com", countryOfResidence: "USA", recordDate: new Date("2023-09-26T12:00:00Z") },
+    { email: "sofia.lewis@example.com", countryOfResidence: "Australia", recordDate: new Date("2023-09-26T15:00:00Z") },
+    { email: "gabriel.nelson@example.com", countryOfResidence: "USA", recordDate: new Date("2023-09-27T09:00:00Z") },
+    { email: "zoe.carter@example.com", countryOfResidence: "Canada", recordDate: new Date("2023-09-27T12:00:00Z") }
+]);
+
+
+db.HotelsLeads.insertMany([
+    { email: "johndoe@example.com", fullName: "John Doe", hotelId: ObjectId("66dc16ddf8135a197e5f6ee7"), recordTimestamps: new Date("2023-09-01T12:00:00Z") },
+    { email: "alicejohnson@example.com", fullName: "Alice Johnson", hotelId: ObjectId("66dc16ddf8135a197e5f6ee8"), recordTimestamps: new Date("2023-09-01T13:00:00Z") },
+    { email: "michaelbrown@example.com", fullName: "Michael Brown", hotelId: ObjectId("66dc16ddf8135a197e5f6ee9"), recordTimestamps: new Date("2023-09-02T10:30:00Z") },
+    { email: "emilywhite@example.com", fullName: "Emily White", hotelId: ObjectId("66dc16ddf8135a197e5f6eea"), recordTimestamps: new Date("2023-09-02T11:00:00Z") },
+    { email: "davidsmith@example.com", fullName: "David Smith", hotelId: ObjectId("66dc16ddf8135a197e5f6eeb"), recordTimestamps: new Date("2023-09-02T15:45:00Z") },
+    { email: "sarawilson@example.com", fullName: "Sara Wilson", hotelId: ObjectId("66dc16ddf8135a197e5f6eec"), recordTimestamps: new Date("2023-09-03T09:00:00Z") },
+    { email: "jamesmiller@example.com", fullName: "James Miller", hotelId: ObjectId("66dc16ddf8135a197e5f6eed"), recordTimestamps: new Date("2023-09-03T17:30:00Z") },
+    { email: "lisataylor@example.com", fullName: "Lisa Taylor", hotelId: ObjectId("66dc16ddf8135a197e5f6eee"), recordTimestamps: new Date("2023-09-04T12:15:00Z") },
+    { email: "robertanderson@example.com", fullName: "Robert Anderson", hotelId: ObjectId("66dc16ddf8135a197e5f6eef"), recordTimestamps: new Date("2023-09-04T19:00:00Z") },
+    { email: "jennifermartinez@example.com", fullName: "Jennifer Martinez", hotelId: ObjectId("66dc16ddf8135a197e5f6ef0"), recordTimestamps: new Date("2023-09-05T08:20:00Z") },
+    { email: "williamgarcia@example.com", fullName: "William Garcia", hotelId: ObjectId("66dc16ddf8135a197e5f6ef1"), recordTimestamps: new Date("2023-09-05T13:30:00Z") },
+    { email: "patriciarodriguez@example.com", fullName: "Patricia Rodriguez", hotelId: ObjectId("66dc16ddf8135a197e5f6ef2"), recordTimestamps: new Date("2023-09-06T14:00:00Z") },
+    { email: "lauralewis@example.com", fullName: "Laura Lewis", hotelId: ObjectId("66dc16ddf8135a197e5f6ee7"), recordTimestamps: new Date("2023-09-07T16:00:00Z") },
+    { email: "kevinclark@example.com", fullName: "Kevin Clark", hotelId: ObjectId("66dc16ddf8135a197e5f6ee8"), recordTimestamps: new Date("2023-09-07T18:00:00Z") },
+    { email: "susanwalker@example.com", fullName: "Susan Walker", hotelId: ObjectId("66dc16ddf8135a197e5f6ee9"), recordTimestamps: new Date("2023-09-08T09:00:00Z") },
+    { email: "markallen@example.com", fullName: "Mark Allen", hotelId: ObjectId("66dc16ddf8135a197e5f6eea"), recordTimestamps: new Date("2023-09-08T11:30:00Z") },
+    { email: "nancywright@example.com", fullName: "Nancy Wright", hotelId: ObjectId("66dc16ddf8135a197e5f6eeb"), recordTimestamps: new Date("2023-09-09T10:00:00Z") },
+    { email: "danielking@example.com", fullName: "Daniel King", hotelId: ObjectId("66dc16ddf8135a197e5f6eec"), recordTimestamps: new Date("2023-09-10T08:45:00Z") },
+    { email: "jessicascott@example.com", fullName: "Jessica Scott", hotelId: ObjectId("66dc16ddf8135a197e5f6eed"), recordTimestamps: new Date("2023-09-10T17:00:00Z") },
+    { email: "thomaswright@example.com", fullName: "Thomas Wright", hotelId: ObjectId("66dc16ddf8135a197e5f6eee"), recordTimestamps: new Date("2023-09-11T12:00:00Z") },
+    { email: "sandrayoung@example.com", fullName: "Sandra Young", hotelId: ObjectId("66dc16ddf8135a197e5f6eef"), recordTimestamps: new Date("2023-09-12T09:00:00Z") },
+    { email: "josephgreen@example.com", fullName: "Joseph Green", hotelId: ObjectId("66dc16ddf8135a197e5f6ef0"), recordTimestamps: new Date("2023-09-12T10:30:00Z") },
+    { email: "mariamartin@example.com", fullName: "Maria Martin", hotelId: ObjectId("66dc16ddf8135a197e5f6ef1"), recordTimestamps: new Date("2023-09-12T14:30:00Z") },
+    { email: "stevenharris@example.com", fullName: "Steven Harris", hotelId: ObjectId("66dc16ddf8135a197e5f6ef2"), recordTimestamps: new Date("2023-09-12T17:45:00Z") },
+    { email: "ashleythompson@example.com", fullName: "Ashley Thompson", hotelId: ObjectId("66dc16ddf8135a197e5f6ee7"), recordTimestamps: new Date("2023-09-13T08:00:00Z") },
+    { email: "brianwhite@example.com", fullName: "Brian White", hotelId: ObjectId("66dc16ddf8135a197e5f6ee8"), recordTimestamps: new Date("2023-09-13T11:20:00Z") },
+    { email: "dorothygarcia@example.com", fullName: "Dorothy Garcia", hotelId: ObjectId("66dc16ddf8135a197e5f6ee9"), recordTimestamps: new Date("2023-09-13T13:50:00Z") },
+    { email: "michelleanderson@example.com", fullName: "Michelle Anderson", hotelId: ObjectId("66dc16ddf8135a197e5f6eea"), recordTimestamps: new Date("2023-09-13T16:15:00Z") },
+    { email: "anthonythomas@example.com", fullName: "Anthony Thomas", hotelId: ObjectId("66dc16ddf8135a197e5f6eeb"), recordTimestamps: new Date("2023-09-14T09:05:00Z") },
+    { email: "julielee@example.com", fullName: "Julie Lee", hotelId: ObjectId("66dc16ddf8135a197e5f6eec"), recordTimestamps: new Date("2023-09-14T11:30:00Z") },
+    { email: "justinmoore@example.com", fullName: "Justin Moore", hotelId: ObjectId("66dc16ddf8135a197e5f6eed"), recordTimestamps: new Date("2023-09-14T14:45:00Z") },
+    { email: "karenclark@example.com", fullName: "Karen Clark", hotelId: ObjectId("66dc16ddf8135a197e5f6eee"), recordTimestamps: new Date("2023-09-15T08:20:00Z") },
+    { email: "charlesrodriguez@example.com", fullName: "Charles Rodriguez", hotelId: ObjectId("66dc16ddf8135a197e5f6eef"), recordTimestamps: new Date("2023-09-15T10:55:00Z") },
+    { email: "rebeccawalker@example.com", fullName: "Rebecca Walker", hotelId: ObjectId("66dc16ddf8135a197e5f6ef0"), recordTimestamps: new Date("2023-09-15T13:30:00Z") },
+    { email: "garylewis@example.com", fullName: "Gary Lewis", hotelId: ObjectId("66dc16ddf8135a197e5f6ef1"), recordTimestamps: new Date("2023-09-16T09:00:00Z") },
+    { email: "nicoleallen@example.com", fullName: "Nicole Allen", hotelId: ObjectId("66dc16ddf8135a197e5f6ef2"), recordTimestamps: new Date("2023-09-16T12:25:00Z") },
+]);
