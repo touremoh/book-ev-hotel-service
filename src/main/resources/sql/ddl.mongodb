@@ -1,10 +1,43 @@
 use book_ev_hotel;
 
+db.SubscriptionPlans.drop()
 db.Users.drop();
 db.Hotels.drop();
-db.ChargingStations.drop();
-db.Analytics.drop();
-db.VisitorRequests.drop();
+db.ChargingInformation.drop();
+db.AdminDashboards.drop();
+db.VisitorSearches.drop();
+db.AddressDictionary.drop();
+
+db.createCollection("SubscriptionPlans", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["subscriptionType", "relatedCountry", "currency", "monthlyAmount", "yearlyAmount"],
+      properties: {
+        subscriptionType: {
+          bsonType: "string",
+          description: "Type of the subscription (standard, basic, premium)"
+        },
+        relatedCountry: {
+          bsonType: "string",
+          description: "Country in which the subscription is applied"
+        },
+        currency: {
+          bsonType: "string",
+          description: "The currency used in that country"
+        },
+        monthlyAmount: {
+          bsonType: "decimal",
+          description: "The amount the customer will be charged each month if he monthy payments"
+        },
+        yearlyAmount: {
+          bsonType: "decimal",
+          description: "The amount the customer will be charged each year if he yearly payments"
+        },
+      }
+    }
+  }
+});
 
 
 db.createCollection("Hotels", {
@@ -15,86 +48,167 @@ db.createCollection("Hotels", {
       properties: {
         hotelName: {
           bsonType: "string",
-          description: "must be a string and is required"
+          description: "Name of the hotel"
         },
         location: {
-          bsonType: "object",
-          description: "must be an object and is required",
-          properties: {
-            fullAddress: {
-              bsonType: "string",
-              description: "must be a string and is required"
-            },
-            city: {
-              bsonType: "string",
-              description: "must be a string and is required"
-            },
-            postalCode: {
-              bsonType: "string",
-              description: "must be a string and is required"
-            },
-            country: {
-              bsonType: "string",
-              description: "must be a string and is required"
-            }
-          }
+               bsonType: "object",
+               required: ["streetAddress", "extendedAddress", "city", "zipOrPostalCode", "stateOrProvince", "country"],
+               properties: {
+                 country: {
+                   bsonType: "string",
+                   description: "Country of the hotel"
+                 },
+                 stateOrProvince: {
+                   bsonType: "string",
+                   description: "State or province of the hotel"
+                 },
+                 zipOrPostalCode: {
+                   bsonType: "string",
+                   description: "Zip code or postal code of the hotel"
+                 },
+                 city: {
+                   bsonType: "string",
+                   description: "City of the hotel"
+                 },
+                 streetAddress: {
+                   bsonType: "string",
+                   description: "Street address of the hotel"
+                 },
+                 extendedAddress: {
+                   bsonType: "string",
+                   description: "Extended address of the hotel"
+                 }
+               },
+               description: "The address that will be shown on the invoice"
         },
         websiteLink: {
           bsonType: "string",
-          description: "optional string"
+          description: "Link of the website. This will be used as a call to action for visitor"
         },
         billingInformation: {
           bsonType: "object",
-          description: "must be an object and is required"
+          required: ["nameOnCard", "cardNumber", "expirationDate", "cvc", "billingAddress"],
+          properties: {
+            nameOnCard: {
+               bsonType: "string",
+               description: "The name of the person on the card"
+            },
+            cardNumber: {
+               bsonType: "string",
+               description: "The number of the card"
+            },
+            expirationDate: {
+               bsonType: "object",
+               required: ["month", "year"],
+               properties: {
+                 month: {
+                   bsonType: "int",
+                   description: "Expiration month of the card. The month should be between 1 and 12"
+                 },
+                 year: {
+                   bsonType: "int",
+                   description: "Expiration year of the card. The expiration year should be anywhere from 0 to 7 years"
+                 }
+               },
+               description: "Name of the person on the card"
+            },
+            cvc: {
+               bsonType: "string",
+               description: "Card verification value"
+            },
+            billingAddress: {
+               bsonType: "object",
+               required: ["streetAddress", "extendedAddress", "city", "zipOrPostalCode", "stateOrProvince", "country"],
+               properties: {
+                 country: {
+                   bsonType: "string",
+                   description: "Country of the billing address"
+                 },
+                 stateOrProvince: {
+                   bsonType: "string",
+                   description: "State or province of the billing address"
+                 },
+                 zipOrPostalCode: {
+                   bsonType: "string",
+                   description: "Zip code or postal code of the billing address"
+                 },
+                 city: {
+                   bsonType: "string",
+                   description: "City of the billing address"
+                 },
+                 streetAddress: {
+                   bsonType: "string",
+                   description: "Street address of the billing address"
+                 },
+                 extendedAddress: {
+                   bsonType: "string",
+                   description: "Extended address of the billing address"
+                 }
+               },
+               description: "The address that will be shown on the invoice"
+            }
+          }
         },
         amenities: {
           bsonType: "array",
-          description: "must be an array and is required"
+          description: "List of amenties provided by the hotel"
         },
         subscription: {
           bsonType: "object",
-          required: ["currentPlan", "price", "billingCycle", "accountStatus"],
+          required: ["currentPlan", "billingCycle", "amount", "accountStatus", "subscriptionDate"],
           properties: {
             currentPlan: {
               bsonType: "string",
-              description: "must be a string and is required"
-            },
-            price: {
-              bsonType: "decimal",
-              description: "must be a decimal and is required"
+              description: "The subscription plan the customer has choosen"
             },
             billingCycle: {
               bsonType: "string",
-              description: "must be a string and is required"
+              description: "The interval at which the customer is charged (montly or yearly)"
+            },
+            amount: {
+              bsonType: "decimal",
+              description: "The amount the customer is charged (montly or yearly)"
+            },
+            currency: {
+              bsonType: "string",
+              description: "The currency the customer is charged (montly or yearly)"
             },
             accountStatus: {
               bsonType: "string",
-              description: "must be a string and is required"
+              description: "The status of the account. Helps to know if the account is active or not"
+            },
+            subscriptionDate: {
+              bsonType: "date",
+              description: "The date at which the customer subscribed to the account"
+            },
+            nextBillingDate: {
+              bsonType: "date",
+              description: "The date at which the customer will be charged in the future"
             }
           },
-          description: "must be an object and is required"
+          description: "Hotel subscription details"
         },
         paymentHistory: {
           bsonType: "array",
           items: {
             bsonType: "object",
-            required: ["paymentDate", "cardLastFour", "amount"],
+            required: ["paymentDate", "cardLastFour", "chargedAmount"],
             properties: {
               paymentDate: {
                 bsonType: "date",
-                description: "must be a date and is required"
+                description: "The date at wich the customer was charged"
               },
               cardLastFour: {
                 bsonType: "string",
-                description: "must be a string and is required"
+                description: "The last four digits of the card"
               },
-              amount: {
-                bsonType: "decimal",
-                description: "must be a decimal and is required"
-              }
+              chargedAmount: {
+                bsonType: "string",
+                description: "The amount and currency the customer was charged"
+              },
             }
           },
-          description: "must be an array and is required"
+          description: "Shows the history of all payments the customer has made"
         }
       }
     }
@@ -124,7 +238,7 @@ db.createCollection("Users", {
           description: "must be a string and is required"
         },
         hotelId: {
-          bsonType: "objectid",
+          bsonType: "objectId",
           description: "must be an object and is required"
         }
       }
@@ -132,62 +246,88 @@ db.createCollection("Users", {
   }
 });
 
-db.createCollection("ChargingStations", {
+db.createCollection("ChargingInformation", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["hotelId", "numberOfConnectors", "maxPower", "availabilityTime", "accessibility", "chargingNetwork", "energyCostPerKWh", "hotelPhoneNumber", "roadsideAssistanceNumber"],
+      required: ["hotelId", "numberOfConnectors", "availabilityTime", "accessibility", "chargingNetwork", "energyCost", "hotelPhoneNumber"],
       properties: {
         hotelId: {
           bsonType: "objectId",
-          description: "must be an object and is required"
+          description: "Related to the hotel"
         },
         numberOfConnectors: {
           bsonType: "int",
-          description: "must be an integer and is required"
+          description: "Number of the connectors open to customers"
         },
         maxPower: {
           bsonType: "string",
-          description: "must be a string and is required"
+          description: "The maximum kwh the charging point can deliver"
         },
         availabilityTime: {
           bsonType: "string",
-          description: "must be a string and is required"
+          description: "Tells which time of the day the charger is open"
         },
         accessibility: {
           bsonType: "string",
-          description: "must be a string and is required"
+          description: "Tells us if the charger is open to public or to the customers"
         },
         chargingNetwork: {
           bsonType: "string",
-          description: "must be a string and is required"
+          description: "Name of the company that the charging point. Eg. Tesla"
         },
-        energyCostPerKWh: {
-          bsonType: "decimal",
-          description: "must be a decimal and is required"
+        energyCost: {
+          bsonType: "object",
+          required: ["price", "priceUnit"],
+          properties: {
+            price: {
+              bsonType: "object",
+              required: ["amount", "currency"],
+              properties: {
+                amount: {
+                  bsonType: "decimal",
+                  description: "value of the amount expressed in decimal number"
+                },
+                currency: {
+                  bsonType: "string",
+                  description: "Currency of the energy price in string format"
+                }
+              },
+              description: "Energy price expressed in object format"
+            },
+            priceUnit: {
+              bsonType: "string", // i.e: per kWh, per minute, per day
+              description: "Energy cost unit expressed in string format"
+            }
+          },
+          description: "Cost of the energy in object format"
         },
         hotelPhoneNumber: {
           bsonType: "string",
-          description: "must be a string and is required"
+          description: "The phone number of the hotel in case the customer needs to call"
         },
-        roadsideAssistanceNumber: {
+        messageForCustomer: { // i.e "We don't have any cable. Please bring your own cable to charge your car"
           bsonType: "string",
-          description: "must be a string and is required"
+          description: "Additional information for the customer about the charging point"
         }
       }
     }
   }
 });
 
-db.createCollection("VisitorRequests", {
+db.createCollection("VisitorSearches", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["searchLocation", "timestamp"],
+      required: ["searchCriteria", "timestamp"],
       properties: {
-        searchLocation: {
+        searchCriteria: {
+          bsonType: "array",
+          description: "Array of objects that holds visitors searches"
+        },
+        userLocation: {
           bsonType: "string",
-          description: "must be a string and is required"
+          description: "The location (city or country) from which the user is searching from"
         },
         timestamp: {
           bsonType: "date",
@@ -198,43 +338,63 @@ db.createCollection("VisitorRequests", {
   }
 });
 
-db.createCollection("Analytics", {
+db.createCollection("AdminDashboards", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["hotelId", "timesAppearedInSearch", "timesProfileViewed", "timesLinkClicked"],
+      required: ["hotelId", "timesImpressions", "timesProfileViews", "timesCTAClicked", "recordDate"],
       properties: {
         hotelId: {
           bsonType: "objectId",
           description: "must be an object and is required"
         },
-        timesAppearedInSearch: {
+        timesImpressions: {
           bsonType: "int",
-          description: "must be an integer and is required"
+          description: "Number of times the hotel showed-up in the visitor search results"
         },
-        timesProfileViewed: {
+        timesProfileViews: {
           bsonType: "int",
-          description: "must be an integer and is required"
+          description: "Number of times the visitor consulted the hotel profile"
         },
-        timesLinkClicked: {
+        timesCTAClicked: {
           bsonType: "int",
-          description: "must be an integer and is required"
+          description: "Number of times the visitor clicked the CTA button"
+        },
+        recordDate: {
+          bsonType: "date",
+          description: "Date of the record"
+        },
+      }
+    }
+  }
+});
+
+db.createCollection("AddressesDictionary", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["key", "values"],
+      properties: {
+        key: {
+          bsonType: "string",
+          description: "Describe a city name, a country name, a word of a street name or a postal code."
+        },
+        values: {
+          bsonType: "array",
+          description: "List of hotels IDs"
         }
       }
     }
   }
 });
 
-
-db.Users.createIndex({ hotelId: 1 });
 db.Users.createIndex({ email: 1 }, { unique: true });
-db.Hotels.createIndex({ owner: 1 });
 db.Hotels.createIndex({ hotelName: 1 });
-db.Hotels.createIndex({ "location.city": 1 });
-db.ChargingStations.createIndex({ hotelId: 1 });
-db.ChargingStations.createIndex({ chargingNetwork: 1 });
-db.VisitorRequests.createIndex({ searchLocation: 1 });
-db.VisitorRequests.createIndex({ searchLocation: 1, timestamp: -1 });
-db.Analytics.createIndex({ hotelId: 1 });
+db.ChargingInformation.createIndex({ hotelId: 1 });
+db.ChargingInformation.createIndex({ chargingNetwork: 1 });
+db.AdminDashboards.createIndex({ hotelId: 1 });
+db.AddressesDictionary.createIndex({ key: 1 }, { unique: true });
+db.SubscriptionPlans.createIndex({ subscriptionType: 1 });
+db.SubscriptionPlans.createIndex({ relatedCountry: 1 });
 
 

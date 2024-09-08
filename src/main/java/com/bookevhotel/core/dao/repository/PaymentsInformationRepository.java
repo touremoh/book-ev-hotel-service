@@ -1,25 +1,26 @@
 package com.bookevhotel.core.dao.repository;
 
 import com.bookevhotel.core.dao.AbstractBookEVHotelRepository;
-import com.bookevhotel.core.dao.entity.User;
+import com.bookevhotel.core.dao.entity.PaymentsInformation;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserRepository extends AbstractBookEVHotelRepository<User> {
+public class PaymentsInformationRepository extends AbstractBookEVHotelRepository<PaymentsInformation> {
 
-	protected UserRepository(MongoTemplate mongoTemplate) {
+
+	protected PaymentsInformationRepository(MongoTemplate mongoTemplate) {
 		super(mongoTemplate);
 	}
 
 	@Override
-	protected Query buildQuery(User entity) {
+	protected Query buildQuery(PaymentsInformation entity) {
 		return new Query(this.prepareInitialStatement(entity));
 	}
 
 	@Override
-	protected Class<User> entityClass() {
-		return User.class;
+	protected Class<PaymentsInformation> entityClass() {
+		return PaymentsInformation.class;
 	}
 }

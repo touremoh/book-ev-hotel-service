@@ -10,20 +10,19 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "Users")
-public class User implements BookEVHotelEntity {
+@Document(collection = "SubscriptionPlans")
+public class SubscriptionPlan implements BookEVHotelEntity {
     @MongoId
     protected ObjectId id;
-    private String email;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private ObjectId hotelId;
-    private LocalDateTime recordTimestamp;
+    private String subscriptionType;
+    private String relatedCountry;
+    private String currency;
+    private BigDecimal monthlyAmount;
+    private BigDecimal yearlyAmount;
 }

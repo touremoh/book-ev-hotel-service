@@ -4,19 +4,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bson.types.ObjectId;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO implements BookEVHotelDTO  {
+public class AdminDashboardDTO implements BookEVHotelDTO {
     private String id;
-    private String email;
-    private String password;
-    private String firstName;
-    private String lastName;
     private String hotelId;
-    private LocalDateTime recordTimestamp;
+    private int timesImpressions;
+    private int timesProfileViews;
+    private int timesCTAClicked;
+    private LocalDate recordDate;
 }

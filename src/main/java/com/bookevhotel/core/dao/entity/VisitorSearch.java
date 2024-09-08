@@ -10,20 +10,17 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "Users")
-public class User implements BookEVHotelEntity {
+@Document(collection = "VisitorSearches")
+public class VisitorSearch implements BookEVHotelEntity {
     @MongoId
     protected ObjectId id;
-    private String email;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private ObjectId hotelId;
-    private LocalDateTime recordTimestamp;
+    private String searchTerm;
+    private String userLocation;
+    private LocalDate requestTimestamp;
 }

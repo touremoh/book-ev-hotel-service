@@ -1,0 +1,113 @@
+db.SubscriptionPlans.insertOne({
+  subscriptionType: "premium",
+  relatedCountry: "USA",
+  currency: "USD",
+  monthlyAmount: NumberDecimal("29.99"),
+  yearlyAmount: NumberDecimal("299.99")
+});
+
+db.SubscriptionPlans.insertOne({
+  subscriptionType: "premium",
+  relatedCountry: "France",
+  currency: "EUR",
+  monthlyAmount: NumberDecimal("29.99"),
+  yearlyAmount: NumberDecimal("299.99")
+});
+
+db.Hotels.insertOne({
+  hotelName: "Grand Plaza",
+  location: {
+    streetAddress: "123 Main St",
+    extendedAddress: "Suite 101",
+    city: "New York",
+    zipOrPostalCode: "10001",
+    stateOrProvince: "NY",
+    country: "USA"
+  },
+  websiteLink: "http://www.grandplaza.com",
+  billingInformation: {
+    nameOnCard: "John Doe",
+    cardNumber: "1234567890123456",
+    expirationDate: {
+      month: 12,
+      year: 2025
+    },
+    cvc: "123",
+    billingAddress: {
+      streetAddress: "123 Main St",
+      extendedAddress: "Suite 101",
+      city: "New York",
+      zipOrPostalCode: "10001",
+      stateOrProvince: "NY",
+      country: "USA"
+    }
+  },
+  amenities: ["pool", "spa", "gym", "wifi", "air_conditionning"],
+  subscription: {
+    currentPlan: "standard",
+    billingCycle: "monthly",
+    amount: NumberDecimal("99.99"),
+    currency: "USD",
+    accountStatus: "active",
+    subscriptionDate: new Date(),
+    nextBillingDate: new Date()
+  },
+  paymentHistory: [
+    {
+      paymentDate: new Date(),
+      cardLastFour: "3456",
+      chargedAmount: "USD 99.99"
+    }
+  ]
+});
+
+db.Users.insertOne({
+  email: "johndoe@example.com",
+  password: "securepassword123",
+  firstName: "John",
+  lastName: "Doe",
+  hotelId: ObjectId("66d32f551561fc1fc872598f") // Assuming you have the ObjectId
+});
+
+db.ChargingInformation.insertOne({
+  hotelId: ObjectId("66d32f551561fc1fc872598f"), // Adjust based on actual ObjectId
+  numberOfConnectors: 4,
+  maxPower: "22kW",
+  availabilityTime: "24/7",
+  accessibility: "public",
+  chargingNetwork: "Tesla",
+  energyCost: {
+    price: {
+      amount: NumberDecimal("0.20"),
+      currency: "USD"
+    },
+    priceUnit: "per kWh"
+  },
+  hotelPhoneNumber: "123-456-7890",
+  messageForCustomer: "Please bring your own charging cable."
+});
+
+db.VisitorSearches.insertOne({
+  searchCriteria: [
+    { key: "hotelName", value: "Grand Plaza" }
+  ],
+  userLocation: "Los Angeles, USA",
+  timestamp: new Date()
+});
+
+db.AdminDashboards.insertOne({
+  hotelId: ObjectId("66d32f551561fc1fc872598f"),
+  timesImpressions: 150,
+  timesProfileViews: 75,
+  timesCTAClicked: 25,
+  recordDate: new Date()
+});
+
+db.AddressesDictionary.insertOne({
+  key: "grand",
+  values: [ObjectId("66d32f551561fc1fc872598f")]
+});
+db.AddressesDictionary.insertOne({
+  key: "plaza",
+  values: [ObjectId("66d32f551561fc1fc872598f")]
+});
