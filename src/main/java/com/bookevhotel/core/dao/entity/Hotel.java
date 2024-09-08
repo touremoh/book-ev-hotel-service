@@ -21,7 +21,6 @@ import java.util.List;
 public class Hotel implements BookEVHotelEntity {
 
     @MongoId
-    @Field("_id")
     private ObjectId id;
     private String hotelName;
     private String hotelDescription;

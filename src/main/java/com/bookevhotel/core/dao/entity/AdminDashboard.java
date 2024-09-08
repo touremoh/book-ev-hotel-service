@@ -20,24 +20,11 @@ import java.time.LocalDate;
 @Document(collection = "AdminDashboards")
 public class AdminDashboard implements BookEVHotelEntity {
     @MongoId
-    @Field("_id")
     private ObjectId id;
-
-    @Field("hotelId")
     private String hotelId;
-
-    @Field("timesImpressions")
     private int timesImpressions;
-
-    @Field("timesProfileViews")
     private int timesProfileViews;
-
-    @Field("timesCTAClicked")
     private int timesCTAClicked;
-
-    @Field("countLeads")
     private int countLeads;
-
-    @Field("recordDate")
     private LocalDate recordDate;
 }

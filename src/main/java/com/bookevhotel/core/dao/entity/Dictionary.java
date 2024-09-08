@@ -19,7 +19,6 @@ import java.util.List;
 @Document(collection = "Dictionary")
 public class Dictionary implements BookEVHotelEntity {
     @MongoId
-    @Field("_id")
     protected ObjectId id;
     private String key;
     private List<ObjectId> values;
