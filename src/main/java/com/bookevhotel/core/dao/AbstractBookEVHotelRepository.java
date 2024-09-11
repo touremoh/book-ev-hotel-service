@@ -1,6 +1,7 @@
 package com.bookevhotel.core.dao;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -17,8 +18,12 @@ public abstract class AbstractBookEVHotelRepository<E extends BookEVHotelEntity>
 		this.mongoTemplate = mongoTemplate;
 	}
 
-	protected abstract Query buildQuery(E entity);
+	protected abstract Query buildFindOneQuery(E entity);
 	protected abstract Class<E> entityClass();
+
+	protected Query buildFindAllQuery(E entity, Pageable pageable) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException("Operation not supported");
+	}
 
 	protected Criteria prepareInitialStatement(E entity) {
 		if (Objects.nonNull(entity.getId())) {
@@ -29,17 +34,17 @@ public abstract class AbstractBookEVHotelRepository<E extends BookEVHotelEntity>
 
 	@Override
 	public E findOne(E entity) {
-		return this.mongoTemplate.findOne(this.buildQuery(entity), this.entityClass());
+		return this.mongoTemplate.findOne(this.buildFindOneQuery(entity), this.entityClass());
 	}
 
 	@Override
-	public List<E> findAll(E entity) {
-		return this.mongoTemplate.find(this.buildQuery(entity), this.entityClass());
+	public List<E> findAll(E entity, Pageable pageable) {
+		return this.mongoTemplate.find(this.buildFindAllQuery(entity, pageable), this.entityClass());
 	}
 
 	@Override
-	public List<E> findAll(List<E> entities) {
-		return List.of(); /// TODO
+	public List<E> findAll(List<E> entities, Pageable pageable) {
+		return null;
 	}
 
 	@Override

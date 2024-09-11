@@ -11,7 +11,6 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MailingListDTO implements BookEVHotelDTO {
-
     private String id;
     private String email;
     private String countryOfResidence;

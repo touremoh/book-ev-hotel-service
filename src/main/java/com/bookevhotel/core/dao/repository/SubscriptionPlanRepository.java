@@ -13,7 +13,7 @@ public class SubscriptionPlanRepository extends AbstractBookEVHotelRepository<Su
 	}
 
 	@Override
-	protected Query buildQuery(SubscriptionPlan entity) {
+	protected Query buildFindOneQuery(SubscriptionPlan entity) {
 		return new Query(this.prepareInitialStatement(entity));
 	}
 

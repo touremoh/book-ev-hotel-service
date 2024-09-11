@@ -13,7 +13,7 @@ public class DictionaryRepository extends AbstractBookEVHotelRepository<Dictiona
 	}
 
 	@Override
-	protected Query buildQuery(Dictionary entity) {
+	protected Query buildFindOneQuery(Dictionary entity) {
 		return new Query(this.prepareInitialStatement(entity));
 	}
 

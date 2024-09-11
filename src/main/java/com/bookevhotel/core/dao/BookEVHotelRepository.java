@@ -1,5 +1,7 @@
 package com.bookevhotel.core.dao;
 
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 
 public interface BookEVHotelRepository<E extends BookEVHotelEntity> {
@@ -16,14 +18,14 @@ public interface BookEVHotelRepository<E extends BookEVHotelEntity> {
 	 * @param entity criteria of the elements to find
 	 * @return list of the found elements
 	 */
-	List<E> findAll(E entity);
+	List<E> findAll(E entity, Pageable pageable);
 
 	/**
 	 * Find a list of elements using another list of elements as criteria
 	 * @param entities elements criteria
 	 * @return a list a elements
 	 */
-	List<E> findAll(List<E> entities);
+	List<E> findAll(List<E> entities, Pageable pageable);
 
 	/**
 	 * Create one element by criteria

@@ -14,7 +14,7 @@ public class HotelLeadRepository extends AbstractBookEVHotelRepository<HotelLead
 	}
 
 	@Override
-	protected Query buildQuery(HotelLead entity) {
+	protected Query buildFindOneQuery(HotelLead entity) {
 		return new Query(this.prepareInitialStatement(entity));
 	}
 

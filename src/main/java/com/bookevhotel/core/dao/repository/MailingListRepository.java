@@ -14,7 +14,7 @@ public class MailingListRepository extends AbstractBookEVHotelRepository<Mailing
 	}
 
 	@Override
-	protected Query buildQuery(MailingList entity) {
+	protected Query buildFindOneQuery(MailingList entity) {
 		return new Query(this.prepareInitialStatement(entity));
 	}
 

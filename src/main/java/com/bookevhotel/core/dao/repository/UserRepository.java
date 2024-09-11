@@ -14,7 +14,7 @@ public class UserRepository extends AbstractBookEVHotelRepository<User> {
 	}
 
 	@Override
-	protected Query buildQuery(User entity) {
+	protected Query buildFindOneQuery(User entity) {
 		return new Query(this.prepareInitialStatement(entity));
 	}
 

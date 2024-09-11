@@ -15,7 +15,7 @@ public class PaymentsInformationRepository extends AbstractBookEVHotelRepository
 	}
 
 	@Override
-	protected Query buildQuery(PaymentsInformation entity) {
+	protected Query buildFindOneQuery(PaymentsInformation entity) {
 		return new Query(this.prepareInitialStatement(entity));
 	}
 

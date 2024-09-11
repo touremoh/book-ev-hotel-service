@@ -14,7 +14,7 @@ public class VisitorSearchRepository extends AbstractBookEVHotelRepository<Visit
 	}
 
 	@Override
-	protected Query buildQuery(VisitorSearch entity) {
+	protected Query buildFindOneQuery(VisitorSearch entity) {
 		return new Query(this.prepareInitialStatement(entity));
 	}
 

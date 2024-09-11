@@ -13,7 +13,7 @@ public class AdminDashboardRepository extends AbstractBookEVHotelRepository<Admi
 	}
 
 	@Override
-	protected Query buildQuery(AdminDashboard entity) {
+	protected Query buildFindOneQuery(AdminDashboard entity) {
 		return new Query(this.prepareInitialStatement(entity));
 	}
 

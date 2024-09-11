@@ -7,6 +7,7 @@ import com.bookevhotel.core.exception.BookEVHotelException;
 import com.bookevhotel.core.mapper.lombok.BookEVHotelMapper;
 import com.bookevhotel.core.validation.BookEVHotelServiceValidator;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -59,13 +60,34 @@ public abstract class AbstractBookEVHotelService<E extends BookEVHotelEntity, D 
 	 * @return list of the found elements
 	 */
 	@Override
-	public List<D> findAll(D dto) throws BookEVHotelException {
+	public List<D> findAll(D dto, Pageable pageable) throws BookEVHotelException {
 		// Validate
+		this.validator.validateBeforeFindAll(dto);
+
 		// Pre-process
+		this.processBeforeFindAll(dto);
+
 		// Process
+		List<E> docs = this.findAllProcess(dto, pageable);
+
 		// Post-process
+		this.processAfterFindAll(docs);
+
 		// Results
-		return null;
+		return this.mapEntitiesToDTOs(docs);
+	}
+	protected void processBeforeFindAll(D dto) throws BookEVHotelException {
+		log.info("Process Before Find All");
+	}
+	protected List<E> findAllProcess(D dto, Pageable pageable) throws BookEVHotelException {
+		log.info("Find All Process");
+		return this.repository.findAll(this.mapper.map(dto), pageable);
+	}
+	protected void processAfterFindAll(List<E> entity) throws BookEVHotelException {
+		log.info("Process After Find All");
+	}
+	protected List<D> mapEntitiesToDTOs(List<E> entities) {
+		return entities.stream().map(this.mapper::map).toList();
 	}
 
 	/**

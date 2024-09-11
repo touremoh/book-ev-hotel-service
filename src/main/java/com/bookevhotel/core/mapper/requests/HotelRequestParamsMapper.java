@@ -20,6 +20,9 @@ public class HotelRequestParamsMapper implements BookEVHotelRequestParamsMapper<
 		if (params.containsKey("hotelName")) {
 			hotelDTO.setHotelName(params.get("hotelName"));
 		}
+		if (params.containsKey("hotelDescription")) {
+			hotelDTO.setHotelDescription(params.get("hotelDescription"));
+		}
 		if (params.containsKey("websiteLink")) {
 			hotelDTO.setWebsiteLink(params.get("websiteLink"));
 		}

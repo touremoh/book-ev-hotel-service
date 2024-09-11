@@ -3,6 +3,7 @@ package com.bookevhotel.core.dao.repository;
 import com.bookevhotel.core.dao.AbstractBookEVHotelRepository;
 import com.bookevhotel.core.dao.entity.Hotel;
 import org.mapstruct.ap.internal.util.Strings;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -17,7 +18,7 @@ public class HotelRepository extends AbstractBookEVHotelRepository<Hotel> {
 	}
 
 	@Override
-	protected Query buildQuery(Hotel entity) {
+	protected Query buildFindOneQuery(Hotel entity) {
 		var criteria = this.prepareInitialStatement(entity);
 
 		if (Strings.isNotEmpty(entity.getHotelName())) {
@@ -35,6 +36,32 @@ public class HotelRepository extends AbstractBookEVHotelRepository<Hotel> {
 			}
 		}
 		return new Query(criteria);
+	}
+
+	@Override
+	protected Query buildFindAllQuery(Hotel entity, Pageable pageable) {
+		var criteria = this.prepareInitialStatement(entity);
+
+		if (Strings.isNotEmpty(entity.getHotelName())) {
+			if (Objects.isNull(criteria)) {
+				criteria = Criteria.where("hotelName").regex(entity.getHotelName());
+			} else {
+				criteria = criteria.and("hotelName").regex(entity.getHotelName());
+			}
+		}
+		if (Strings.isNotEmpty(entity.getHotelDescription())) {
+			if (Objects.isNull(criteria)) {
+				criteria = Criteria.where("hotelDescription").regex(entity.getHotelDescription());
+			} else {
+				criteria = criteria.and("hotelDescription").regex(entity.getHotelDescription());
+			}
+		}
+
+		if (Objects.isNull(criteria)) {
+			criteria = Criteria.where("1").is("1");
+		}
+
+		return new Query(criteria).with(pageable);
 	}
 
 	@Override
