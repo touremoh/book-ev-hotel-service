@@ -1,5 +1,6 @@
 package com.bookevhotel.core.dto;
 
+import com.bookevhotel.core.dto.common.BillingInformation;
 import com.bookevhotel.core.dto.common.Location;
 import com.bookevhotel.core.dto.common.PaymentHistory;
 import com.bookevhotel.core.dto.common.SubscriptionInformation;
@@ -16,7 +17,7 @@ import java.util.List;
 public class PaymentsInformationDTO implements BookEVHotelDTO {
     private String id;
     private String hotelId;
-    private Location billingInformation;
+    private BillingInformation billingInformation;
     private SubscriptionInformation subscriptionInformation;
     private List<PaymentHistory> paymentHistory;
 }

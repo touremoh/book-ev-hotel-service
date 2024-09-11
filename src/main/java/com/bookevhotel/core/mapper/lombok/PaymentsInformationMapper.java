@@ -1,4 +1,4 @@
-package com.bookevhotel.core.mapper;
+package com.bookevhotel.core.mapper.lombok;
 
 import com.bookevhotel.core.dao.entity.PaymentsInformation;
 import com.bookevhotel.core.dto.PaymentsInformationDTO;

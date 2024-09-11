@@ -1,4 +1,4 @@
-package com.bookevhotel.core.mapper;
+package com.bookevhotel.core.mapper.lombok;
 
 import com.bookevhotel.core.dao.BookEVHotelEntity;
 import com.bookevhotel.core.dto.BookEVHotelDTO;
@@ -28,7 +28,10 @@ public interface BookEVHotelMapper<E extends BookEVHotelEntity, D extends BookEV
 	 * @return converted objectId
 	 */
 	default ObjectId stringToObjectId(String id) {
-		return new ObjectId(id);
+		if (Objects.nonNull(id)) {
+			return new ObjectId(id);
+		}
+		return null;
 	}
 
 	/**

@@ -3,12 +3,15 @@ package com.bookevhotel.core.service;
 import com.bookevhotel.core.dao.entity.MailingList;
 import com.bookevhotel.core.dao.repository.MailingListRepository;
 import com.bookevhotel.core.dto.MailingListDTO;
-import com.bookevhotel.core.mapper.MailingListMapper;
+import com.bookevhotel.core.mapper.lombok.MailingListMapper;
+import com.bookevhotel.core.validation.MailingListServiceValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MailingListService extends AbstractBookEVHotelService<MailingList, MailingListDTO> {
-	public MailingListService(MailingListRepository repository, MailingListMapper mapper) {
-		super(repository, mapper);
+	@Autowired
+	public MailingListService(MailingListRepository repository, MailingListMapper mapper, MailingListServiceValidator validator) {
+		super(repository, mapper, validator);
 	}
 }

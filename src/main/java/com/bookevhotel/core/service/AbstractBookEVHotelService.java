@@ -4,24 +4,30 @@ import com.bookevhotel.core.dao.BookEVHotelEntity;
 import com.bookevhotel.core.dao.BookEVHotelRepository;
 import com.bookevhotel.core.dto.BookEVHotelDTO;
 import com.bookevhotel.core.exception.BookEVHotelException;
-import com.bookevhotel.core.mapper.BookEVHotelMapper;
+import com.bookevhotel.core.mapper.lombok.BookEVHotelMapper;
+import com.bookevhotel.core.validation.BookEVHotelServiceValidator;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
 @Slf4j
-public class AbstractBookEVHotelService<E extends BookEVHotelEntity, D extends BookEVHotelDTO> implements BookEVHotelService<D> {
+public abstract class AbstractBookEVHotelService<E extends BookEVHotelEntity, D extends BookEVHotelDTO> implements BookEVHotelService<D> {
 
 	protected final BookEVHotelRepository<E> repository;
 	protected final BookEVHotelMapper<E, D> mapper;
+	protected final BookEVHotelServiceValidator<D> validator;
 
-	public AbstractBookEVHotelService(BookEVHotelRepository<E> repository, BookEVHotelMapper<E, D> mapper) {
+	protected AbstractBookEVHotelService(BookEVHotelRepository<E> repository, BookEVHotelMapper<E, D> mapper, BookEVHotelServiceValidator<D> validator) {
 		this.repository = repository;
 		this.mapper = mapper;
+		this.validator = validator;
 	}
 
 	@Override
 	public D findOne(D dto) throws BookEVHotelException {
+		// Validate
+		this.validator.validateBeforeFindOne(dto);
+
 		// Pre-process
 		this.processBeforeFindOne(dto);
 
@@ -36,14 +42,14 @@ public class AbstractBookEVHotelService<E extends BookEVHotelEntity, D extends B
 	}
 
 	protected void processBeforeFindOne(D dto) throws BookEVHotelException {
-		log.info("Before find one document: {}", 1);
+		log.info("Process Before Find One");
 	}
 	protected E findOneProcess(D dto) throws BookEVHotelException {
-		log.info("Find one document: Nb docs = {}", 1);
+		log.info("Find One Process");
 		return this.repository.findOne(this.mapper.map(dto));
 	}
-	protected void processAfterFindOne(E document) throws BookEVHotelException {
-		log.info("After find one document: {}", 1);
+	protected void processAfterFindOne(E entity) throws BookEVHotelException {
+		log.info("Process After Find One");
 	}
 
 	/**
@@ -54,6 +60,11 @@ public class AbstractBookEVHotelService<E extends BookEVHotelEntity, D extends B
 	 */
 	@Override
 	public List<D> findAll(D dto) throws BookEVHotelException {
+		// Validate
+		// Pre-process
+		// Process
+		// Post-process
+		// Results
 		return null;
 	}
 
@@ -65,6 +76,11 @@ public class AbstractBookEVHotelService<E extends BookEVHotelEntity, D extends B
 	 */
 	@Override
 	public D createOne(D dto) throws BookEVHotelException {
+		// Validate
+		// Pre-process
+		// Process
+		// Post-process
+		// Results
 		return null;
 	}
 
@@ -76,6 +92,11 @@ public class AbstractBookEVHotelService<E extends BookEVHotelEntity, D extends B
 	 */
 	@Override
 	public D updateOne(D dto) throws BookEVHotelException {
+		// Validate
+		// Pre-process
+		// Process
+		// Post-process
+		// Results
 		return null;
 	}
 
@@ -87,6 +108,10 @@ public class AbstractBookEVHotelService<E extends BookEVHotelEntity, D extends B
 	 */
 	@Override
 	public D deleteOne(D dto) throws BookEVHotelException {
+		// Pre-process
+		// Process
+		// Post-process
+		// Results
 		return null;
 	}
 }

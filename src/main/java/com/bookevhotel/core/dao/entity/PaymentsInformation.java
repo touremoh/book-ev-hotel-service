@@ -5,14 +5,13 @@ import com.bookevhotel.core.dto.common.BillingInformation;
 import com.bookevhotel.core.dto.common.PaymentHistory;
 import com.bookevhotel.core.dto.common.SubscriptionInformation;
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import java.util.Date;
+
 import java.util.List;
 
 @Getter

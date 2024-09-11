@@ -24,7 +24,7 @@ public abstract class AbstractBookEVHotelRepository<E extends BookEVHotelEntity>
 		if (Objects.nonNull(entity.getId())) {
 			return Criteria.where("_id").is(entity.getId());
 		}
-		return new Criteria();
+		return null;
 	}
 
 	@Override
