@@ -1,6 +1,8 @@
 package com.bookevhotel.core.dao;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
 
@@ -18,14 +20,14 @@ public interface BookEVHotelRepository<E extends BookEVHotelEntity> {
 	 * @param entity criteria of the elements to find
 	 * @return list of the found elements
 	 */
-	List<E> findAll(E entity, Pageable pageable);
+	Page<E> findAll(E entity, Pageable pageable);
 
 	/**
 	 * Find a list of elements using another list of elements as criteria
 	 * @param entities elements criteria
 	 * @return a list a elements
 	 */
-	List<E> findAll(List<E> entities, Pageable pageable);
+	Page<E> findAll(List<E> entities, Pageable pageable);
 
 	/**
 	 * Create one element by criteria

@@ -1,10 +1,12 @@
 package com.bookevhotel.core.dao;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,6 +27,10 @@ public abstract class AbstractBookEVHotelRepository<E extends BookEVHotelEntity>
 		throw new UnsupportedOperationException("Operation not supported");
 	}
 
+	protected Query buildFindAllQueryFromList(List<E> entities, Pageable pageable) throws UnsupportedOperationException {
+		throw new UnsupportedOperationException("Operation not supported");
+	}
+
 	protected Criteria prepareInitialStatement(E entity) {
 		if (Objects.nonNull(entity.getId())) {
 			return Criteria.where("_id").is(entity.getId());
@@ -38,13 +44,15 @@ public abstract class AbstractBookEVHotelRepository<E extends BookEVHotelEntity>
 	}
 
 	@Override
-	public List<E> findAll(E entity, Pageable pageable) {
-		return this.mongoTemplate.find(this.buildFindAllQuery(entity, pageable), this.entityClass());
+	public Page<E> findAll(E entity, Pageable pageable) {
+		var query = this.buildFindAllQuery(entity, pageable);
+		return PageableExecutionUtils.getPage(this.mongoTemplate.find(query, this.entityClass()), pageable, () -> this.mongoTemplate.count(query, this.entityClass()));
 	}
 
 	@Override
-	public List<E> findAll(List<E> entities, Pageable pageable) {
-		return null;
+	public Page<E> findAll(List<E> entities, Pageable pageable) {
+		var query = this.buildFindAllQueryFromList(entities, pageable);
+		return PageableExecutionUtils.getPage(this.mongoTemplate.find(query, this.entityClass()), pageable, () -> this.mongoTemplate.count(query, this.entityClass()));
 	}
 
 	@Override

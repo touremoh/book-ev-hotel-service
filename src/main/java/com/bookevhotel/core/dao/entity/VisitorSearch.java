@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -22,5 +23,5 @@ public class VisitorSearch implements BookEVHotelEntity {
     protected ObjectId id;
     private String searchTerm;
     private String userLocation;
-    private LocalDate requestTimestamp;
+    private LocalDateTime requestTimestamp;
 }

@@ -1,7 +1,6 @@
 package com.bookevhotel.core.mapper.requests;
 
 import com.bookevhotel.core.annotation.RequestParamsMapper;
-import com.bookevhotel.core.dto.DictionaryDTO;
 import com.bookevhotel.core.dto.HotelLeadDTO;
 import com.bookevhotel.core.exception.BookEVHotelException;
 import com.bookevhotel.core.utils.BookEVHotelUtils;

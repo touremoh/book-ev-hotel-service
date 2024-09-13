@@ -21,4 +21,5 @@ public class HotelDTO implements BookEVHotelDTO {
     private List<String> amenities;
     private ChargingInformation chargingInformation;
     private List<Offer> offers;
+    private VisitorSearchDTO visitorSearch;
 }

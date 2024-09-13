@@ -2,6 +2,7 @@ package com.bookevhotel.core.service;
 
 import com.bookevhotel.core.dto.BookEVHotelDTO;
 import com.bookevhotel.core.exception.BookEVHotelException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -20,7 +21,14 @@ public interface BookEVHotelService<D extends BookEVHotelDTO> {
 	 * @param dto dto of the elements to find
 	 * @return list of the found elements
 	 */
-	List<D> findAll(D dto, Pageable pageable) throws BookEVHotelException;
+	Page<D> findAll(D dto, Pageable pageable) throws BookEVHotelException;
+
+	/**
+	 * Find multiple elements from a list of elements
+	 * @param dtos dto of the elements to find
+	 * @return list of the found elements
+	 */
+	Page<D> findAll(List<D> dtos, Pageable pageable) throws BookEVHotelException;
 
 	/**
 	 * Create one element by dto

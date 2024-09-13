@@ -1,5 +1,6 @@
-package com.bookevhotel.core.controller;
+package com.bookevhotel.core.controller.tmp;
 
+import com.bookevhotel.core.controller.AbstractBookEVHotelController;
 import com.bookevhotel.core.dto.UserDTO;
 import com.bookevhotel.core.mapper.requests.UserRequestParamsMapper;
 import com.bookevhotel.core.service.UserService;

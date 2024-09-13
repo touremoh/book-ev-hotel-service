@@ -11,8 +11,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DictionaryDTO implements BookEVHotelDTO {
+public class SearchWordsDTO implements BookEVHotelDTO {
     private String id;
     private String key;
+    private String languageCode;
     private List<String> values;
 }

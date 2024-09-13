@@ -1,5 +1,6 @@
-package com.bookevhotel.core.controller;
+package com.bookevhotel.core.controller.tmp;
 
+import com.bookevhotel.core.controller.AbstractBookEVHotelController;
 import com.bookevhotel.core.dto.MailingListDTO;
 import com.bookevhotel.core.mapper.requests.MailingListRequestParamsMapper;
 import com.bookevhotel.core.service.MailingListService;

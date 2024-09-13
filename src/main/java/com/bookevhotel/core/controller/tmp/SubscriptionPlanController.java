@@ -1,5 +1,6 @@
-package com.bookevhotel.core.controller;
+package com.bookevhotel.core.controller.tmp;
 
+import com.bookevhotel.core.controller.AbstractBookEVHotelController;
 import com.bookevhotel.core.dto.SubscriptionPlanDTO;
 import com.bookevhotel.core.mapper.requests.SubscriptionPlanRequestParamsMapper;
 import com.bookevhotel.core.service.SubscriptionPlanService;

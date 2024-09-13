@@ -3,6 +3,9 @@ package com.bookevhotel.core.validation;
 import com.bookevhotel.core.dto.BookEVHotelDTO;
 import com.bookevhotel.core.exception.BookEVHotelException;
 
+import java.util.List;
+import java.util.stream.Stream;
+
 public interface BookEVHotelServiceValidator<D extends BookEVHotelDTO> {
 
 	/**
@@ -19,6 +22,17 @@ public interface BookEVHotelServiceValidator<D extends BookEVHotelDTO> {
 	 * @throws BookEVHotelException thrown when validation fails
 	 */
 	void validateBeforeFindAll(D dto) throws BookEVHotelException;
+
+	/**
+	 * Validate find all
+	 * @param dtos Data to validate
+	 * @throws BookEVHotelException thrown when validation fails
+	 */
+	default void validateBeforeFindAll(List<D> dtos) throws BookEVHotelException {
+		for (D dto : dtos) {
+			this.validateBeforeFindAll(dto);
+		}
+	}
 
 
 	/**

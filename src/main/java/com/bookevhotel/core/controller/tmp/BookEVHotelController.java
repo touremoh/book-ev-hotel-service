@@ -1,4 +1,4 @@
-package com.bookevhotel.core.controller;
+package com.bookevhotel.core.controller.tmp;
 
 import com.bookevhotel.core.dto.BookEVHotelDTO;
 import com.bookevhotel.core.exception.BookEVHotelException;

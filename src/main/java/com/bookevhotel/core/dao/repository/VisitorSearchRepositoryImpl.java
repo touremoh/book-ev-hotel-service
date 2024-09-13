@@ -7,9 +7,9 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class VisitorSearchRepository extends AbstractBookEVHotelRepository<VisitorSearch> {
+public class VisitorSearchRepositoryImpl extends AbstractBookEVHotelRepository<VisitorSearch> {
 
-	protected VisitorSearchRepository(MongoTemplate mongoTemplate) {
+	protected VisitorSearchRepositoryImpl(MongoTemplate mongoTemplate) {
 		super(mongoTemplate);
 	}
 

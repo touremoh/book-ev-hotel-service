@@ -27,7 +27,7 @@ public interface BookEVHotelRequestParamsMapper<D extends BookEVHotelDTO> {
 		var page = Pageable.ofSize(pageSize).withPage(pageNumber);
 
 		if (Objects.nonNull(params)) {
-			if (params.containsKey("page")) {
+			if (params.containsKey("pageNumber")) {
 				pageNumber = Integer.parseInt(params.get("pageNumber"));
 			}
 			if (params.containsKey("pageSize")) {

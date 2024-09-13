@@ -2,6 +2,7 @@ package com.bookevhotel.core.dao.repository;
 
 import com.bookevhotel.core.dao.AbstractBookEVHotelRepository;
 import com.bookevhotel.core.dao.entity.Hotel;
+import org.bson.types.ObjectId;
 import org.mapstruct.ap.internal.util.Strings;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -9,11 +10,13 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class HotelRepository extends AbstractBookEVHotelRepository<Hotel> {
-	protected HotelRepository(MongoTemplate mongoTemplate) {
+public class HotelRepositoryImpl extends AbstractBookEVHotelRepository<Hotel> {
+	protected HotelRepositoryImpl(MongoTemplate mongoTemplate) {
 		super(mongoTemplate);
 	}
 
@@ -56,12 +59,21 @@ public class HotelRepository extends AbstractBookEVHotelRepository<Hotel> {
 				criteria = criteria.and("hotelDescription").regex(entity.getHotelDescription());
 			}
 		}
-
 		if (Objects.isNull(criteria)) {
-			criteria = Criteria.where("1").is("1");
+			return new Query().with(pageable);
+		}
+		return new Query(criteria).with(pageable);
+	}
+
+	@Override
+	protected Query buildFindAllQueryFromList(List<Hotel> hotels, Pageable pageable) throws UnsupportedOperationException {
+		List<ObjectId> ids = new ArrayList<>();
+
+		for (Hotel hotel : hotels) {
+			ids.add(hotel.getId());
 		}
 
-		return new Query(criteria).with(pageable);
+		return new Query(Criteria.where("_id").in(ids)).with(pageable);
 	}
 
 	@Override

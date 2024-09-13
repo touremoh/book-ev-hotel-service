@@ -7,8 +7,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class AdminDashboardRepository extends AbstractBookEVHotelRepository<AdminDashboard> {
-	protected AdminDashboardRepository(MongoTemplate mongoTemplate) {
+public class AdminDashboardRepositoryImpl extends AbstractBookEVHotelRepository<AdminDashboard> {
+	protected AdminDashboardRepositoryImpl(MongoTemplate mongoTemplate) {
 		super(mongoTemplate);
 	}
 
