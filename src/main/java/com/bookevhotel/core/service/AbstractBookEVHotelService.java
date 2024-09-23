@@ -3,7 +3,6 @@ package com.bookevhotel.core.service;
 import com.bookevhotel.core.dao.BookEVHotelEntity;
 import com.bookevhotel.core.dao.BookEVHotelRepository;
 import com.bookevhotel.core.dto.BookEVHotelDTO;
-import com.bookevhotel.core.dto.BookEVHotelRequestResponse;
 import com.bookevhotel.core.exception.BookEVHotelException;
 import com.bookevhotel.core.mapper.lombok.BookEVHotelMapper;
 import com.bookevhotel.core.validation.BookEVHotelServiceValidator;
@@ -13,7 +12,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
