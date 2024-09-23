@@ -3,6 +3,7 @@ package com.bookevhotel.core.service;
 import com.bookevhotel.core.dao.BookEVHotelEntity;
 import com.bookevhotel.core.dao.BookEVHotelRepository;
 import com.bookevhotel.core.dto.BookEVHotelDTO;
+import com.bookevhotel.core.dto.BookEVHotelRequestResponse;
 import com.bookevhotel.core.exception.BookEVHotelException;
 import com.bookevhotel.core.mapper.lombok.BookEVHotelMapper;
 import com.bookevhotel.core.validation.BookEVHotelServiceValidator;
@@ -10,8 +11,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+
+import static java.util.Optional.ofNullable;
 
 @Slf4j
 public abstract class AbstractBookEVHotelService<E extends BookEVHotelEntity, D extends BookEVHotelDTO> implements BookEVHotelService<D> {
@@ -35,23 +41,37 @@ public abstract class AbstractBookEVHotelService<E extends BookEVHotelEntity, D 
 		this.processBeforeFindOne(dto);
 
 		// Process
-		E doc = this.findOneProcess(dto);
+		D doc = this.findOneProcess(dto);
 
 		// Post-process
 		this.processAfterFindOne(doc);
 
 		// Result
-		return this.mapper.map(doc);
+		return doc;
 	}
 
 	protected void processBeforeFindOne(D dto) throws BookEVHotelException {
 		log.info("Process Before Find One");
 	}
-	protected E findOneProcess(D dto) throws BookEVHotelException {
-		log.info("Find One Process");
-		return this.repository.findOne(this.mapper.map(dto));
+	protected D findOneProcess(D dto) throws BookEVHotelException {
+		try {
+			// Exception to be thrown if user not found
+			final var resourceNotFound = new BookEVHotelException(
+				"Unable to find resource",
+				HttpStatus.NOT_FOUND.value(),
+				HttpStatus.NOT_FOUND
+			);
+
+			// Convert DTO to entity
+			var user = this.mapper.map(dto);
+
+			// Check if user was found before returning the results
+			return this.mapper.map(ofNullable(this.repository.findOne(user)).orElseThrow(() -> resourceNotFound));
+		} catch (Exception e) {
+			throw new BookEVHotelException("Error during findOneProcess", e);
+		}
 	}
-	protected void processAfterFindOne(E entity) throws BookEVHotelException {
+	protected void processAfterFindOne(D dto) throws BookEVHotelException {
 		log.info("Process After Find One");
 	}
 
@@ -70,22 +90,25 @@ public abstract class AbstractBookEVHotelService<E extends BookEVHotelEntity, D 
 		this.processBeforeFindAll(dto);
 
 		// Process
-		Page<E> docs = this.findAllProcess(dto, pageable);
+		Page<D> docs = this.findAllProcess(dto, pageable);
 
 		// Post-process
 		this.processAfterFindAll(docs);
 
 		// Results
-		return this.mapEntitiesToDTOs(docs);
+		return docs;
 	}
 	protected void processBeforeFindAll(D dto) throws BookEVHotelException {
 		log.info("Process Before Find All");
 	}
-	protected Page<E> findAllProcess(D dto, Pageable pageable) throws BookEVHotelException {
-		log.info("Find All Process");
-		return this.repository.findAll(this.mapper.map(dto), pageable);
+	protected Page<D> findAllProcess(D dto, Pageable pageable) throws BookEVHotelException {
+		try {
+			return this.mapEntitiesToDTOs(this.repository.findAll(this.mapper.map(dto), pageable));
+		} catch (Exception e) {
+			throw new BookEVHotelException("Error during findAllProcess", e);
+		}
 	}
-	protected void processAfterFindAll(Page<E> entity) throws BookEVHotelException {
+	protected void processAfterFindAll(Page<D> data) throws BookEVHotelException {
 		log.info("Process After Find All");
 	}
 	protected Page<D> mapEntitiesToDTOs(Page<E> page) {
@@ -107,13 +130,21 @@ public abstract class AbstractBookEVHotelService<E extends BookEVHotelEntity, D 
 		}
 
 		// Process
-		Page<E> docs = this.repository.findAll(dtos.stream().map(this.mapper::map).toList(), pageable);
+		Page<D> docs = this.findAllProcess(dtos, pageable);
 
 		// Post-process
 		this.processAfterFindAll(docs);
 
 		// Results
-		return mapEntitiesToDTOs(docs);
+		return docs;
+	}
+
+	protected Page<D> findAllProcess(List<D> dtos, Pageable pageable) throws BookEVHotelException {
+		try {
+			return this.mapEntitiesToDTOs(this.repository.findAll(dtos.stream().map(this.mapper::map).toList(), pageable));
+		} catch (Exception e) {
+			throw new BookEVHotelException("Error during findAllProcess", e);
+		}
 	}
 
 	/**
@@ -125,11 +156,28 @@ public abstract class AbstractBookEVHotelService<E extends BookEVHotelEntity, D 
 	@Override
 	public D createOne(D dto) throws BookEVHotelException {
 		// Validate
+		this.validator.validateBeforeCreateOne(dto);
+
 		// Pre-process
+		this.processBeforeCreateOne(dto);
+
 		// Process
+		D doc = this.createOneProcess(dto);
+
 		// Post-process
+		this.processAfterCreateOne(doc);
+
 		// Results
-		return null;
+		return doc;
+	}
+	protected void processBeforeCreateOne(D dto) throws BookEVHotelException {
+		log.debug("Process Before Create One");
+	}
+	protected void processAfterCreateOne(D dto) throws BookEVHotelException {
+		log.debug("Process After Create One");
+	}
+	protected D createOneProcess(D dto) throws BookEVHotelException {
+		return this.mapper.map(this.repository.createOne(this.mapper.map(dto)));
 	}
 
 	/**
@@ -141,25 +189,40 @@ public abstract class AbstractBookEVHotelService<E extends BookEVHotelEntity, D 
 	@Override
 	public D updateOne(D dto) throws BookEVHotelException {
 		// Validate
+		this.validator.validateBeforeUpdateOne(dto);
+
 		// Pre-process
+		this.processBeforeUpdateOne(dto);
+
 		// Process
+		D doc = this.updateOneProcess(dto);
+
 		// Post-process
+		this.processAfterUpdateOne(doc);
+
 		// Results
-		return null;
+		return doc;
+	}
+	protected void processBeforeUpdateOne(D dto) throws BookEVHotelException {
+		log.debug("Process Before Update One");
+	}
+	protected void processAfterUpdateOne(D dto) throws BookEVHotelException {
+		log.debug("Process After Update One");
+	}
+	protected D updateOneProcess(D dto) throws BookEVHotelException {
+		return this.mapper.map(this.repository.updateOne(this.mapper.map(dto)));
 	}
 
 	/**
 	 * Delete one element by criteria
-	 *
 	 * @param dto criteria of the element to delete
 	 * @return the created element
 	 */
 	@Override
-	public D deleteOne(D dto) throws BookEVHotelException {
-		// Pre-process
-		// Process
-		// Post-process
-		// Results
-		return null;
+	public Boolean deleteOne(D dto) throws BookEVHotelException {
+		if (Objects.isNull(dto) || Objects.isNull(dto.getId())) {
+			throw new BookEVHotelException("Invalid request");
+		}
+		return this.repository.deleteOne(this.mapper.map(dto));
 	}
 }

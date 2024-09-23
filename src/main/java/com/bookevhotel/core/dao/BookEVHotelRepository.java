@@ -2,7 +2,6 @@ package com.bookevhotel.core.dao;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
 
@@ -48,5 +47,12 @@ public interface BookEVHotelRepository<E extends BookEVHotelEntity> {
 	 * @param entity criteria of the element to delete
 	 * @return the created element
 	 */
-	E deleteOne(E entity);
+	Boolean deleteOne(E entity);
+
+	/**
+	 * Check if the document exists in the db
+	 * @param entity document to check
+	 * @return true or false
+	 */
+	boolean exists(E entity);
 }

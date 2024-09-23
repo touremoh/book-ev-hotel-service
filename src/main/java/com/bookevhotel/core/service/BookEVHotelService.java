@@ -49,5 +49,5 @@ public interface BookEVHotelService<D extends BookEVHotelDTO> {
 	 * @param dto dto of the element to delete
 	 * @return the created element
 	 */
-	D deleteOne(D dto) throws BookEVHotelException;
+	Boolean deleteOne(D dto) throws BookEVHotelException;
 }

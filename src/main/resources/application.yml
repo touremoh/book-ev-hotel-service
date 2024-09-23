@@ -5,18 +5,3 @@ server:
 spring:
   application:
     name: book-ev-hotel-service
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/book_ev_hotel
-      database: book_ev_hotel
-
-
-logging:
-  level:
-    org:
-      springframework:
-        data:
-          mongodb:
-            core:
-              MongoTemplate: DEBUG
-

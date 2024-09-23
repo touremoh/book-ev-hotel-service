@@ -1,13 +1,18 @@
 package com.bookevhotel.core.dao.repository;
 
 import com.bookevhotel.core.dao.AbstractBookEVHotelRepository;
+import com.bookevhotel.core.dao.BookEVHotelRepository;
 import com.bookevhotel.core.dao.entity.PaymentsInformation;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public class PaymentsInformationRepositoryImpl extends AbstractBookEVHotelRepository<PaymentsInformation> {
+public class PaymentsInformationRepositoryImpl extends AbstractBookEVHotelRepository<PaymentsInformation> implements BookEVHotelRepository<PaymentsInformation> {
 
 
 	protected PaymentsInformationRepositoryImpl(MongoTemplate mongoTemplate) {
@@ -15,12 +20,27 @@ public class PaymentsInformationRepositoryImpl extends AbstractBookEVHotelReposi
 	}
 
 	@Override
-	protected Query buildFindOneQuery(PaymentsInformation entity) {
-		return new Query(this.prepareInitialStatement(entity));
+	protected Query buildOneElementQuery(PaymentsInformation entity) {
+		return null;
 	}
 
 	@Override
-	protected Class<PaymentsInformation> entityClass() {
-		return PaymentsInformation.class;
+	public PaymentsInformation findOne(PaymentsInformation entity) {
+		return null;
+	}
+
+	@Override
+	public Page<PaymentsInformation> findAll(PaymentsInformation entity, Pageable pageable) {
+		return null;
+	}
+
+	@Override
+	public Page<PaymentsInformation> findAll(List<PaymentsInformation> entities, Pageable pageable) {
+		return null;
+	}
+
+	@Override
+	public boolean exists(PaymentsInformation entity) {
+		return false;
 	}
 }

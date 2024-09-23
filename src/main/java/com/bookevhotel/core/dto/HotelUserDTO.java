@@ -1,5 +1,6 @@
 package com.bookevhotel.core.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,12 +12,20 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO implements BookEVHotelDTO  {
+public class HotelUserDTO implements BookEVHotelDTO  {
     private String id;
     private String email;
-    private String password;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String rawPassword;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String encodedPassword;
+
     private String firstName;
     private String lastName;
+    private String userRole;
+    private String userStatus;
     private String hotelId;
     private LocalDateTime recordTimestamp;
 }
