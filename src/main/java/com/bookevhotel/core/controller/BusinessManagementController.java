@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/business")
-public class AdminDashboardController extends AbstractBookEVHotelController<AdminDashboardDTO> {
-	public AdminDashboardController(AdminDashboardService service, AdminDashboardRequestParamsMapper requestParamsMapper) {
+public class BusinessManagementController extends AbstractBookEVHotelController<AdminDashboardDTO> {
+	public BusinessManagementController(AdminDashboardService service, AdminDashboardRequestParamsMapper requestParamsMapper) {
 		super(service, requestParamsMapper);
 	}
+
+	// Add Hotel and Charging Information
+	// Update Hotel and Charging Information
 }
