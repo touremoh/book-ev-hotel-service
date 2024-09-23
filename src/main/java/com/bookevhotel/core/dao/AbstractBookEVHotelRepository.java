@@ -1,7 +1,5 @@
 package com.bookevhotel.core.dao;
 
-import com.bookevhotel.core.dao.entity.Hotel;
-import com.bookevhotel.core.dao.entity.PaymentsInformation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +8,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.support.PageableExecutionUtils;
 
-import java.util.List;
 import java.util.Objects;
 
 @Slf4j
