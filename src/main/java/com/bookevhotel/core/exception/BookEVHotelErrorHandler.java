@@ -16,8 +16,8 @@ public class BookEVHotelErrorHandler extends ResponseEntityExceptionHandler {
 	protected ResponseEntity<Object> handleConflict(BookEVHotelException ex) {
 		var response = BookEVHotelErrorResponse.builder()
 			.message(ex.getMessage())
-			.code(Objects.nonNull(ex.getHttpStatusCode())? ex.getHttpStatusCode() : HttpStatus.INTERNAL_SERVER_ERROR.value())
 			.status(Objects.nonNull(ex.getStatus()) ? ex.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR)
+			.code(Objects.nonNull(ex.getHttpStatusCode()) ? ex.getHttpStatusCode() : HttpStatus.INTERNAL_SERVER_ERROR.value())
 			.timestamp(LocalDateTime.now())
 			.build();
 		return ResponseEntity.status(response.getStatus()).body(response);

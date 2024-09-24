@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Slf4j
 @Service
 public class HotelUserService extends AbstractBookEVHotelService<HotelUser, HotelUserDTO> {
@@ -62,5 +64,50 @@ public class HotelUserService extends AbstractBookEVHotelService<HotelUser, Hote
 	protected void processAfterCreateOne(HotelUserDTO hotelUserDTO) throws BookEVHotelException {
 		// Once the user created, send confirmation email to him to activate the user
 		this.emailNotificationService.sendEmail(hotelUserDTO, "Please activate your account");
+	}
+
+	@Override
+	protected void processBeforeUpdateOne(HotelUserDTO dto) throws BookEVHotelException {
+		log.debug("Updating hotel user: {}", dto);
+
+		// Check if user exist by ID
+		if (!repository.exists(this.mapper.map(dto))) {
+			throw new BookEVHotelException(
+				"Trying to update a hotel user that does not exist",
+				HttpStatus.UNAUTHORIZED.value(),
+				HttpStatus.UNAUTHORIZED
+			);
+		}
+
+		// Update the DTO with the entity data
+		this.mapper.merge(dto, this.findOne(dto));
+	}
+
+	public HotelUserDTO activateUserAccount(String userId) throws BookEVHotelException {
+		log.debug("Activating hotel user: {}", userId);
+
+		// Build user dto
+		var hotelUserDTO = new HotelUserDTO();
+		hotelUserDTO.setId(userId);
+		hotelUserDTO.setUserStatus(UserStatusEnum.ACTIVE.getValue());
+
+		// find the user
+		var hotelUser = this.findOne(hotelUserDTO);
+
+		// Check if user is active
+		if (Objects.nonNull(hotelUser) && hotelUser.getUserStatus().equals(UserStatusEnum.ACTIVE.getValue())) {
+			log.warn("User already active: {}", hotelUser);
+			throw new BookEVHotelException(
+				"Dead link: user already activated",
+				HttpStatus.UNAUTHORIZED.value(),
+				HttpStatus.UNAUTHORIZED
+			);
+		}
+
+		// Activate user
+		hotelUser.setUserStatus(UserStatusEnum.ACTIVE.getValue());
+
+		// update user data and return the results
+		return this.updateOne(hotelUser);
 	}
 }

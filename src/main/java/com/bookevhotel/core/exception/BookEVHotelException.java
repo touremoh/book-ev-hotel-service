@@ -19,6 +19,7 @@ public class BookEVHotelException extends Exception {
 		super(message);
 		this.httpStatusCode = httpStatusCode;
 		this.message = message;
+		this.status = status;
 	}
 
 	public BookEVHotelException(String message, Throwable cause) {
@@ -29,5 +30,6 @@ public class BookEVHotelException extends Exception {
 		super(message, cause);
 		this.httpStatusCode = httpStatusCode;
 		this.message = message;
+		this.status = status;
 	}
 }

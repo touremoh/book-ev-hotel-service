@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -152,6 +153,7 @@ public abstract class AbstractBookEVHotelService<E extends BookEVHotelEntity, D 
 	 * @return the created element
 	 */
 	@Override
+	@Transactional
 	public D createOne(D dto) throws BookEVHotelException {
 		// Validate
 		this.validator.validateBeforeCreateOne(dto);

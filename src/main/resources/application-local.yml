@@ -5,7 +5,7 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/book_ev_hotel
+      uri: mongodb://localhost:27017/book_ev_hotel?replicaSet=rs0
       database: book_ev_hotel
   mail:
     host: MAIL_HOST
@@ -28,6 +28,9 @@ logging:
           mongodb:
             core:
               MongoTemplate: DEBUG
+    com:
+      bookevhotel:
+        core: debug
 
 
 constants:

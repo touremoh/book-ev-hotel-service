@@ -4,6 +4,7 @@ import com.bookevhotel.core.dto.HotelUserDTO;
 import com.bookevhotel.core.exception.BookEVHotelException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -18,6 +19,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class EmailNotificationService {
 
@@ -49,7 +51,7 @@ public class EmailNotificationService {
 			// Replace placeholders with dynamic content
 			String htmlContent = htmlTemplate
 				.replace("{{website_name}}", "Book EV Hotel")
-				.replace("{{username}}", receiver.getEmail())
+				.replace("{{username}}", receiver.getFirstName())
 				.replace("{{activation_link}}", activationLink);
 
 			// Set the HTML content in the email
@@ -58,6 +60,7 @@ public class EmailNotificationService {
 			// Send the email
 			mailSender.send(mimeMessage);
 		} catch (MessagingException | IOException e) {
+			log.error("Failed to send email notification to the user {}. Error message is: " + e.getMessage(), receiver.getEmail(), e);
 			throw new BookEVHotelException(
 				"Failed to send notification to user",
 				e,
