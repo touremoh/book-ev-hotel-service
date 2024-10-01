@@ -2,11 +2,14 @@ package com.bookevhotel.core.service;
 
 import com.bookevhotel.core.dao.entity.HotelUser;
 import com.bookevhotel.core.dao.repository.HotelUserRepositoryImpl;
+import com.bookevhotel.core.dto.AccountActivationCodeDTO;
+import com.bookevhotel.core.dto.ActivationCodeDTO;
 import com.bookevhotel.core.dto.HotelUserDTO;
 import com.bookevhotel.core.enums.UserRoleEnum;
 import com.bookevhotel.core.enums.UserStatusEnum;
 import com.bookevhotel.core.exception.BookEVHotelException;
 import com.bookevhotel.core.mapper.lombok.HotelUserMapper;
+import com.bookevhotel.core.utils.BookEVHotelUtils;
 import com.bookevhotel.core.validation.HotelUserServiceValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
@@ -15,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Slf4j
@@ -22,7 +26,9 @@ import java.util.Objects;
 public class HotelUserService extends AbstractBookEVHotelService<HotelUser, HotelUserDTO> {
 
 	private final PasswordEncoder passwordEncoder;
-	private final EmailNotificationService emailNotificationService;
+	private final AccountCreationNotificationService notificationService;
+	private final ActivationCodeService activationCodeService;
+	private static final long ACTIVATION_CODE_EXPIRATION_TIME = 30;
 
 	@Autowired
 	public HotelUserService(
@@ -30,11 +36,12 @@ public class HotelUserService extends AbstractBookEVHotelService<HotelUser, Hote
 		HotelUserMapper mapper,
 		HotelUserServiceValidator validator,
 		PasswordEncoder passwordEncoder,
-		EmailNotificationService emailNotificationService) {
+		AccountCreationNotificationService notificationService, ActivationCodeService activationCodeService) {
 
 		super(repository, mapper, validator);
 		this.passwordEncoder = passwordEncoder;
-		this.emailNotificationService = emailNotificationService;
+		this.notificationService = notificationService;
+		this.activationCodeService = activationCodeService;
 	}
 
 	@Override
@@ -62,13 +69,29 @@ public class HotelUserService extends AbstractBookEVHotelService<HotelUser, Hote
 
 	@Override
 	protected void processAfterCreateOne(HotelUserDTO hotelUserDTO) throws BookEVHotelException {
-		// Once the user created, send confirmation email to him to activate the user
-		this.emailNotificationService.sendEmail(hotelUserDTO, "Please activate your account");
+		// Generate an activation code
+		var code = BookEVHotelUtils.generateActivationCode();
+
+		// Save it to db
+		var accountActivationCodeDTO = AccountActivationCodeDTO.builder()
+			.activationCode(code)
+			.userId(hotelUserDTO.getId())
+			.expirationTimestamp(LocalDateTime.now().plusMinutes(ACTIVATION_CODE_EXPIRATION_TIME))
+			.build();
+
+		// Check if code exist before saving (prevent collision)
+
+
+		// Save
+		this.activationCodeService.createOne(accountActivationCodeDTO);
+
+		// Ask the user to use the confirmation code to activate his account
+		this.notificationService.sendEmail(hotelUserDTO, accountActivationCodeDTO);
 	}
 
 	@Override
 	protected void processBeforeUpdateOne(HotelUserDTO dto) throws BookEVHotelException {
-		log.debug("Updating hotel user: {}", dto);
+		log.debug("Updating hotel user: {}", dto.getId());
 
 		// Check if user exist by ID
 		if (!repository.exists(this.mapper.map(dto))) {
@@ -83,31 +106,52 @@ public class HotelUserService extends AbstractBookEVHotelService<HotelUser, Hote
 		this.mapper.merge(dto, this.findOne(dto));
 	}
 
-	public HotelUserDTO activateUserAccount(String userId) throws BookEVHotelException {
-		log.debug("Activating hotel user: {}", userId);
+	public Boolean activateUserAccount(ActivationCodeDTO activationCode) throws BookEVHotelException {
+		log.debug("Activating user account with code: {}", activationCode.getCode());
 
-		// Build user dto
-		var hotelUserDTO = new HotelUserDTO();
-		hotelUserDTO.setId(userId);
-		hotelUserDTO.setUserStatus(UserStatusEnum.ACTIVE.getValue());
+		var code = activationCode.getCode();
 
-		// find the user
-		var hotelUser = this.findOne(hotelUserDTO);
+		// Find activation code in db
+		var activationCodeToFind = AccountActivationCodeDTO.builder().activationCode(code).build();
+		var activationCodeFound = this.activationCodeService.findOne(activationCodeToFind);
 
-		// Check if user is active
-		if (Objects.nonNull(hotelUser) && hotelUser.getUserStatus().equals(UserStatusEnum.ACTIVE.getValue())) {
-			log.warn("User already active: {}", hotelUser);
+		// Check if code has not expired (valid)
+		if (Objects.nonNull(activationCodeFound) && LocalDateTime.now().isAfter(activationCodeFound.getExpirationTimestamp())) {
+			log.warn("Activation code {} expired", code);
 			throw new BookEVHotelException(
-				"Dead link: user already activated",
-				HttpStatus.UNAUTHORIZED.value(),
-				HttpStatus.UNAUTHORIZED
+				"The activation code has expired",
+				HttpStatus.EXPECTATION_FAILED.value(),
+				HttpStatus.EXPECTATION_FAILED
 			);
 		}
 
-		// Activate user
-		hotelUser.setUserStatus(UserStatusEnum.ACTIVE.getValue());
+		// find the user of the code
+		var hotelUserDTO = new HotelUserDTO();
+		hotelUserDTO.setId(activationCodeFound.getUserId());
 
-		// update user data and return the results
-		return this.updateOne(hotelUser);
+		// Find
+		var userFound = this.findOne(hotelUserDTO);
+
+		// Check if user was found
+		if (Objects.isNull(userFound)) {
+			log.warn("User with id {} not found during activation", hotelUserDTO.getId());
+			throw new BookEVHotelException(
+				"User with id " + hotelUserDTO.getId() + " not found",
+				HttpStatus.INTERNAL_SERVER_ERROR.value(),
+				HttpStatus.INTERNAL_SERVER_ERROR
+			);
+		}
+
+		// Activate his status
+		userFound.setUserStatus(UserStatusEnum.ACTIVE.getValue());
+
+		// Update the user status in db
+		this.updateOne(userFound);
+
+		// Delete activation code in db
+		this.activationCodeService.deleteOne(activationCodeFound);
+
+		// return true if everything was fine
+		return true;
 	}
 }

@@ -221,7 +221,7 @@ public abstract class AbstractBookEVHotelService<E extends BookEVHotelEntity, D 
 	@Override
 	public Boolean deleteOne(D dto) throws BookEVHotelException {
 		if (Objects.isNull(dto) || Objects.isNull(dto.getId())) {
-			throw new BookEVHotelException("Invalid request");
+			throw new BookEVHotelException("ID is required to delete a resource");
 		}
 		return this.repository.deleteOne(this.mapper.map(dto));
 	}

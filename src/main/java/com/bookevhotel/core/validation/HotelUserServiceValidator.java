@@ -17,10 +17,10 @@ import static java.util.Objects.nonNull;
 @ServiceValidator
 public class HotelUserServiceValidator implements BookEVHotelServiceValidator<HotelUserDTO> {
 
-	@Value("${constants.emailRegex}")
+	@Value("${regex.email}")
 	private String emailRegex;
 
-	@Value("${constants.passwordRegex}")
+	@Value("${regex.password}")
 	private String passwordRegex;
 
 

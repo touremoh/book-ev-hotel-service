@@ -42,17 +42,24 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtRequestFilter jwtRequestFilter) throws Exception {
+		// Disable CSRF (since you are using stateless JWT)
 		http.csrf(AbstractHttpConfigurer::disable)
+			// Configure authorization for your endpoints
 			.authorizeHttpRequests(auth -> auth
 				.requestMatchers(
-					"/register",
+					"/register/**",
 					"/authentication/login",
 					"/authentication/token/validate",
-					"/destinations"
-				).permitAll()
+					"/destinations",
+					"/users/account/activate"
+				).permitAll() // Publicly accessible routes
 				.anyRequest().authenticated()
 			)
+
+			// Stateless session management (for JWT)
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+			// Add JWT filter before UsernamePasswordAuthenticationFilter
 			.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();

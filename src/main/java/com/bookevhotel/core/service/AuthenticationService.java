@@ -39,7 +39,7 @@ public class AuthenticationService {
 			UserDetails userDetails = this.userDetailsService.loadUserByUsername(hotelUserDTO.getEmail());
 
 			// Generate a JWT and return it
-			return JwtDTO.builder().token(JwtUtils.generateToken(userDetails, jwtConfig)).build();
+			return JwtDTO.builder().accessToken(JwtUtils.generateToken(userDetails, jwtConfig)).build();
 		} catch (AuthenticationException e) {
 			throw new BookEVHotelException("Authentication failed", e);
 		}

@@ -45,7 +45,7 @@ public abstract class AbstractBookEVHotelRepository<E extends BookEVHotelEntity>
 	}
 
 	public Boolean deleteOne(E entity) {
-		return null;
+		return this.mongoTemplate.remove(entity).getDeletedCount() == 1;
 	}
 
 	public boolean exists(Query query, Class<E> entityClass) {

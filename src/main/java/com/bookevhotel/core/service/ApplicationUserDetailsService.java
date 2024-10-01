@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Service
 public class ApplicationUserDetailsService implements UserDetailsService {
@@ -32,6 +33,11 @@ public class ApplicationUserDetailsService implements UserDetailsService {
 
 			// Find user by email
 			var userFound = this.userRepository.findOne(userToFind);
+
+			// Check if user was found
+			if (Objects.isNull(userFound)) {
+				throw new UsernameNotFoundException("User not found");
+			}
 
 			// Convert userDTO into Spring Security User
 			return User

@@ -54,6 +54,6 @@ public class JwtUtils {
 	}
 
 	public JwtDTO generateAndBuildToken(UserDetails userDetails, JwtConfig jwtConfig) {
-		return JwtDTO.builder().token(JwtUtils.generateToken(userDetails, jwtConfig)).build();
+		return JwtDTO.builder().accessToken(JwtUtils.generateToken(userDetails, jwtConfig)).build();
 	}
 }
