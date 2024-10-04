@@ -2,14 +2,15 @@ package com.bookevhotel.core.service;
 
 import com.bookevhotel.core.dao.entity.HotelUser;
 import com.bookevhotel.core.dao.repository.HotelUserRepositoryImpl;
-import com.bookevhotel.core.dto.AccountActivationCodeDTO;
-import com.bookevhotel.core.dto.ActivationCodeDTO;
+import com.bookevhotel.core.dto.OTPCodeDTO;
+import com.bookevhotel.core.dto.AccountActivationRequest;
 import com.bookevhotel.core.dto.HotelUserDTO;
 import com.bookevhotel.core.enums.UserRoleEnum;
 import com.bookevhotel.core.enums.UserStatusEnum;
 import com.bookevhotel.core.exception.BookEVHotelException;
 import com.bookevhotel.core.mapper.lombok.HotelUserMapper;
 import com.bookevhotel.core.utils.BookEVHotelUtils;
+import com.bookevhotel.core.utils.SecretGenerator;
 import com.bookevhotel.core.validation.HotelUserServiceValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
@@ -18,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Slf4j
@@ -27,8 +27,7 @@ public class HotelUserService extends AbstractBookEVHotelService<HotelUser, Hote
 
 	private final PasswordEncoder passwordEncoder;
 	private final AccountCreationNotificationService notificationService;
-	private final ActivationCodeService activationCodeService;
-	private static final long ACTIVATION_CODE_EXPIRATION_TIME = 30;
+	private final OTPCodeService otpCodeService;
 
 	@Autowired
 	public HotelUserService(
@@ -36,12 +35,12 @@ public class HotelUserService extends AbstractBookEVHotelService<HotelUser, Hote
 		HotelUserMapper mapper,
 		HotelUserServiceValidator validator,
 		PasswordEncoder passwordEncoder,
-		AccountCreationNotificationService notificationService, ActivationCodeService activationCodeService) {
+		AccountCreationNotificationService notificationService, OTPCodeService otpCodeService) {
 
 		super(repository, mapper, validator);
 		this.passwordEncoder = passwordEncoder;
 		this.notificationService = notificationService;
-		this.activationCodeService = activationCodeService;
+		this.otpCodeService = otpCodeService;
 	}
 
 	@Override
@@ -69,24 +68,23 @@ public class HotelUserService extends AbstractBookEVHotelService<HotelUser, Hote
 
 	@Override
 	protected void processAfterCreateOne(HotelUserDTO hotelUserDTO) throws BookEVHotelException {
+		// Generate OTP Secret
+		var otpSecret = SecretGenerator.generateSecret(32);
 		// Generate an activation code
-		var code = BookEVHotelUtils.generateActivationCode();
+		var code = this.otpCodeService.generateTOTP(otpSecret);
 
 		// Save it to db
-		var accountActivationCodeDTO = AccountActivationCodeDTO.builder()
-			.activationCode(code)
+		var otpCodeDTO = OTPCodeDTO.builder()
+			.code(code)
 			.userId(hotelUserDTO.getId())
-			.expirationTimestamp(LocalDateTime.now().plusMinutes(ACTIVATION_CODE_EXPIRATION_TIME))
+			.secret(otpSecret)
 			.build();
 
-		// Check if code exist before saving (prevent collision)
-
-
 		// Save
-		this.activationCodeService.createOne(accountActivationCodeDTO);
+		this.otpCodeService.createOne(otpCodeDTO);
 
 		// Ask the user to use the confirmation code to activate his account
-		this.notificationService.sendEmail(hotelUserDTO, accountActivationCodeDTO);
+		this.notificationService.sendEmail(hotelUserDTO, otpCodeDTO);
 	}
 
 	@Override
@@ -106,20 +104,20 @@ public class HotelUserService extends AbstractBookEVHotelService<HotelUser, Hote
 		this.mapper.merge(dto, this.findOne(dto));
 	}
 
-	public Boolean activateUserAccount(ActivationCodeDTO activationCode) throws BookEVHotelException {
-		log.debug("Activating user account with code: {}", activationCode.getCode());
+	public Boolean activateUserAccount(AccountActivationRequest request) throws BookEVHotelException {
+		log.debug("Activating user account with code: {}", request.getCode());
 
-		var code = activationCode.getCode();
+		var code = request.getCode();
 
 		// Find activation code in db
-		var activationCodeToFind = AccountActivationCodeDTO.builder().activationCode(code).build();
-		var activationCodeFound = this.activationCodeService.findOne(activationCodeToFind);
+		var otpCodeToFind = OTPCodeDTO.builder().code(code).build();
+		var otpCodeFound = this.otpCodeService.findOne(otpCodeToFind);
 
 		// Check if code has not expired (valid)
-		if (Objects.nonNull(activationCodeFound) && LocalDateTime.now().isAfter(activationCodeFound.getExpirationTimestamp())) {
-			log.warn("Activation code {} expired", code);
+		if (Objects.nonNull(otpCodeFound) && !this.otpCodeService.validateOTP(code, otpCodeFound.getSecret())) {
+			log.warn("OTP code {} expired", code);
 			throw new BookEVHotelException(
-				"The activation code has expired",
+				"The OTP has expired",
 				HttpStatus.EXPECTATION_FAILED.value(),
 				HttpStatus.EXPECTATION_FAILED
 			);
@@ -127,7 +125,7 @@ public class HotelUserService extends AbstractBookEVHotelService<HotelUser, Hote
 
 		// find the user of the code
 		var hotelUserDTO = new HotelUserDTO();
-		hotelUserDTO.setId(activationCodeFound.getUserId());
+		hotelUserDTO.setId(otpCodeFound.getUserId());
 
 		// Find
 		var userFound = this.findOne(hotelUserDTO);
@@ -147,9 +145,6 @@ public class HotelUserService extends AbstractBookEVHotelService<HotelUser, Hote
 
 		// Update the user status in db
 		this.updateOne(userFound);
-
-		// Delete activation code in db
-		this.activationCodeService.deleteOne(activationCodeFound);
 
 		// return true if everything was fine
 		return true;

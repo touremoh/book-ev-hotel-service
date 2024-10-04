@@ -11,8 +11,8 @@ management:
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/book_ev_hotel?replicaSet=rs0
-      database: book_ev_hotel
+      uri: mongodb://localhost:27017/dbname?replicaSet=rs0
+      database: dbname
   mail:
     host: MAIL-HOST
     port: 0

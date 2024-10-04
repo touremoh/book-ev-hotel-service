@@ -1,6 +1,6 @@
 package com.bookevhotel.core.service;
 
-import com.bookevhotel.core.dto.AccountActivationCodeDTO;
+import com.bookevhotel.core.dto.OTPCodeDTO;
 import com.bookevhotel.core.dto.HotelUserDTO;
 import com.bookevhotel.core.exception.BookEVHotelException;
 import com.microsoft.graph.models.*;
@@ -41,7 +41,7 @@ public class AccountCreationNotificationService {
 		this.oauth2TokenService = oauth2TokenService;
 	}
 
-	public void sendEmail(HotelUserDTO receiver, AccountActivationCodeDTO accountActivationCode) throws BookEVHotelException {
+	public void sendEmail(HotelUserDTO receiver, OTPCodeDTO otp) throws BookEVHotelException {
 		try {
 			var recipient = new Recipient();
 			var emailAddress = new EmailAddress();
@@ -61,7 +61,7 @@ public class AccountCreationNotificationService {
 				.replace("{{year}}", String.valueOf(LocalDate.now().getYear()))
 				.replace("{{website_name}}", "Book EV Hotel")
 				.replace("{{first_name}}", receiver.getFirstName())
-				.replace("{{activation_code}}", accountActivationCode.getActivationCode());
+				.replace("{{activation_code}}", otp.getCode());
 
 
 			var itemBody = new ItemBody();

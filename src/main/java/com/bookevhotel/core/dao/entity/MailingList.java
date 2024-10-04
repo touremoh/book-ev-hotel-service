@@ -21,7 +21,6 @@ public class MailingList implements BookEVHotelEntity {
 
     @MongoId
     private ObjectId id;
-
     private String email;
     private String countryOfResidence;
     private LocalDate recordDate;

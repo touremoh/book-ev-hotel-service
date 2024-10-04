@@ -1,4 +1,4 @@
-use book_ev_hotel;
+use bevhot;
 
 db.SubscriptionPlans.drop();
 db.Hotels.drop();
@@ -7,7 +7,9 @@ db.HotelsLeads.drop();
 db.Users.drop();
 db.VisitorSearches.drop();
 db.AdminDashboards.drop();
-db.Dictionary.drop();
+db.OTPCodes.drop();
+db.MailingList.drop();
+db.SearchWords.drop();
 
 db.createCollection("SubscriptionPlans", {
   validator: {
@@ -342,7 +344,7 @@ db.createCollection("Users", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["email", "password", "firstName", "lastName", "hotelId"],
+      required: ["email", "password", "firstName", "lastName", "userStatus"], // Added userStatus to required
       properties: {
         email: {
           bsonType: "string",
@@ -362,16 +364,22 @@ db.createCollection("Users", {
         },
         hotelId: {
           bsonType: "objectId",
-          description: "must be an object and is required"
+          description: "must be an objectId and is required"
         },
         recordTimestamp: {
           bsonType: "date",
           description: "Date and time when the user created the account"
+        },
+        userStatus: {
+          bsonType: "string",  // Define the type for userStatus
+          enum: ["ACTIVE", "INACTIVE", "LOCKED", "WAITING_FOR_REGISTRATION_VALIDATION"],
+          description: "Status of the user: active, inactive, suspended"
         }
       }
     }
   }
 });
+
 
 db.createCollection("VisitorSearches", {
   validator: {
@@ -431,24 +439,33 @@ db.createCollection("AdminDashboards", {
   }
 });
 
-db.createCollection("Dictionary", {
-  validator: {
-    $jsonSchema: {
-      bsonType: "object",
-      required: ["key", "values"],
-      properties: {
-        key: {
-          bsonType: "string",
-          description: "Represents a word in lower case that hotel name or description may contains. It also a word that a city or a country may contains."
-        },
-        values: {
-          bsonType: "array",
-          description: "List of hotels IDs"
-        }
+db.createCollection("SearchWords", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: [ "key", "languageCode", "values" ],
+         properties: {
+            key: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            },
+            languageCode: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            },
+            values: {
+               bsonType: ["array"],
+               items: {
+                  bsonType: "objectId",
+                  description: "must be a list of ObjectIds"
+               },
+               description: "must be an array of ObjectIds and is required"
+            }
+         }
       }
-    }
-  }
+   }
 });
+
 
 db.createCollection("MailingList", {
   validator: {
@@ -467,6 +484,29 @@ db.createCollection("MailingList", {
         recordDate: {
           bsonType: "date",
           description: "Date and time when the visitor subscribed to the mailing list"
+        }
+      }
+    }
+  }
+});
+
+db.createCollection("OTPCodes", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["code", "secret", "userId"],
+      properties: {
+        code: {
+          bsonType: "string",
+          description: "OPT code"
+        },
+        secret: {
+          bsonType: "string",
+          description: "OTP Generation secret"
+        },
+        userId: {
+          bsonType: "objectId",
+          description: "ID of the user"
         }
       }
     }

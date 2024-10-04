@@ -42,9 +42,9 @@ public class DestinationSearchService {
 		List<SearchWordsDTO> keywords = pattern.splitAsStream(searchRequest.getSearchTerm())
 			.map(String::toLowerCase)
 			.map(st -> {
-				var o = new SearchWordsDTO();
-				o.setKey(st);
-				return o;
+				var sw = new SearchWordsDTO();
+				sw.setKey(st);
+				return sw;
 			})
 			.toList();
 
@@ -58,6 +58,8 @@ public class DestinationSearchService {
 				hotelsMap.put(hotelId, hotelsMap.getOrDefault(hotelId, 0) + 1);
 			}
 		}
+		// TODO: take all the hotels ids in hotelMaps that the occurrence is the same as the number of dicoPage.getContent().size()
+
 		var hotels = hotelsMap.keySet().stream().map(hotelId -> {
 			var hotel = new HotelDTO();
 			hotel.setId(hotelId);

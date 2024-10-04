@@ -1,6 +1,6 @@
 package com.bookevhotel.core.controller;
 
-import com.bookevhotel.core.dto.ActivationCodeDTO;
+import com.bookevhotel.core.dto.AccountActivationRequest;
 import com.bookevhotel.core.dto.BookEVHotelRequestResponse;
 import com.bookevhotel.core.dto.HotelUserDTO;
 import com.bookevhotel.core.exception.BookEVHotelException;
@@ -22,7 +22,7 @@ public class HotelUserController extends AbstractBookEVHotelController<HotelUser
 	}
 
 	@PatchMapping(path = "/account/activate", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<BookEVHotelRequestResponse> activate(@RequestBody ActivationCodeDTO activationCode) throws BookEVHotelException {
+	public ResponseEntity<BookEVHotelRequestResponse> activate(@RequestBody AccountActivationRequest activationCode) throws BookEVHotelException {
 		return BuildApiResponse.from(((HotelUserService) this.service).activateUserAccount(activationCode));
 	}
 }

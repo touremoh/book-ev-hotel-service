@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ActivationCodeDTO {
+public class AccountActivationRequest {
 	@JsonProperty(value = "code")
 	private String code;
 }

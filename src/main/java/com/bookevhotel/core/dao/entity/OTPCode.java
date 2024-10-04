@@ -15,11 +15,11 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "AccountActivationCodes")
-public class AccountActivationCode implements BookEVHotelEntity {
+@Document(collection = "OTPCodes")
+public class OTPCode implements BookEVHotelEntity {
 	@MongoId
 	protected ObjectId id;
-	private String activationCode;
+	private String code;
 	private ObjectId userId;
-	private LocalDateTime expirationTimestamp;
+	private String secret;
 }

@@ -1,7 +1,7 @@
 package com.bookevhotel.core.validation;
 
 import com.bookevhotel.core.annotation.ServiceValidator;
-import com.bookevhotel.core.dto.AccountActivationCodeDTO;
+import com.bookevhotel.core.dto.OTPCodeDTO;
 import com.bookevhotel.core.exception.BookEVHotelException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
@@ -16,19 +16,19 @@ import static java.util.Objects.nonNull;
 
 @Slf4j
 @ServiceValidator
-public class AccountActivationCodeValidation implements BookEVHotelServiceValidator<AccountActivationCodeDTO> {
+public class OTPCodeValidation implements BookEVHotelServiceValidator<OTPCodeDTO> {
 
 	@Value("${regex.activationCode}")
 	private String activationCodeRegex;
 
 	@Override
-	public void validateBeforeFindOne(AccountActivationCodeDTO activationCode) throws BookEVHotelException {
-		if (isNull(activationCode)) {
+	public void validateBeforeFindOne(OTPCodeDTO otp) throws BookEVHotelException {
+		if (isNull(otp)) {
 			throw new BookEVHotelException("Cannot find code - Mandatory fields are empty");
 		}
-		boolean isValid = Strings.isNotEmpty(activationCode.getId()) && Strings.isNotBlank(activationCode.getId());
+		boolean isValid = Strings.isNotEmpty(otp.getId()) && Strings.isNotBlank(otp.getId());
 
-		if (Strings.isNotEmpty(activationCode.getActivationCode()) && Strings.isNotBlank(activationCode.getActivationCode())) {
+		if (Strings.isNotEmpty(otp.getCode()) && Strings.isNotBlank(otp.getCode())) {
 			isValid = true;
 		}
 		if (!isValid) {
@@ -41,19 +41,19 @@ public class AccountActivationCodeValidation implements BookEVHotelServiceValida
 	}
 
 	@Override
-	public void validateBeforeFindAll(AccountActivationCodeDTO activationCode) throws BookEVHotelException {
+	public void validateBeforeFindAll(OTPCodeDTO activationCode) throws BookEVHotelException {
 		throw new UnsupportedOperationException("Operation not supported");
 	}
 
 	@Override
-	public void validateBeforeFindAll(List<AccountActivationCodeDTO> dtos) throws BookEVHotelException {
+	public void validateBeforeFindAll(List<OTPCodeDTO> dtos) throws BookEVHotelException {
 		throw new UnsupportedOperationException("Operation not supported");
 	}
 
 
 	@Override
-	public void validateBeforeCreateOne(AccountActivationCodeDTO activationCode) throws BookEVHotelException {
-		if (isNull(activationCode) || nonNull(activationCode.getId())) {
+	public void validateBeforeCreateOne(OTPCodeDTO otp) throws BookEVHotelException {
+		if (isNull(otp) || nonNull(otp.getId())) {
 			throw new BookEVHotelException(
 				"Invalid input - ID not allowed",
 				HttpStatus.BAD_REQUEST.value(),
@@ -61,9 +61,9 @@ public class AccountActivationCodeValidation implements BookEVHotelServiceValida
 			);
 		}
 
-		if (Strings.isNotEmpty(activationCode.getActivationCode())) {
+		if (Strings.isNotEmpty(otp.getCode())) {
 			Pattern pattern = Pattern.compile(activationCodeRegex);
-			if (!pattern.matcher(activationCode.getActivationCode()).matches()) {
+			if (!pattern.matcher(otp.getCode()).matches()) {
 				throw new BookEVHotelException(
 					"Invalid activation code",
 					HttpStatus.FORBIDDEN.value(),
@@ -74,7 +74,7 @@ public class AccountActivationCodeValidation implements BookEVHotelServiceValida
 	}
 
 	@Override
-	public void validateBeforeUpdateOne(AccountActivationCodeDTO activationCode) throws BookEVHotelException {
+	public void validateBeforeUpdateOne(OTPCodeDTO activationCode) throws BookEVHotelException {
 		throw new UnsupportedOperationException("Operation not supported");
 	}
 }
