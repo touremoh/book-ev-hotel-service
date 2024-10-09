@@ -5,8 +5,6 @@ import com.bookevhotel.core.dto.HotelDTO;
 import com.bookevhotel.core.exception.BookEVHotelException;
 import com.bookevhotel.core.utils.BookEVHotelUtils;
 
-import java.util.List;
-
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.mapstruct.ap.internal.util.Strings.isEmpty;

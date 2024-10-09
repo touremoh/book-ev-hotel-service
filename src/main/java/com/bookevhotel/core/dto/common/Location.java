@@ -16,4 +16,13 @@ public class Location {
     private String zipOrPostalCode;
     private String stateOrProvince;
     private String country;
+
+    public String toString() {
+        return streetAddress + " "
+             + extendedAddress + " "
+             + city + " "
+             + zipOrPostalCode + " "
+             + stateOrProvince + " "
+             + country + " ";
+    }
 }

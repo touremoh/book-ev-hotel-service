@@ -4,14 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.math.BigDecimal;
+import org.bson.types.Decimal128;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Price {
-    private BigDecimal amount;
+    private Decimal128 amount;
     private String currency;
 }

@@ -12,7 +12,7 @@ import org.bson.types.ObjectId;
 @AllArgsConstructor
 public class ChargingInformation {
     private int numberOfConnectors;
-    private String maxPower;
+    private int maxPower;
     private String availabilityTime;
     private String accessibility;
     private String chargingNetwork;

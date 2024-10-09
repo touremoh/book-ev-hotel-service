@@ -1,17 +1,15 @@
 package com.bookevhotel.core.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchWordsDTO implements BookEVHotelDTO {
+public class SearchWordDTO implements BookEVHotelDTO {
     private String id;
     private String key;
     private String languageCode;

@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -146,14 +145,7 @@ public abstract class AbstractBookEVHotelService<E extends BookEVHotelEntity, D 
 		}
 	}
 
-	/**
-	 * Create one element by criteria
-	 *
-	 * @param dto criteria of the elements to create
-	 * @return the created element
-	 */
 	@Override
-	@Transactional
 	public D createOne(D dto) throws BookEVHotelException {
 		// Validate
 		this.validator.validateBeforeCreateOne(dto);
@@ -180,12 +172,41 @@ public abstract class AbstractBookEVHotelService<E extends BookEVHotelEntity, D 
 		return this.mapper.map(this.repository.createOne(this.mapper.map(dto)));
 	}
 
-	/**
-	 * Update one element by criteria
-	 *
-	 * @param dto criteria of the elements to create
-	 * @return the created element
-	 */
+	@Override
+	public List<D> createMany(List<D> dtos) throws BookEVHotelException {
+		// validate
+		this.validator.validateBeforeCreateAll(dtos);
+
+		// pre-process
+		this.processBeforeCreateMany(dtos);
+
+		// process
+		List<D> results = this.createManyProcess(dtos);
+
+		// post-process
+		this.processAfterCreateMany(results);
+
+		// results
+		return results;
+	}
+	protected void processBeforeCreateMany(List<D> dtos) throws BookEVHotelException {
+		log.debug("Process Before Create Many");
+	}
+	protected void processAfterCreateMany(List<D> dto) throws BookEVHotelException {
+		log.debug("Process After Create Many");
+	}
+	protected List<D> createManyProcess(List<D> dtos) throws BookEVHotelException {
+		// Map Entity to list
+		var entities = dtos.stream().map(this.mapper::map).toList();
+
+		// Persist
+		var results = this.repository.createMany(entities);
+
+		// Map results to DTO and return
+		return results.stream().map(this.mapper::map).toList();
+	}
+
+
 	@Override
 	public D updateOne(D dto) throws BookEVHotelException {
 		// Validate

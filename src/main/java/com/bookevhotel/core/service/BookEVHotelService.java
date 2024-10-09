@@ -40,6 +40,14 @@ public interface BookEVHotelService<D extends BookEVHotelDTO> {
 	D createOne(D dto) throws BookEVHotelException;
 
 	/**
+	 * Given a list of objects, insert all in the db
+ 	 * @param dtos data list to insert
+	 * @return the inserted objects
+	 * @throws BookEVHotelException error thrown when something went wrong
+	 */
+	List<D> createMany(List<D> dtos) throws BookEVHotelException;
+
+	/**
 	 * Update one element by dto
 	 * @param dto dto of the elements to create
 	 * @return the created element

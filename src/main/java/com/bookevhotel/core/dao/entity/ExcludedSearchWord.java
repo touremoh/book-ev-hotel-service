@@ -15,11 +15,10 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "SearchWords")
-public class SearchWord implements BookEVHotelEntity {
+@Document(collection = "ExcludedSearchWords")
+public class ExcludedSearchWord implements BookEVHotelEntity {
     @MongoId
     protected ObjectId id;
     private String key;
     private String languageCode;
-    private List<String> values;
 }

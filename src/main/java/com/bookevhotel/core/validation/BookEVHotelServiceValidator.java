@@ -13,7 +13,9 @@ public interface BookEVHotelServiceValidator<D extends BookEVHotelDTO> {
 	 * @param dto Data to validate
 	 * @throws BookEVHotelException thrown when validation fails
 	 */
-	void validateBeforeFindOne(D dto) throws BookEVHotelException;
+	default void validateBeforeFindOne(D dto) throws BookEVHotelException {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
 
 	/**
@@ -21,7 +23,9 @@ public interface BookEVHotelServiceValidator<D extends BookEVHotelDTO> {
 	 * @param dto Data to validate
 	 * @throws BookEVHotelException thrown when validation fails
 	 */
-	void validateBeforeFindAll(D dto) throws BookEVHotelException;
+	default void validateBeforeFindAll(D dto) throws BookEVHotelException {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 
 	/**
 	 * Validate find all
@@ -40,12 +44,27 @@ public interface BookEVHotelServiceValidator<D extends BookEVHotelDTO> {
 	 * @param dto Object to create
 	 * @throws BookEVHotelException Thrown when creation failed
 	 */
-	void validateBeforeCreateOne(D dto) throws BookEVHotelException;
+	default void validateBeforeCreateOne(D dto) throws BookEVHotelException {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	/**
+	 * Validate a list a DTO before persisting them
+	 * @param dtos Objects to validate
+	 * @throws BookEVHotelException thrown when something went wrong
+	 */
+	default void validateBeforeCreateAll(List<D> dtos) throws BookEVHotelException {
+		for (D dto : dtos) {
+			this.validateBeforeCreateOne(dto);
+		}
+	}
 
 	/**
 	 * Validate data before updating an existing document
 	 * @param dto Data to validate
 	 * @throws BookEVHotelException Thrown when validation failed
 	 */
-	void validateBeforeUpdateOne(D dto) throws BookEVHotelException;
+	default void validateBeforeUpdateOne(D dto) throws BookEVHotelException {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 }

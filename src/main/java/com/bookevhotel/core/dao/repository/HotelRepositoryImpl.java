@@ -19,7 +19,6 @@ import java.util.Objects;
 @Repository
 public class HotelRepositoryImpl extends AbstractBookEVHotelRepository<Hotel> implements BookEVHotelRepository<Hotel> {
 
-	protected static final String FIELD_HOTEL_ID = "_id";
 	protected static final String FIELD_HOTEL_NAME = "hotelName";
 	protected static final String FIELD_WEBSITE_LINK = "websiteLink";
 	protected static final String FIELD_HOTEL_DESCRIPTION = "hotelDescription";
@@ -99,7 +98,7 @@ public class HotelRepositoryImpl extends AbstractBookEVHotelRepository<Hotel> im
 		}
 
 		// prepare query statement
-		var query = new Query(Criteria.where(FIELD_HOTEL_ID).in(ids)).with(pageable);
+		var query = new Query(Criteria.where(FIELD_ID).in(ids)).with(pageable);
 
 		// execute the query
 		return this.findAll(query, Hotel.class, pageable);
