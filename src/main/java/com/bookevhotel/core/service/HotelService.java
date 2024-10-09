@@ -14,8 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 @Service
 public class HotelService  extends AbstractBookEVHotelService<Hotel, HotelDTO> {
@@ -85,10 +85,9 @@ public class HotelService  extends AbstractBookEVHotelService<Hotel, HotelDTO> {
 	}
 
 	protected List<String> splitString(String input) {
-		return Pattern.compile("\\s+")
-			.splitAsStream(input)
-			.map(String::toLowerCase)
-			.toList();
+		return Arrays.stream(input.split("[^\\p{L}\\p{M}']+"))
+			         .map(String::toLowerCase)
+			         .toList();
 	}
 
 	@SafeVarargs
@@ -101,16 +100,13 @@ public class HotelService  extends AbstractBookEVHotelService<Hotel, HotelDTO> {
 			);
 		}
 
-		// Regex to match words in many languages
-		String regex = "\\b[a-zA-ZÀ-ÖØ-öø-ÿßæœçñ'-]+\\b";
-
 		// Get the length of the list
 		List<String> result = new ArrayList<>();
 
 		// concat without number and without duplicates
 		for (List<String> list : listOfList) {
 			for (String word : list) {
-				if (!result.contains(word) && word.matches(regex)) {
+				if (!result.contains(word) && word.matches("\\b[a-zA-ZÀ-ÖØ-öø-ÿßæœçñ'-]+\\b")) {
 					result.add(word);
 				}
 			}
