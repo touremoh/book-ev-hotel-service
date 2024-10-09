@@ -9,14 +9,12 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "ExcludedSearchWords")
-public class ExcludedSearchWord implements BookEVHotelEntity {
+@Document(collection = "ExcludedSearchKeywords")
+public class ExcludedSearchKeyword implements BookEVHotelEntity {
     @MongoId
     protected ObjectId id;
     private String key;

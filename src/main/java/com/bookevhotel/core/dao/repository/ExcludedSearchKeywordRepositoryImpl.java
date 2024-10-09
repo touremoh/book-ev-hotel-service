@@ -2,7 +2,7 @@ package com.bookevhotel.core.dao.repository;
 
 import com.bookevhotel.core.dao.AbstractBookEVHotelRepository;
 import com.bookevhotel.core.dao.BookEVHotelRepository;
-import com.bookevhotel.core.dao.entity.ExcludedSearchWord;
+import com.bookevhotel.core.dao.entity.ExcludedSearchKeyword;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.ap.internal.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +17,17 @@ import java.util.Objects;
 
 @Slf4j
 @Repository
-public class ExcludedSearchWordRepositoryImpl extends AbstractBookEVHotelRepository<ExcludedSearchWord> implements BookEVHotelRepository<ExcludedSearchWord> {
+public class ExcludedSearchKeywordRepositoryImpl extends AbstractBookEVHotelRepository<ExcludedSearchKeyword> implements BookEVHotelRepository<ExcludedSearchKeyword> {
 
 	protected static final String FIELD_LANGUAGE_CODE = "languageCode";
 
 	@Autowired
-	protected ExcludedSearchWordRepositoryImpl(MongoTemplate mongoTemplate) {
+	protected ExcludedSearchKeywordRepositoryImpl(MongoTemplate mongoTemplate) {
 		super(mongoTemplate);
 	}
 
 	@Override
-	public Page<ExcludedSearchWord> findAll(ExcludedSearchWord searchWord, Pageable pageable) {
+	public Page<ExcludedSearchKeyword> findAll(ExcludedSearchKeyword searchWord, Pageable pageable) {
 		// Prepare initial statement
 		Criteria criteria = null;
 
@@ -45,6 +45,6 @@ public class ExcludedSearchWordRepositoryImpl extends AbstractBookEVHotelReposit
 		}
 
 		// Execute
-		return this.findAll(query, ExcludedSearchWord.class, pageable);
+		return this.findAll(query, ExcludedSearchKeyword.class, pageable);
 	}
 }

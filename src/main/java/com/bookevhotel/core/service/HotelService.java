@@ -4,7 +4,7 @@ import com.bookevhotel.core.dao.entity.Hotel;
 import com.bookevhotel.core.dao.repository.HotelRepositoryImpl;
 import com.bookevhotel.core.dto.ExcludedSearchWordDTO;
 import com.bookevhotel.core.dto.HotelDTO;
-import com.bookevhotel.core.dto.SearchWordDTO;
+import com.bookevhotel.core.dto.SearchKeywordDTO;
 import com.bookevhotel.core.exception.BookEVHotelException;
 import com.bookevhotel.core.mapper.lombok.HotelMapper;
 import com.bookevhotel.core.validation.HotelServiceValidator;
@@ -20,18 +20,18 @@ import java.util.List;
 @Service
 public class HotelService  extends AbstractBookEVHotelService<Hotel, HotelDTO> {
 
-	protected final SearchWordService searchWordService;
-	protected final ExcludedSearchWordService excludedSearchWordService;
+	protected final SearchKeywordService searchKeywordService;
+	protected final ExcludedSearchKeywordService excludedSearchKeywordService;
 
 	@Autowired
 	public HotelService(HotelRepositoryImpl repository,
 						HotelMapper mapper,
 						HotelServiceValidator validator,
-						SearchWordService searchWordService,
-						ExcludedSearchWordService excludedSearchWordService) {
+						SearchKeywordService searchKeywordService,
+						ExcludedSearchKeywordService excludedSearchKeywordService) {
 		super(repository, mapper, validator);
-		this.searchWordService = searchWordService;
-		this.excludedSearchWordService = excludedSearchWordService;
+		this.searchKeywordService = searchKeywordService;
+		this.excludedSearchKeywordService = excludedSearchKeywordService;
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class HotelService  extends AbstractBookEVHotelService<Hotel, HotelDTO> {
 		// Find words to exclude
 		var page = Pageable.ofSize(1000).withPage(0);
 		var exclusionCriteria = ExcludedSearchWordDTO.builder().languageCode(hotelDTO.getLanguageCode()).build();
-		var excludedWords = this.excludedSearchWordService
+		var excludedWords = this.excludedSearchKeywordService
 			.findAll(exclusionCriteria, page)
 			.stream()
 			.map(ExcludedSearchWordDTO::getKey)
@@ -69,10 +69,10 @@ public class HotelService  extends AbstractBookEVHotelService<Hotel, HotelDTO> {
 			.toList();
 
 		// Build searchWordDTO without duplicate and numbers
-		List<SearchWordDTO> searchWords = words
+		List<SearchKeywordDTO> searchWords = words
 			.stream()
 			.map(word ->
-				SearchWordDTO.builder()
+				SearchKeywordDTO.builder()
 					.key(word)
 					.languageCode(hotelDTO.getLanguageCode())
 					.values(List.of(hotelDTO.getId()))
@@ -81,7 +81,7 @@ public class HotelService  extends AbstractBookEVHotelService<Hotel, HotelDTO> {
 			.toList();
 
 		// Add the words in the dictionary using upsert strategy
-		this.searchWordService.createMany(searchWords);
+		this.searchKeywordService.createMany(searchWords);
 	}
 
 	protected List<String> splitString(String input) {

@@ -1,0 +1,93 @@
+db.ExcludedSearchKeywords.insertMany([
+   { "key": "le", "languageCode": "fr" },
+   { "key": "la", "languageCode": "fr" },
+   { "key": "les", "languageCode": "fr" },
+   { "key": "un", "languageCode": "fr" },
+   { "key": "une", "languageCode": "fr" },
+   { "key": "des", "languageCode": "fr" },
+   { "key": "du", "languageCode": "fr" },
+   { "key": "de", "languageCode": "fr" },
+   { "key": "l'", "languageCode": "fr" },
+   { "key": "c'", "languageCode": "fr" },
+   { "key": "ce", "languageCode": "fr" },
+   { "key": "cet", "languageCode": "fr" },
+   { "key": "cette", "languageCode": "fr" },
+   { "key": "ces", "languageCode": "fr" },
+   { "key": "mon", "languageCode": "fr" },
+   { "key": "ma", "languageCode": "fr" },
+   { "key": "mes", "languageCode": "fr" },
+   { "key": "à", "languageCode": "fr" }
+]);
+
+db.ExcludedSearchKeywords.insertMany([
+   { "key": "the", "languageCode": "en" },
+   { "key": "a", "languageCode": "en" },
+   { "key": "an", "languageCode": "en" },
+   { "key": "this", "languageCode": "en" },
+   { "key": "that", "languageCode": "en" },
+   { "key": "these", "languageCode": "en" },
+   { "key": "those", "languageCode": "en" },
+   { "key": "my", "languageCode": "en" },
+   { "key": "your", "languageCode": "en" },
+   { "key": "his", "languageCode": "en" },
+   { "key": "her", "languageCode": "en" },
+   { "key": "its", "languageCode": "en" },
+   { "key": "our", "languageCode": "en" },
+   { "key": "their", "languageCode": "en" },
+   { "key": "of", "languageCode": "en" },
+   { "key": "on", "languageCode": "en" }
+]);
+
+db.ExcludedSearchKeywords.insertMany([
+   { "key": "el", "languageCode": "es" },
+   { "key": "la", "languageCode": "es" },
+   { "key": "los", "languageCode": "es" },
+   { "key": "las", "languageCode": "es" },
+   { "key": "un", "languageCode": "es" },
+   { "key": "una", "languageCode": "es" },
+   { "key": "unos", "languageCode": "es" },
+   { "key": "unas", "languageCode": "es" },
+   { "key": "este", "languageCode": "es" },
+   { "key": "esta", "languageCode": "es" },
+   { "key": "estos", "languageCode": "es" },
+   { "key": "estas", "languageCode": "es" },
+   { "key": "mi", "languageCode": "es" },
+   { "key": "mis", "languageCode": "es" }
+]);
+
+db.ExcludedSearchKeywords.insertMany([
+   { "key": "der", "languageCode": "de" },
+   { "key": "die", "languageCode": "de" },
+   { "key": "das", "languageCode": "de" },
+   { "key": "ein", "languageCode": "de" },
+   { "key": "eine", "languageCode": "de" },
+   { "key": "einen", "languageCode": "de" },
+   { "key": "dieser", "languageCode": "de" },
+   { "key": "diese", "languageCode": "de" },
+   { "key": "dieses", "languageCode": "de" },
+   { "key": "mein", "languageCode": "de" },
+   { "key": "meine", "languageCode": "de" },
+   { "key": "dein", "languageCode": "de" },
+   { "key": "deine", "languageCode": "de" },
+   { "key": "sein", "languageCode": "de" },
+   { "key": "ihre", "languageCode": "de" }
+]);
+
+db.ExcludedSearchKeywords.insertMany([
+   { "key": "o", "languageCode": "pt" },
+   { "key": "a", "languageCode": "pt" },
+   { "key": "os", "languageCode": "pt" },
+   { "key": "as", "languageCode": "pt" },
+   { "key": "um", "languageCode": "pt" },
+   { "key": "uma", "languageCode": "pt" },
+   { "key": "uns", "languageCode": "pt" },
+   { "key": "umas", "languageCode": "pt" },
+   { "key": "este", "languageCode": "pt" },
+   { "key": "esta", "languageCode": "pt" },
+   { "key": "estes", "languageCode": "pt" },
+   { "key": "estas", "languageCode": "pt" },
+   { "key": "meu", "languageCode": "pt" },
+   { "key": "minha", "languageCode": "pt" },
+   { "key": "meus", "languageCode": "pt" },
+   { "key": "minhas", "languageCode": "pt" }
+]);

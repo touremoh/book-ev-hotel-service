@@ -9,7 +9,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchWordDTO implements BookEVHotelDTO {
+public class SearchKeywordDTO implements BookEVHotelDTO {
     private String id;
     private String key;
     private String languageCode;

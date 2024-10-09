@@ -1,6 +1,6 @@
 package com.bookevhotel.core.service;
 
-import com.bookevhotel.core.dto.SearchWordDTO;
+import com.bookevhotel.core.dto.SearchKeywordDTO;
 import com.bookevhotel.core.dto.HotelDTO;
 import com.bookevhotel.core.exception.BookEVHotelException;
 import com.bookevhotel.core.mapper.requests.VisitorSearchRequestParamsMapper;
@@ -16,17 +16,17 @@ import java.util.regex.Pattern;
 public class DestinationSearchService {
 	protected final HotelService hotelService;
 	protected final VisitorSearchService visitorSearchService;
-	protected final SearchWordService searchWordService;
+	protected final SearchKeywordService searchKeywordService;
 	protected final VisitorSearchRequestParamsMapper searchRequestParamsMapper;
 
 	public DestinationSearchService(
 		HotelService hotelService,
 		VisitorSearchService visitorSearchService,
-		SearchWordService searchWordService,
+		SearchKeywordService searchKeywordService,
 		VisitorSearchRequestParamsMapper searchRequestParamsMapper) {
 		this.hotelService = hotelService;
 		this.visitorSearchService = visitorSearchService;
-		this.searchWordService = searchWordService;
+		this.searchKeywordService = searchKeywordService;
 		this.searchRequestParamsMapper = searchRequestParamsMapper;
 	}
 
@@ -39,22 +39,22 @@ public class DestinationSearchService {
 
 		// Create a list of dictionary keywords from visitor's search request
 		Pattern pattern = Pattern.compile("\\s+");
-		List<SearchWordDTO> keywords = pattern.splitAsStream(searchRequest.getSearchTerm())
+		List<SearchKeywordDTO> keywords = pattern.splitAsStream(searchRequest.getSearchTerm())
 			.map(String::toLowerCase)
 			.map(st -> {
-				var sw = new SearchWordDTO();
+				var sw = new SearchKeywordDTO();
 				sw.setKey(st);
 				return sw;
 			})
 			.toList();
 
 		// Search into dictionary
-		var dicoPage = this.searchWordService.findAll(keywords, this.searchRequestParamsMapper.getPage(params));
+		var dicoPage = this.searchKeywordService.findAll(keywords, this.searchRequestParamsMapper.getPage(params));
 
 		// Merge hotels ids to eliminate duplicates
 		var hotelsMap = new HashMap<String, Integer>();
-		for (SearchWordDTO searchWordDTO : dicoPage.getContent()) {
-			for (String hotelId : searchWordDTO.getValues()) {
+		for (SearchKeywordDTO searchKeywordDTO : dicoPage.getContent()) {
+			for (String hotelId : searchKeywordDTO.getValues()) {
 				hotelsMap.put(hotelId, hotelsMap.getOrDefault(hotelId, 0) + 1);
 			}
 		}
