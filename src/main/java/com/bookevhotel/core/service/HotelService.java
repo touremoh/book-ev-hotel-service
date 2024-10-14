@@ -127,7 +127,7 @@ public class HotelService  extends AbstractBookEVHotelService<Hotel, HotelDTO> {
 		// Split hotel location
 		List<String> wordsFromHotelAddress = this.splitString(hotelDTO.getLocation().toString());
 
-		// Find words to exclude
+		// Find words to exclude in the keywords dictionary
 		var exclusionCriteria = ExcludedSearchWordDTO.builder().languageCode(hotelDTO.getLanguageCode()).build();
 		var excludedWords = this.excludedSearchKeywordService
 			.findAll(exclusionCriteria, this.getDefaultPageSettings())
@@ -135,7 +135,7 @@ public class HotelService  extends AbstractBookEVHotelService<Hotel, HotelDTO> {
 			.map(ExcludedSearchWordDTO::getKey)
 			.toList();
 
-		// Build words without duplicate, without numbers and without excluded word
+		// Build words without duplicate, without numbers and without excluded words
 		List<String> concatedLists = this.concatLists(
 			wordsFromHotelName,
 			wordsFromHotelDescription,
@@ -149,7 +149,7 @@ public class HotelService  extends AbstractBookEVHotelService<Hotel, HotelDTO> {
 			.filter(word -> word.length() > 1) // no need to add single letter words
 			.toList();
 
-		// Build searchWordDTO without duplicate and numbers
+		// Build search keywords without duplicates and without numbers
 		List<SearchKeywordDTO> newSearchKeywords = words
 			.stream()
 			.map(keyword ->
