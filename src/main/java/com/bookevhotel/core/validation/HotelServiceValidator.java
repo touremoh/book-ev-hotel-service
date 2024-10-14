@@ -43,8 +43,13 @@ public class HotelServiceValidator implements BookEVHotelServiceValidator<HotelD
 		if (isNull(dto) || isNull(dto.getId())) {
 			throw new BookEVHotelException("Can't update hotel with missing required fields");
 		}
+
 		if (BookEVHotelUtils.allNull(dto)) {
 			throw new BookEVHotelException("Can't update hotel with missing required fields");
+		}
+
+		if (isNull(dto.getHotelName()) && isNull(dto.getLocation())) {
+			throw new BookEVHotelException("Hotel name and location are missing");
 		}
 	}
 }

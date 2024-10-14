@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -15,5 +16,5 @@ public class HotelLeadDTO implements BookEVHotelDTO {
     private String email;
     private String fullName;
     private String hotelId;
-    private Date recordTimestamps;
+    private LocalDateTime recordTimestamps;
 }

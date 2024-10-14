@@ -20,35 +20,35 @@ public class SearchKeywordService extends AbstractBookEVHotelService<SearchKeywo
 	}
 
 	@Override
-	protected void processBeforeCreateOne(SearchKeywordDTO dto) throws BookEVHotelException {
-		this.lowerCaseLanguageCode(dto);
+	protected void processBeforeCreateOne(SearchKeywordDTO searchKeywordDTO) throws BookEVHotelException {
+		this.lowerCaseLanguageCode(searchKeywordDTO);
 	}
 
 	@Override
-	protected void processBeforeFindOne(SearchKeywordDTO dto) throws BookEVHotelException {
-		this.lowerCaseLanguageCode(dto);
+	protected void processBeforeFindOne(SearchKeywordDTO searchKeywordDTO) throws BookEVHotelException {
+		this.lowerCaseLanguageCode(searchKeywordDTO);
 	}
 
 	@Override
-	protected void processBeforeFindAll(SearchKeywordDTO dto) throws BookEVHotelException {
-		this.lowerCaseLanguageCode(dto);
+	protected void processBeforeFindAll(SearchKeywordDTO searchKeywordDTO) throws BookEVHotelException {
+		this.lowerCaseLanguageCode(searchKeywordDTO);
 	}
 
 	@Override
-	protected void processBeforeUpdateOne(SearchKeywordDTO dto) throws BookEVHotelException {
-		this.lowerCaseLanguageCode(dto);
+	protected void processBeforeUpdateOne(SearchKeywordDTO searchKeywordDTO) throws BookEVHotelException {
+		this.lowerCaseLanguageCode(searchKeywordDTO);
 	}
 
 	@Override
-	protected void processBeforeCreateMany(List<SearchKeywordDTO> dtos) throws BookEVHotelException {
-		for (SearchKeywordDTO dto : dtos) {
-			this.lowerCaseLanguageCode(dto);
+	protected void processBeforeCreateMany(List<SearchKeywordDTO> searchKeywordDTOs) throws BookEVHotelException {
+		for (SearchKeywordDTO keywordDTO : searchKeywordDTOs) {
+			this.lowerCaseLanguageCode(keywordDTO);
 		}
 	}
 
-	protected void lowerCaseLanguageCode(SearchKeywordDTO word) {
-		if (Strings.isNotEmpty(word.getLanguageCode())) {
-			word.setLanguageCode(word.getLanguageCode().toLowerCase());
+	protected void lowerCaseLanguageCode(SearchKeywordDTO searchKeywordDTO) {
+		if (Strings.isNotEmpty(searchKeywordDTO.getLanguageCode())) {
+			searchKeywordDTO.setLanguageCode(searchKeywordDTO.getLanguageCode().toLowerCase());
 		}
 	}
 }

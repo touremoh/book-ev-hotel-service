@@ -68,7 +68,6 @@ public interface BookEVHotelMapper<E extends BookEVHotelEntity, D extends BookEV
 				if (targetValue == null && sourceValue != null) {
 					field.set(target, sourceValue); // Set target field to source field value
 				}
-
 			} catch (IllegalAccessException e) {
 				throw new BookEVHotelException("Could not access field: " + field.getName(), e);
 			}

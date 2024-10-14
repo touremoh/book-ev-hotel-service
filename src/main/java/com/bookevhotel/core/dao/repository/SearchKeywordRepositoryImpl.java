@@ -98,8 +98,14 @@ public class SearchKeywordRepositoryImpl extends AbstractBookEVHotelRepository<S
 			words.add(searchKeyword.getKey());
 		}
 
+		// Get the language code
+		var languageCode = entities.getFirst().getLanguageCode();
+
+		// Build query criteria
+		var criteria = Criteria.where(FIELD_KEY).in(words).and(FIELD_LANGUAGE_CODE).is(languageCode);
+
 		// Prepare query statement
-		var query = new Query(Criteria.where(FIELD_KEY).in(words)).with(pageable);
+		var query = new Query(criteria).with(pageable);
 
 		// Execute query
 		return this.findAll(query, SearchKeyword.class, pageable);

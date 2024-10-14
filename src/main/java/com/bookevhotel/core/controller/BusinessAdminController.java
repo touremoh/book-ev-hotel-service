@@ -10,20 +10,18 @@ import com.bookevhotel.core.service.PaymentsInformationService;
 import com.bookevhotel.core.utils.BuildApiResponse;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin")
-public class AdminController extends AbstractBookEVHotelController<AdminDashboardDTO> {
+public class BusinessAdminController extends AbstractBookEVHotelController<AdminDashboardDTO> {
 	protected final HotelService hotelService;
 	protected final AdminDashboardService adminDashboardService;
 	protected final HotelUserService hotelUserService;
 	protected final PaymentsInformationService paymentsInformationService;
 
-	public AdminController(
+	public BusinessAdminController(
 		AdminDashboardService service,
 		AdminDashboardRequestParamsMapper requestParamsMapper,
 		HotelService hotelService,
@@ -41,6 +39,11 @@ public class AdminController extends AbstractBookEVHotelController<AdminDashboar
 	@PutMapping(path = "/hotels", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<BookEVHotelRequestResponse> addHotelInformation(@RequestBody HotelDTO hotelDTO) throws BookEVHotelException {
 		return BuildApiResponse.from(this.hotelService.createOne(hotelDTO));
+	}
+
+	@PatchMapping(path = "/hotels", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<BookEVHotelRequestResponse> updateHotelInformation(@RequestBody HotelDTO hotelDTO) throws BookEVHotelException {
+		return BuildApiResponse.from(this.hotelService.updateOne(hotelDTO));
 	}
 
 	// Payment info management
