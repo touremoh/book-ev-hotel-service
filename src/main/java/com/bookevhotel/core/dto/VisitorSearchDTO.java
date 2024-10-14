@@ -16,5 +16,6 @@ public class VisitorSearchDTO implements BookEVHotelDTO {
     private String id;
     private String searchTerm;
     private String userLocation;
+    private String languageCode;
     private LocalDateTime requestTimestamp;
 }

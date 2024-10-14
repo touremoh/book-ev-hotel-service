@@ -55,7 +55,7 @@ logging:
               MongoTemplate: DEBUG
     com:
       bookevhotel:
-        core: debug
+        core: DEBUG
 
 regex:
   email: EMAIL_CHECK_REGEX

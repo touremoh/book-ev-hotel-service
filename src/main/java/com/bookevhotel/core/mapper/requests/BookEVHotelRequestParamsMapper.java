@@ -23,7 +23,7 @@ public interface BookEVHotelRequestParamsMapper<D extends BookEVHotelDTO> {
 	 */
 	default Pageable getPage(Map<String, String> params) {
 		int pageNumber = 0;
-		int pageSize = 100;
+		int pageSize = 500;
 		var page = Pageable.ofSize(pageSize).withPage(pageNumber);
 
 		if (Objects.nonNull(params)) {

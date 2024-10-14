@@ -6,6 +6,8 @@ import com.bookevhotel.core.exception.BookEVHotelException;
 import com.bookevhotel.core.mapper.requests.VisitorSearchRequestParamsMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -33,41 +35,55 @@ public class DestinationSearchService {
 	public Page<HotelDTO> search(Map<String, String> params) throws BookEVHotelException {
 		// Map params
 		var searchRequest = this.searchRequestParamsMapper.map(params);
+		var searchReqPage = this.searchRequestParamsMapper.getPage(params);
 
 		// Save visitor's search
 		this.visitorSearchService.createOne(searchRequest);
 
-		// Create a list of dictionary keywords from visitor's search request
+		// Create word pattern to split search keywords
 		Pattern pattern = Pattern.compile("\\s+");
+
+		// Create a list of dictionary keywords from visitor's search request
 		List<SearchKeywordDTO> keywords = pattern.splitAsStream(searchRequest.getSearchTerm())
 			.map(String::toLowerCase)
-			.map(st -> {
-				var sw = new SearchKeywordDTO();
-				sw.setKey(st);
-				return sw;
-			})
+			.map(st -> SearchKeywordDTO.builder().key(st).languageCode(searchRequest.getLanguageCode()).build())
 			.toList();
 
 		// Search into dictionary
-		var dicoPage = this.searchKeywordService.findAll(keywords, this.searchRequestParamsMapper.getPage(params));
+		var searchKeywords = this.searchKeywordService
+			.findAll(keywords, searchReqPage)
+			.getContent();
 
-		// Merge hotels ids to eliminate duplicates
-		var hotelsMap = new HashMap<String, Integer>();
-		for (SearchKeywordDTO searchKeywordDTO : dicoPage.getContent()) {
-			for (String hotelId : searchKeywordDTO.getValues()) {
-				hotelsMap.put(hotelId, hotelsMap.getOrDefault(hotelId, 0) + 1);
-			}
+		// Check search terms
+		if (searchKeywords.isEmpty()) {
+			log.warn("No hotel was found for search term {}", searchRequest.getSearchTerm());
+			return new PageImpl<>(
+				List.of(),
+				searchReqPage,
+				0
+			);
 		}
-		// TODO: take all the hotels ids in hotelMaps that the occurrence is the same as the number of dicoPage.getContent().size()
 
-		var hotels = hotelsMap.keySet().stream().map(hotelId -> {
-			var hotel = new HotelDTO();
-			hotel.setId(hotelId);
-			return hotel;
-		}).toList();
+		// The intersection of all sets is the most relevant results
+		Set<String> hotelIds = new HashSet<>(searchKeywords.getFirst().getValues());
+		for (SearchKeywordDTO keywordDTO : searchKeywords) {
+			hotelIds.retainAll(new HashSet<>(keywordDTO.getValues()));
+		}
+
+		// Check search terms
+		if (hotelIds.isEmpty()) {
+			log.warn("No hotel was found for search term {}", searchRequest.getSearchTerm());
+			return new PageImpl<>(
+				List.of(),
+				searchReqPage,
+				0
+			);
+		}
+
+		// Build hotel dto list to perform finAll on hotels collection
+		var hotels = hotelIds.stream().map(hotelId -> HotelDTO.builder().id(hotelId).build()).toList();
 
 		// Search elements
 		return this.hotelService.findAll(hotels, this.searchRequestParamsMapper.getPage(params));
 	}
-
 }

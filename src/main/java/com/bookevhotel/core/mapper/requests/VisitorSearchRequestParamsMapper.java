@@ -17,6 +17,7 @@ public class VisitorSearchRequestParamsMapper implements BookEVHotelRequestParam
 		visitorSearchDTO.setSearchTerm(params.get("searchTerm"));
 		visitorSearchDTO.setRequestTimestamp(LocalDateTime.now());
 		visitorSearchDTO.setUserLocation(params.getOrDefault("userLocation", "Unknown"));
+		visitorSearchDTO.setLanguageCode(params.getOrDefault("languageCode", "en"));
 		return visitorSearchDTO;
 	}
 }
