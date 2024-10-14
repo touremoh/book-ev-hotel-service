@@ -21,7 +21,6 @@ public class HotelRepositoryImpl extends AbstractBookEVHotelRepository<Hotel> im
 
 	protected static final String FIELD_HOTEL_NAME = "hotelName";
 	protected static final String FIELD_WEBSITE_LINK = "websiteLink";
-	protected static final String FIELD_HOTEL_DESCRIPTION = "hotelDescription";
 
 
 	protected HotelRepositoryImpl(MongoTemplate mongoTemplate) {
@@ -65,13 +64,6 @@ public class HotelRepositoryImpl extends AbstractBookEVHotelRepository<Hotel> im
 				criteria = Criteria.where(FIELD_HOTEL_NAME).regex(entity.getHotelName());
 			} else {
 				criteria = criteria.and(FIELD_HOTEL_NAME).regex(entity.getHotelName());
-			}
-		}
-		if (Strings.isNotEmpty(entity.getHotelDescription())) {
-			if (Objects.isNull(criteria)) {
-				criteria = Criteria.where(FIELD_HOTEL_DESCRIPTION).regex(entity.getHotelDescription());
-			} else {
-				criteria = criteria.and(FIELD_HOTEL_DESCRIPTION).regex(entity.getHotelDescription());
 			}
 		}
 

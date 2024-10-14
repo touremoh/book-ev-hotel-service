@@ -47,46 +47,42 @@ db.createCollection("Hotels", {
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["hotelName", "location"],
+      required: ["hotelName", "location", "websiteLink"],
       properties: {
         hotelName: {
           bsonType: "string",
           description: "Name of the hotel"
         },
-        hotelDescription: {
-          bsonType: "string",
-          description: "Description of the hotel - Services proposed by the hotel"
-        },
         location: {
-           bsonType: "object",
-           required: ["streetAddress", "extendedAddress", "city", "zipOrPostalCode", "stateOrProvince", "country"],
-           properties: {
-             country: {
-               bsonType: "string",
-               description: "Country of the hotel"
-             },
-             stateOrProvince: {
-               bsonType: "string",
-               description: "State or province of the hotel"
-             },
-             zipOrPostalCode: {
-               bsonType: "string",
-               description: "Zip code or postal code of the hotel"
-             },
-             city: {
-               bsonType: "string",
-               description: "City of the hotel"
-             },
-             streetAddress: {
-               bsonType: "string",
-               description: "Street address of the hotel"
-             },
-             extendedAddress: {
-               bsonType: "string",
-               description: "Extended address of the hotel"
-             }
-           },
-           description: "The address that will be shown on the invoice"
+          bsonType: "object",
+          required: ["streetAddress", "extendedAddress", "city", "zipOrPostalCode", "stateOrProvince", "country"],
+          properties: {
+            country: {
+              bsonType: "string",
+              description: "Country of the hotel"
+            },
+            stateOrProvince: {
+              bsonType: "string",
+              description: "State or province of the hotel"
+            },
+            zipOrPostalCode: {
+              bsonType: "string",
+              description: "Zip code or postal code of the hotel"
+            },
+            city: {
+              bsonType: "string",
+              description: "City of the hotel"
+            },
+            streetAddress: {
+              bsonType: "string",
+              description: "Street address of the hotel"
+            },
+            extendedAddress: {
+              bsonType: "string",
+              description: "Extended address of the hotel"
+            }
+          },
+          description: "The address that will be shown on the invoice"
         },
         websiteLink: {
           bsonType: "string",
@@ -146,7 +142,7 @@ db.createCollection("Hotels", {
               },
               description: "Cost of the energy in object format"
             },
-            messageForCustomer: { // i.e "We don't have any cable. Please bring your own cable to charge your car"
+            messageForCustomer: {
               bsonType: "string",
               description: "Additional information for the customer about the charging point"
             }
@@ -160,7 +156,7 @@ db.createCollection("Hotels", {
               bsonType: "object",
               description: "An offer made by the hotel for the EV owner",
               properties: {
-                 title: {
+                title: {
                   bsonType: "string",
                   description: "Name of the offer"
                 },
@@ -190,11 +186,7 @@ db.createCollection("Hotels", {
         },
         lastUpdatedBy: {
           bsonType: "objectId",
-          description: "ID of the person who created the record"
-        },
-        languageCode: {
-          bsonType: "string",
-          description: "Code of the language in which the hotel description was made"
+          description: "ID of the person who updated the record last time"
         }
       }
     }
@@ -469,13 +461,9 @@ db.createCollection("SearchKeywords", {
    validator: {
       $jsonSchema: {
          bsonType: "object",
-         required: [ "key", "languageCode", "values" ],
+         required: [ "key", "values" ],
          properties: {
             key: {
-               bsonType: "string",
-               description: "must be a string and is required"
-            },
-            languageCode: {
                bsonType: "string",
                description: "must be a string and is required"
             },
@@ -539,28 +527,8 @@ db.createCollection("OTPCodes", {
   }
 });
 
-db.createCollection("ExcludedSearchKeywords", {
-   validator: {
-      $jsonSchema: {
-         bsonType: "object",
-         required: [ "key", "languageCode"],
-         properties: {
-            key: {
-               bsonType: "string",
-               description: "Word to be excluded"
-            },
-            languageCode: {
-               bsonType: "string",
-               description: "The language the word belongs to"
-            }
-         }
-      }
-   }
-});
-
 
 db.SearchKeywords.createIndex({key: 1});
-db.ExcludedSearchKeywords.createIndex({key: 1});
 db.MailingList.createIndex({email: 1});
 db.VisitorSearches.createIndex({searchTerm: 1});
 db.Users.createIndex({email: 1});

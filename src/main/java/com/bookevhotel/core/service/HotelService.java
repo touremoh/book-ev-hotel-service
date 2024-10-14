@@ -2,13 +2,11 @@ package com.bookevhotel.core.service;
 
 import com.bookevhotel.core.dao.entity.Hotel;
 import com.bookevhotel.core.dao.repository.HotelRepositoryImpl;
-import com.bookevhotel.core.dto.ExcludedSearchWordDTO;
 import com.bookevhotel.core.dto.HotelDTO;
 import com.bookevhotel.core.dto.HotelUserDTO;
 import com.bookevhotel.core.dto.SearchKeywordDTO;
 import com.bookevhotel.core.exception.BookEVHotelException;
 import com.bookevhotel.core.mapper.lombok.HotelMapper;
-import com.bookevhotel.core.mapper.lombok.SearchKeywordMapper;
 import com.bookevhotel.core.validation.HotelServiceValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +24,7 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 @Slf4j
 @Service
 public class HotelService  extends AbstractBookEVHotelService<Hotel, HotelDTO> {
-	private final SearchKeywordMapper searchKeywordMapper;
-
 	protected final SearchKeywordService searchKeywordService;
-	protected final ExcludedSearchKeywordService excludedSearchKeywordService;
 	protected final HotelUserService hotelUserService;
 
 	@Autowired
@@ -37,13 +32,10 @@ public class HotelService  extends AbstractBookEVHotelService<Hotel, HotelDTO> {
 						HotelMapper mapper,
 						HotelServiceValidator validator,
 						SearchKeywordService searchKeywordService,
-						ExcludedSearchKeywordService excludedSearchKeywordService, HotelUserService hotelUserService,
-						SearchKeywordMapper searchKeywordMapper) {
+						HotelUserService hotelUserService) {
 		super(repository, mapper, validator);
 		this.searchKeywordService = searchKeywordService;
-		this.excludedSearchKeywordService = excludedSearchKeywordService;
 		this.hotelUserService = hotelUserService;
-		this.searchKeywordMapper = searchKeywordMapper;
 	}
 
 	@Override
@@ -121,41 +113,18 @@ public class HotelService  extends AbstractBookEVHotelService<Hotel, HotelDTO> {
 		// Split hotel name
 		List<String> wordsFromHotelName = this.splitString(hotelDTO.getHotelName());
 
-		// Split hotel description
-		List<String> wordsFromHotelDescription = this.splitString(hotelDTO.getHotelDescription());
-
 		// Split hotel location
 		List<String> wordsFromHotelAddress = this.splitString(hotelDTO.getLocation().toString());
 
-		// Find words to exclude in the keywords dictionary
-		var exclusionCriteria = ExcludedSearchWordDTO.builder().languageCode(hotelDTO.getLanguageCode()).build();
-		var excludedWords = this.excludedSearchKeywordService
-			.findAll(exclusionCriteria, this.getDefaultPageSettings())
-			.stream()
-			.map(ExcludedSearchWordDTO::getKey)
-			.toList();
-
 		// Build words without duplicate, without numbers and without excluded words
-		List<String> concatedLists = this.concatLists(
-			wordsFromHotelName,
-			wordsFromHotelDescription,
-			wordsFromHotelAddress
-		);
-
-		// Exclude irrelevant words
-		List<String> words = concatedLists
-			.stream()
-			.filter(word -> !excludedWords.contains(word))
-			.filter(word -> word.length() > 1) // no need to add single letter words
-			.toList();
+		List<String> concatedLists = this.concatLists(wordsFromHotelName, wordsFromHotelAddress);
 
 		// Build search keywords without duplicates and without numbers
-		List<SearchKeywordDTO> newSearchKeywords = words
+		List<SearchKeywordDTO> newSearchKeywords = concatedLists
 			.stream()
 			.map(keyword ->
 				SearchKeywordDTO.builder()
 					.key(keyword)
-					.languageCode(hotelDTO.getLanguageCode())
 					.values(List.of(hotelDTO.getId()))
 					.build()
 			)

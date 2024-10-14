@@ -25,7 +25,6 @@ public class Hotel implements BookEVHotelEntity {
     @MongoId
     private ObjectId id;
     private String hotelName;
-    private String hotelDescription;
     private Location location;
     private String websiteLink;
     private List<String> amenities;
@@ -40,5 +39,4 @@ public class Hotel implements BookEVHotelEntity {
 
     private ObjectId createdBy;
     private ObjectId lastUpdatedBy;
-    private String languageCode;
 }

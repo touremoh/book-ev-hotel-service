@@ -7,7 +7,6 @@ import com.bookevhotel.core.mapper.requests.VisitorSearchRequestParamsMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -46,7 +45,7 @@ public class DestinationSearchService {
 		// Create a list of dictionary keywords from visitor's search request
 		List<SearchKeywordDTO> keywords = pattern.splitAsStream(searchRequest.getSearchTerm())
 			.map(String::toLowerCase)
-			.map(st -> SearchKeywordDTO.builder().key(st).languageCode(searchRequest.getLanguageCode()).build())
+			.map(searchTerm -> SearchKeywordDTO.builder().key(searchTerm).build())
 			.toList();
 
 		// Search into dictionary

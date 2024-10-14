@@ -12,6 +12,5 @@ import java.util.List;
 public class SearchKeywordDTO implements BookEVHotelDTO {
     private String id;
     private String key;
-    private String languageCode;
     private List<String> values;
 }

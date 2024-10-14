@@ -20,6 +20,5 @@ public class SearchKeyword implements BookEVHotelEntity {
     @MongoId
     protected ObjectId id;
     private String key;
-    private String languageCode;
     private List<String> values;
 }

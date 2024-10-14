@@ -3,15 +3,11 @@ db.runCommand({
   validator: {
     $jsonSchema: {
       bsonType: "object",
-      required: ["hotelName", "location"],
+      required: ["hotelName", "location", "websiteLink"],
       properties: {
         hotelName: {
           bsonType: "string",
           description: "Name of the hotel"
-        },
-        hotelDescription: {
-          bsonType: "string",
-          description: "Description of the hotel - Services proposed by the hotel"
         },
         location: {
           bsonType: "object",
@@ -50,7 +46,7 @@ db.runCommand({
         },
         amenities: {
           bsonType: "array",
-          description: "List of amenties provided by the hotel"
+          description: "List of amenities provided by the hotel"
         },
         chargingInformation: {
           bsonType: "object",
@@ -147,10 +143,6 @@ db.runCommand({
         lastUpdatedBy: {
           bsonType: "objectId",
           description: "ID of the person who updated the record last time"
-        },
-        languageCode: {
-          bsonType: "string",
-          description: "Code of the language in which the hotel description was made"
         }
       }
     }
@@ -163,13 +155,9 @@ db.runCommand({
    validator: {
       $jsonSchema: {
          bsonType: "object",
-         required: [ "key", "languageCode", "values" ],
+         required: [ "key", "values" ],
          properties: {
             key: {
-               bsonType: "string",
-               description: "must be a string and is required"
-            },
-            languageCode: {
                bsonType: "string",
                description: "must be a string and is required"
             },

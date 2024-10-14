@@ -23,7 +23,6 @@ import java.util.Objects;
 public class SearchKeywordRepositoryImpl extends AbstractBookEVHotelRepository<SearchKeyword> implements BookEVHotelRepository<SearchKeyword> {
 
 	protected static final String FIELD_KEY = "key";
-	protected static final String FIELD_LANGUAGE_CODE = "languageCode";
 
 
 	@Autowired
@@ -45,14 +44,6 @@ public class SearchKeywordRepositoryImpl extends AbstractBookEVHotelRepository<S
 			}
 		}
 
-		if (Strings.isNotEmpty(searchKeyword.getLanguageCode())) {
-			if (Objects.isNull(criteria)) {
-				criteria = Criteria.where(FIELD_LANGUAGE_CODE).is(searchKeyword.getLanguageCode());
-			} else {
-				criteria = criteria.and(FIELD_LANGUAGE_CODE).is(searchKeyword.getLanguageCode());
-			}
-		}
-
 		// Build query
 		return new Query(criteria);
 	}
@@ -66,15 +57,6 @@ public class SearchKeywordRepositoryImpl extends AbstractBookEVHotelRepository<S
 	public Page<SearchKeyword> findAll(SearchKeyword searchKeyword, Pageable pageable) {
 		// Prepare initial statement
 		var criteria = this.prepareInitialStatement(searchKeyword);
-
-		// Build query criteria
-		if (Strings.isNotEmpty(searchKeyword.getLanguageCode())) {
-			if (Objects.isNull(criteria)) {
-				criteria = Criteria.where(FIELD_LANGUAGE_CODE).is(searchKeyword.getLanguageCode());
-			} else {
-				criteria = criteria.and(FIELD_LANGUAGE_CODE).is(searchKeyword.getLanguageCode());
-			}
-		}
 
 		// Build query
 		Query query = null;
@@ -98,11 +80,8 @@ public class SearchKeywordRepositoryImpl extends AbstractBookEVHotelRepository<S
 			words.add(searchKeyword.getKey());
 		}
 
-		// Get the language code
-		var languageCode = entities.getFirst().getLanguageCode();
-
 		// Build query criteria
-		var criteria = Criteria.where(FIELD_KEY).in(words).and(FIELD_LANGUAGE_CODE).is(languageCode);
+		var criteria = Criteria.where(FIELD_KEY).in(words);
 
 		// Prepare query statement
 		var query = new Query(criteria).with(pageable);
@@ -117,9 +96,7 @@ public class SearchKeywordRepositoryImpl extends AbstractBookEVHotelRepository<S
 
 		for (SearchKeyword searchKeyword : entities) {
 			Query query = new Query();
-			query.addCriteria(Criteria
-				 .where(FIELD_KEY).is(searchKeyword.getKey())
-				 .and(FIELD_LANGUAGE_CODE).is(searchKeyword.getLanguageCode()));
+			query.addCriteria(Criteria.where(FIELD_KEY).is(searchKeyword.getKey()));
 
 			// Use $addToSet to add new values without duplicates
 			Update update = new Update();

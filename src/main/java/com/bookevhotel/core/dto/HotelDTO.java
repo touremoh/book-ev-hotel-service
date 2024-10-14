@@ -16,7 +16,6 @@ import java.util.List;
 public class HotelDTO implements BookEVHotelDTO {
     private String id;
     private String hotelName;
-    private String hotelDescription;
     private Location location;
     private String websiteLink;
     private List<String> amenities;
@@ -31,5 +30,4 @@ public class HotelDTO implements BookEVHotelDTO {
 
     private String createdBy;
     private String lastUpdatedBy;
-    private String languageCode;
 }
