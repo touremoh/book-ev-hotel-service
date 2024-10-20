@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class HotelUserDTO implements BookEVHotelDTO  {
+public class HotelUserDTO extends AbstractBookEVHotelDTO {
     private String id;
     private String email;
 

@@ -13,6 +13,7 @@ import org.bson.types.ObjectId;
 public class ChargingInformation {
     private int numberOfConnectors;
     private int maxPower;
+    private String connectorType;
     private String availabilityTime;
     private String accessibility;
     private String chargingNetwork;

@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class HotelDTO implements BookEVHotelDTO {
+public class HotelDTO extends AbstractBookEVHotelDTO {
     private String id;
     private String hotelName;
     private Location location;

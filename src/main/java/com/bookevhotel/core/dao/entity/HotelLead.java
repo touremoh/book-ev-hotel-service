@@ -2,6 +2,7 @@ package com.bookevhotel.core.dao.entity;
 
 import com.bookevhotel.core.dao.BookEVHotelEntity;
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 import lombok.Getter;
@@ -24,5 +25,7 @@ public class HotelLead implements BookEVHotelEntity {
     private String email;
     private String fullName;
     private ObjectId hotelId;
+    
+    @CreatedDate
     private LocalDateTime recordTimestamps;
 }

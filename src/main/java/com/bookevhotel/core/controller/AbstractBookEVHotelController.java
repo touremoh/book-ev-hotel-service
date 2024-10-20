@@ -16,21 +16,21 @@ import java.util.Map;
 @Slf4j
 public abstract class AbstractBookEVHotelController<D extends BookEVHotelDTO> {
 	protected final BookEVHotelService<D> service;
-	protected final BookEVHotelRequestParamsMapper<D> mapper;
+	protected final BookEVHotelRequestParamsMapper<D> requestMapper;
 
-	protected AbstractBookEVHotelController(BookEVHotelService<D> service, BookEVHotelRequestParamsMapper<D> mapper) {
+	protected AbstractBookEVHotelController(BookEVHotelService<D> service, BookEVHotelRequestParamsMapper<D> requestMapper) {
 		this.service = service;
-		this.mapper = mapper;
+		this.requestMapper = requestMapper;
 	}
 
 	@GetMapping(path = "/one", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<BookEVHotelRequestResponse> findOne(@RequestParam Map<String, String> params) throws BookEVHotelException {
-		return BuildApiResponse.from(this.service.findOne(this.mapper.map(params)));
+		return BuildApiResponse.from(this.service.findOne(this.requestMapper.map(params)));
 	}
 
 	@GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<BookEVHotelRequestResponse> findAll(@RequestParam Map<String, String> params) throws BookEVHotelException {
-		return BuildApiResponse.from(this.service.findAll(this.mapper.map(params), this.mapper.getPage(params)));
+		return BuildApiResponse.from(this.service.findAll(this.requestMapper.map(params), this.requestMapper.getPage(params)));
 	}
 
 	@DeleteMapping(produces = MediaType.APPLICATION_JSON_VALUE)

@@ -50,8 +50,11 @@ db.runCommand({
         },
         chargingInformation: {
           bsonType: "object",
-          required: ["numberOfConnectors", "availabilityTime", "accessibility", "energyCost"],
           properties: {
+            connectorType: {
+              bsonType: "string",
+              description: "Type of plug use to connect the car"
+            },
             numberOfConnectors: {
               bsonType: "int",
               description: "Number of the connectors open to customers"
@@ -123,6 +126,14 @@ db.runCommand({
                 code: {
                   bsonType: "string",
                   description: "Code of the offer"
+                },
+                startDate: {
+                  bsonType: "string",
+                  description: "Date at which the offer will start"
+                },
+                endDate: {
+                  bsonType: "string",
+                  description: "Date at which the offer will end"
                 }
               }
             }

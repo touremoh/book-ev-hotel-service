@@ -9,7 +9,6 @@ import com.bookevhotel.core.enums.UserRoleEnum;
 import com.bookevhotel.core.enums.UserStatusEnum;
 import com.bookevhotel.core.exception.BookEVHotelException;
 import com.bookevhotel.core.mapper.lombok.HotelUserMapper;
-import com.bookevhotel.core.utils.BookEVHotelUtils;
 import com.bookevhotel.core.utils.SecretGenerator;
 import com.bookevhotel.core.validation.HotelUserServiceValidator;
 import lombok.extern.slf4j.Slf4j;
@@ -67,16 +66,20 @@ public class HotelUserService extends AbstractBookEVHotelService<HotelUser, Hote
 	}
 
 	@Override
-	protected void processAfterCreateOne(HotelUserDTO hotelUserDTO) throws BookEVHotelException {
+	protected void processAfterCreateOne(HotelUserDTO incomingDTO, HotelUserDTO newDoc) throws BookEVHotelException {
+		// Update new doc
+		newDoc.setLanguageCode(incomingDTO.getLanguageCode());
+
 		// Generate OTP Secret
 		var otpSecret = SecretGenerator.generateSecret(32);
+
 		// Generate an activation code
 		var code = this.otpCodeService.generateTOTP(otpSecret);
 
-		// Save it to db
+		// Build OPT object
 		var otpCodeDTO = OTPCodeDTO.builder()
 			.code(code)
-			.userId(hotelUserDTO.getId())
+			.userId(newDoc.getId())
 			.secret(otpSecret)
 			.build();
 
@@ -84,15 +87,15 @@ public class HotelUserService extends AbstractBookEVHotelService<HotelUser, Hote
 		this.otpCodeService.createOne(otpCodeDTO);
 
 		// Ask the user to use the confirmation code to activate his account
-		this.notificationService.sendEmail(hotelUserDTO, otpCodeDTO);
+		this.notificationService.sendNotification(newDoc, otpCodeDTO);
 	}
 
 	@Override
-	protected void processBeforeUpdateOne(HotelUserDTO dto) throws BookEVHotelException {
-		log.debug("Updating hotel user: {}", dto.getId());
+	protected void processBeforeUpdateOne(HotelUserDTO userDTO) throws BookEVHotelException {
+		log.debug("Updating hotel user: {}", userDTO.getId());
 
 		// Check if user exist by ID
-		if (!repository.exists(this.mapper.map(dto))) {
+		if (!repository.exists(this.mapper.map(userDTO))) {
 			throw new BookEVHotelException(
 				"Trying to update a hotel user that does not exist",
 				HttpStatus.UNAUTHORIZED.value(),
@@ -101,7 +104,7 @@ public class HotelUserService extends AbstractBookEVHotelService<HotelUser, Hote
 		}
 
 		// Update the DTO with the entity data
-		this.mapper.merge(dto, this.findOne(dto));
+		this.mapper.merge(userDTO, this.findOne(userDTO));
 	}
 
 	public Boolean activateUserAccount(AccountActivationRequest request) throws BookEVHotelException {

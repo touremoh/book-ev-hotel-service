@@ -40,11 +40,8 @@ public class HotelService  extends AbstractBookEVHotelService<Hotel, HotelDTO> {
 
 	@Override
 	protected void processBeforeCreateOne(HotelDTO hotelDTO) throws BookEVHotelException {
-		// Get the information of the person who updated the resource
-		var username = SecurityContextHolder.getContext().getAuthentication().getName();
-
 		// Find the user in the db
-		var foundUser = this.hotelUserService.findOne(HotelUserDTO.builder().email(username).build());
+		var foundUser = this.getUser();
 
 		// Check if the user was found
 		if (Objects.nonNull(foundUser)) {
@@ -54,17 +51,27 @@ public class HotelService  extends AbstractBookEVHotelService<Hotel, HotelDTO> {
 	}
 
 	@Override
-	protected void processAfterCreateOne(HotelDTO hotelDTO) throws BookEVHotelException {
-		this.updateSearchKeywords(hotelDTO);
+	protected void processAfterCreateOne(HotelDTO incomingDTO, HotelDTO newDoc) throws BookEVHotelException {
+		// Update language code
+		newDoc.setLanguageCode(incomingDTO.getLanguageCode());
+
+		// Update Search Keywords
+		this.updateSearchKeywords(newDoc);
+
+		// Associate the Hotel with the user if not
+		var user = this.getUser();
+
+		// Add Hotel ID
+		user.setHotelId(newDoc.getId());
+
+		// Update HotelUser
+		this.hotelUserService.updateOne(user);
 	}
 
 	@Override
 	protected void processBeforeUpdateOne(HotelDTO hotelDTO) throws BookEVHotelException {
-		// Get the information of the person who updated the resource
-		var username = SecurityContextHolder.getContext().getAuthentication().getName();
-
 		// Find the user in the db
-		var foundUser = this.hotelUserService.findOne(HotelUserDTO.builder().email(username).build());
+		var foundUser = this.getUser();
 
 		// Check if the user was found
 		if (Objects.nonNull(foundUser)) {
@@ -117,10 +124,10 @@ public class HotelService  extends AbstractBookEVHotelService<Hotel, HotelDTO> {
 		List<String> wordsFromHotelAddress = this.splitString(hotelDTO.getLocation().toString());
 
 		// Build words without duplicate, without numbers and without excluded words
-		List<String> concatedLists = this.concatLists(wordsFromHotelName, wordsFromHotelAddress);
+		List<String> concatLists = this.concatLists(wordsFromHotelName, wordsFromHotelAddress);
 
 		// Build search keywords without duplicates and without numbers
-		List<SearchKeywordDTO> newSearchKeywords = concatedLists
+		List<SearchKeywordDTO> newSearchKeywords = concatLists
 			.stream()
 			.map(keyword ->
 				SearchKeywordDTO.builder()
@@ -170,5 +177,13 @@ public class HotelService  extends AbstractBookEVHotelService<Hotel, HotelDTO> {
 			}
 		}
 		return -1;
+	}
+
+	protected HotelUserDTO getUser() throws BookEVHotelException {
+		// Get the information of the person who updated the resource
+		var username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+		// Find the user in the db
+		return this.hotelUserService.findOne(HotelUserDTO.builder().email(username).build());
 	}
 }

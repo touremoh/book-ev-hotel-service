@@ -146,26 +146,26 @@ public abstract class AbstractBookEVHotelService<E extends BookEVHotelEntity, D 
 	}
 
 	@Override
-	public D createOne(D dto) throws BookEVHotelException {
+	public D createOne(D inDTO) throws BookEVHotelException {
 		// Validate
-		this.validator.validateBeforeCreateOne(dto);
+		this.validator.validateBeforeCreateOne(inDTO);
 
 		// Pre-process
-		this.processBeforeCreateOne(dto);
+		this.processBeforeCreateOne(inDTO);
 
 		// Process
-		D doc = this.createOneProcess(dto);
+		D newDoc = this.createOneProcess(inDTO);
 
 		// Post-process
-		this.processAfterCreateOne(doc);
+		this.processAfterCreateOne(inDTO, newDoc);
 
 		// Results
-		return doc;
+		return newDoc;
 	}
 	protected void processBeforeCreateOne(D dto) throws BookEVHotelException {
 		log.debug("Process Before Create One");
 	}
-	protected void processAfterCreateOne(D dto) throws BookEVHotelException {
+	protected void processAfterCreateOne(D incomingDTO, D createdDTO) throws BookEVHotelException {
 		log.debug("Process After Create One");
 	}
 	protected D createOneProcess(D dto) throws BookEVHotelException {

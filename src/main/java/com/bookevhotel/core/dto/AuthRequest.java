@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class AuthRequest implements BookEVHotelDTO {
+public class AuthRequest extends AbstractBookEVHotelDTO {
 	private String email;
 	private String password;
 

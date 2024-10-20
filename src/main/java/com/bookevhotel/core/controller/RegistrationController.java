@@ -20,7 +20,10 @@ public class RegistrationController {
 	}
 
 	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<BookEVHotelRequestResponse> createRegistration(@RequestBody HotelUserDTO hotelUserDTO) throws BookEVHotelException {
+	public ResponseEntity<BookEVHotelRequestResponse> register(
+		@RequestBody HotelUserDTO hotelUserDTO, 
+		@RequestHeader("languageCode") String languageCode) throws BookEVHotelException {
+		hotelUserDTO.setLanguageCode(languageCode);
 		return BuildApiResponse.from(this.hotelUserService.createOne(hotelUserDTO));
 	}
 }

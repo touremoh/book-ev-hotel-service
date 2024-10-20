@@ -1,17 +1,15 @@
 package com.bookevhotel.core.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class HotelLeadDTO implements BookEVHotelDTO {
+public class HotelLeadDTO extends AbstractBookEVHotelDTO {
     private String id;
     private String email;
     private String fullName;
