@@ -22,8 +22,6 @@ import java.util.stream.Collectors;
 @Service
 public class AccountCreationNotificationService extends AbstractEmailService {
 
-	private static final String SUBJECT = "Action Required: Activate Your Account with Book EV Hotel (Code Inside)";
-
 	@Autowired
 	public AccountCreationNotificationService(OAuth2TokenService oauth2TokenService) {
 		super(oauth2TokenService);
@@ -32,18 +30,17 @@ public class AccountCreationNotificationService extends AbstractEmailService {
 	public void sendNotification(HotelUserDTO receiver, OTPCodeDTO otp) throws BookEVHotelException {
 		try {
 			// Load the HTML template from file
-			String htmlTemplate = loadHtmlTemplate("templates/account-activation-template.html");
+			String htmlTemplate = loadHtmlTemplate("templates/account-creation/account-activation-template.html");
 
 			// Get language code
 			String languageCode = receiver.getLanguageCode().toLowerCase();
 
 			// Get the template content
-			String templateContent = loadHtmlTemplate("templates/"+languageCode+"_notification_content.html");
+			String templateContent = loadHtmlTemplate("templates/account-creation/"+languageCode+"_notification_content.html");
 
 			// Replace placeholders with dynamic content
 			templateContent = templateContent
 				.replace("{{year}}", String.valueOf(LocalDate.now().getYear()))
-				.replace("{{website_name}}", "Book EV Hotel")
 				.replace("{{first_name}}", receiver.getFirstName())
 				.replace("{{activation_code}}", otp.getCode());
 

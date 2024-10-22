@@ -11,7 +11,6 @@ db.runCommand({
         },
         location: {
           bsonType: "object",
-          required: ["streetAddress", "extendedAddress", "city", "zipOrPostalCode", "stateOrProvince", "country"],
           properties: {
             country: {
               bsonType: "string",
@@ -48,118 +47,160 @@ db.runCommand({
           bsonType: "array",
           description: "List of amenities provided by the hotel"
         },
+        minPricePerNight: {
+           bsonType: "decimal",
+           description: "The minimum price the customer can expect to pay per room per night"
+        },
+        maxPricePerNight: {
+           bsonType: "decimal",
+           description: "The maximum price the customer can expect to pay per room per night"
+        },
         chargingInformation: {
-          bsonType: "object",
-          properties: {
-            connectorType: {
-              bsonType: "string",
-              description: "Type of plug use to connect the car"
-            },
-            numberOfConnectors: {
-              bsonType: "int",
-              description: "Number of the connectors open to customers"
-            },
-            maxPower: {
-              bsonType: "int",
-              description: "The maximum power expressed in kW the charging point can deliver"
-            },
-            availabilityTime: {
-              bsonType: "string",
-              description: "Tells which time of the day the charger is open"
-            },
-            accessibility: {
-              bsonType: "string",
-              description: "Tells us if the charger is open to public or to the customers"
-            },
-            chargingNetwork: {
-              bsonType: "string",
-              description: "Name of the company that the charging point. Eg. Tesla"
-            },
-            energyCost: {
-              bsonType: "object",
-              required: ["price", "priceUnit"],
-              properties: {
-                price: {
-                  bsonType: "object",
-                  required: ["amount", "currency"],
-                  properties: {
-                    amount: {
-                      bsonType: "decimal",
-                      description: "value of the amount expressed in decimal number"
-                    },
-                    currency: {
-                      bsonType: "string",
-                      description: "Currency of the energy price in string format"
-                    }
-                  },
-                  description: "Energy price expressed in object format"
-                },
-                priceUnit: {
-                  bsonType: "string", // i.e: kWh, min, day
-                  description: "Energy cost unit expressed in string format"
-                }
+          bsonType: "array",
+          description: "Array of charging information objects",
+          items: {
+            bsonType: "object",
+            properties: {
+              connectorType: {
+                bsonType: "string",
+                description: "Type of plug used to connect the car"
               },
-              description: "Cost of the energy in object format"
-            },
-            messageForCustomer: {
-              bsonType: "string",
-              description: "Additional information for the customer about the charging point"
+              numberOfConnectors: {
+                bsonType: "int",
+                description: "Number of connectors open to customers"
+              },
+              maxPower: {
+                bsonType: "int",
+                description: "The maximum power expressed in kW the charging point can deliver"
+              },
+              availabilityTime: {
+                bsonType: "string",
+                description: "Time of the day the charger is open"
+              },
+              accessibility: {
+                bsonType: "string",
+                description: "Tells if the charger is open to the public or to customers"
+              },
+              chargingNetwork: {
+                bsonType: "string",
+                description: "Name of the charging network company, e.g., Tesla"
+              },
+              energyCost: {
+                bsonType: "object",
+                required: ["price", "priceUnit"],
+                properties: {
+                  price: {
+                    bsonType: "object",
+                    required: ["amount", "currency"],
+                    properties: {
+                      amount: {
+                        bsonType: "decimal",
+                        description: "Energy cost amount"
+                      },
+                      currency: {
+                        bsonType: "string",
+                        description: "Currency of the energy price"
+                      }
+                    },
+                    description: "Energy price details"
+                  },
+                  priceUnit: {
+                    bsonType: "string",
+                    description: "Unit for energy cost, e.g., kWh, min, day"
+                  }
+                },
+                description: "Cost of the energy"
+              },
+              messageForCustomer: {
+                bsonType: "string",
+                description: "Additional information for customers"
+              },
+              isDestinationCharger: {
+                bsonType: "bool",
+                description: "Indicates whether this is a destination charger or nearby charger"
+              },
+              chargerLocation: {
+                bsonType: "object",
+                properties: {
+                  country: {
+                    bsonType: "string",
+                    description: "Country of the charger location"
+                  },
+                  stateOrProvince: {
+                    bsonType: "string",
+                    description: "State or province of the charger location"
+                  },
+                  zipOrPostalCode: {
+                    bsonType: "string",
+                    description: "Zip code or postal code of the charger location"
+                  },
+                  city: {
+                    bsonType: "string",
+                    description: "City of the charger location"
+                  },
+                  streetAddress: {
+                    bsonType: "string",
+                    description: "Street address of the charger location"
+                  },
+                  extendedAddress: {
+                    bsonType: "string",
+                    description: "Extended address of the charger location"
+                  }
+                }
+              }
             }
           }
         },
         offers: {
           bsonType: "array",
-          description: "Represent a list of all offers the hotel proposed to the customers",
-          properties: {
-            offer: {
-              bsonType: "object",
-              description: "An offer made by the hotel for the EV owner",
-              properties: {
-                title: {
-                  bsonType: "string",
-                  description: "Name of the offer"
-                },
-                description: {
-                  bsonType: "string",
-                  description: "Description of the offer"
-                },
-                code: {
-                  bsonType: "string",
-                  description: "Code of the offer"
-                },
-                startDate: {
-                  bsonType: "string",
-                  description: "Date at which the offer will start"
-                },
-                endDate: {
-                  bsonType: "string",
-                  description: "Date at which the offer will end"
-                }
+          description: "List of offers made by the hotel",
+          items: {
+            bsonType: "object",
+            description: "Offer details",
+            properties: {
+              title: {
+                bsonType: "string",
+                description: "Title of the offer"
+              },
+              description: {
+                bsonType: "string",
+                description: "Description of the offer"
+              },
+              code: {
+                bsonType: "string",
+                description: "Offer code"
+              },
+              startDate: {
+                bsonType: "string",
+                description: "Start date of the offer"
+              },
+              endDate: {
+                bsonType: "string",
+                description: "End date of the offer"
               }
             }
           }
         },
         createdAt: {
           bsonType: "date",
-          description: "Date at which the record was created"
+          description: "Record creation date"
         },
         lastUpdatedAt: {
           bsonType: "date",
-          description: "Date at which the record was updated"
+          description: "Last record update date"
         },
         createdBy: {
           bsonType: "objectId",
-          description: "ID of the person who created the record"
+          description: "ID of the creator"
         },
         lastUpdatedBy: {
           bsonType: "objectId",
-          description: "ID of the person who updated the record last time"
+          description: "ID of the last person who updated the record"
         }
       }
     }
   }
 });
-
 
 db.runCommand({
    collMod: "SearchKeywords",

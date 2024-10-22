@@ -18,8 +18,10 @@ public class HotelDTO extends AbstractBookEVHotelDTO {
     private String hotelName;
     private Location location;
     private String websiteLink;
+    private Price minPricePerNight;
+    private Price maxPricePerNight;
     private List<String> amenities;
-    private ChargingInformation chargingInformation;
+    private List<ChargingInformation> chargingInformation;
     private List<Offer> offers;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

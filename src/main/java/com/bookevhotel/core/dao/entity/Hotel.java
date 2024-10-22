@@ -28,7 +28,9 @@ public class Hotel implements BookEVHotelEntity {
     private Location location;
     private String websiteLink;
     private List<String> amenities;
-    private ChargingInformation chargingInformation;
+    private Price minPricePerNight;
+    private Price maxPricePerNight;
+    private List<ChargingInformation> chargingInformation;
     private List<Offer> offers;
 
     @CreatedDate
