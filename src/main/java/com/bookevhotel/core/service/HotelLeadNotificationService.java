@@ -1,7 +1,7 @@
 package com.bookevhotel.core.service;
 
-import com.bookevhotel.core.dto.OTPCodeDTO;
-import com.bookevhotel.core.dto.HotelUserDTO;
+import com.bookevhotel.core.dto.HotelLeadDTO;
+import com.bookevhotel.core.dto.common.Offer;
 import com.bookevhotel.core.enums.EmailTitlesEnum;
 import com.bookevhotel.core.exception.BookEVHotelException;
 import lombok.extern.slf4j.Slf4j;
@@ -15,35 +15,38 @@ import java.time.LocalDate;
 
 @Slf4j
 @Service
-public class AccountCreationNotificationService extends AbstractEmailService {
+public class HotelLeadNotificationService extends AbstractEmailService {
 
 	@Autowired
-	public AccountCreationNotificationService(OAuth2TokenService oauth2TokenService) {
+	protected HotelLeadNotificationService(OAuth2TokenService oauth2TokenService) {
 		super(oauth2TokenService);
 	}
 
-	public void sendNotification(HotelUserDTO receiver, OTPCodeDTO otp) throws BookEVHotelException {
+	public void sendNotification(HotelLeadDTO receiver) throws BookEVHotelException {
 		try {
 			// Load the HTML template from file
-			String htmlTemplate = loadHtmlTemplate("templates/account-creation/account-activation-template.html");
+			String htmlTemplate = loadHtmlTemplate("templates/lead-generation/lead-notification-template.html");
 
 			// Get language code
 			String languageCode = receiver.getLanguageCode().toLowerCase();
 
 			// Get the template content
-			String templateContent = loadHtmlTemplate("templates/account-creation/"+languageCode+"_notification_content.html");
+			String templateContent = loadHtmlTemplate("templates/lead-generation/"+languageCode+"_notification_content.html");
 
 			// Replace placeholders with dynamic content
 			templateContent = templateContent
 				.replace("{{year}}", String.valueOf(LocalDate.now().getYear()))
-				.replace("{{first_name}}", receiver.getFirstName())
-				.replace("{{activation_code}}", otp.getCode());
+				.replace("{{full_name}}", receiver.getFullName())
+				.replace("{{offer_title}}", receiver.getRequestedOffer().getTitle())
+				.replace("{{offer_code}}", receiver.getRequestedOffer().getCode())
+				.replace("{{offer_start_date}}",  receiver.getRequestedOffer().getStartDate().toString())
+				.replace("{{offer_end_date}}", receiver.getRequestedOffer().getStartDate().toString());
 
 			// Update html template
 			String htmlContent = htmlTemplate.replace("{{template_content}}", templateContent);
 
 			// Send Email
-			sendEmail(receiver.getEmail(), EmailTitlesEnum.getEmailTitle(languageCode, ACC_NOTIF_TYPE), htmlContent);
+			sendEmail(receiver.getEmail(), EmailTitlesEnum.getEmailTitle(languageCode, LEAD_NOTIF_TYPE), htmlContent);
 		} catch (IOException | MailException e) {
 			log.error("Failed to send email notification to the user {}. Error message is: {}", receiver.getEmail(), e.getMessage(), e);
 			throw new BookEVHotelException(

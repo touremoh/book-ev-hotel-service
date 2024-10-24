@@ -13,28 +13,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class HotelLeadService extends AbstractBookEVHotelService<HotelLead, HotelLeadDTO> {
 	protected final HotelService hotelService;
+	protected final HotelLeadNotificationService hotelLeadNotificationService;
 
 	@Autowired
 	public HotelLeadService(
 		HotelLeadRepositoryImpl repository,
 		HotelLeadMapper mapper,
 		HotelLeadServiceValidator validator,
-		HotelService hotelService) {
+		HotelService hotelService,
+		HotelLeadNotificationService hotelLeadNotificationService) {
 		super(repository, mapper, validator);
 		this.hotelService = hotelService;
+		this.hotelLeadNotificationService = hotelLeadNotificationService;
 	}
 
 	@Override
 	protected void processAfterCreateOne(HotelLeadDTO incomingDTO, HotelLeadDTO newDoc) throws BookEVHotelException {
-		// Get the hotel the lead has subscribed to
-		var hotelDTO = this.hotelService.findOne(HotelDTO.builder().id(newDoc.getHotelId()).build());
-
-		// Get the list of offers
-		var offers = hotelDTO.getOffers();
-
-		// Update language code
+		// Update newDoc
 		newDoc.setLanguageCode(incomingDTO.getLanguageCode());
+		newDoc.setRequestedOffer(incomingDTO.getRequestedOffer());
 
 		// Send Offer to the subscriber
+		this.hotelLeadNotificationService.sendNotification(newDoc);
 	}
 }

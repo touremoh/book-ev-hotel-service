@@ -7,16 +7,24 @@ import com.microsoft.graph.users.item.sendmail.SendMailPostRequestBody;
 import com.microsoft.kiota.authentication.AuthenticationProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.mail.MailException;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 public abstract class AbstractEmailService {
 
 	protected final OAuth2TokenService oauth2TokenService;
+	protected static final String LEAD_NOTIF_TYPE = "LEAD";
+	protected static final String ACC_NOTIF_TYPE = "ACC";
 
 	@Value("${spring.mail.username}")
 	private String senderEmail;
@@ -64,6 +72,13 @@ public abstract class AbstractEmailService {
 				HttpStatus.INTERNAL_SERVER_ERROR.value(),
 				HttpStatus.INTERNAL_SERVER_ERROR
 			);
+		}
+	}
+
+	protected String loadHtmlTemplate(String filePath) throws IOException {
+		ClassPathResource resource = new ClassPathResource(filePath);
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8))) {
+			return reader.lines().collect(Collectors.joining(System.lineSeparator()));
 		}
 	}
 }
