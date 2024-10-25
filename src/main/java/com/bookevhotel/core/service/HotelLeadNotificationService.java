@@ -1,5 +1,6 @@
 package com.bookevhotel.core.service;
 
+import com.bookevhotel.core.dto.HotelDTO;
 import com.bookevhotel.core.dto.HotelLeadDTO;
 import com.bookevhotel.core.dto.common.Offer;
 import com.bookevhotel.core.enums.EmailTitlesEnum;
@@ -22,7 +23,7 @@ public class HotelLeadNotificationService extends AbstractEmailService {
 		super(oauth2TokenService);
 	}
 
-	public void sendNotification(HotelLeadDTO receiver) throws BookEVHotelException {
+	public void sendNotification(HotelLeadDTO receiver, HotelDTO hotelDTO) throws BookEVHotelException {
 		try {
 			// Load the HTML template from file
 			String htmlTemplate = loadHtmlTemplate("templates/lead-generation/lead-notification-template.html");
@@ -39,6 +40,8 @@ public class HotelLeadNotificationService extends AbstractEmailService {
 				.replace("{{full_name}}", receiver.getFullName())
 				.replace("{{offer_title}}", receiver.getRequestedOffer().getTitle())
 				.replace("{{offer_code}}", receiver.getRequestedOffer().getCode())
+				.replace("{{hotel_name}}", hotelDTO.getHotelName())
+				.replace("{{hotel_address}}", hotelDTO.getLocation().toString())
 				.replace("{{offer_start_date}}",  receiver.getRequestedOffer().getStartDate().toString())
 				.replace("{{offer_end_date}}", receiver.getRequestedOffer().getStartDate().toString());
 

@@ -60,4 +60,12 @@ public interface BookEVHotelService<D extends BookEVHotelDTO> {
 	 * @return the created element
 	 */
 	Boolean deleteOne(D dto) throws BookEVHotelException;
+
+	/**
+	 * Check if an entity exists in the db
+	 * @param dto check criteria
+	 * @return true if exists or false otherwise
+	 * @throws BookEVHotelException when an expected error occurred
+	 */
+	Boolean exists(D dto) throws BookEVHotelException;
 }

@@ -1,6 +1,7 @@
 package com.bookevhotel.core.exception;
 
 import com.bookevhotel.core.dto.BookEVHotelErrorResponse;
+import org.mapstruct.ap.internal.util.Strings;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,7 +16,7 @@ public class BookEVHotelErrorHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(value = {BookEVHotelException.class})
 	protected ResponseEntity<Object> handleConflict(BookEVHotelException ex) {
 		var response = BookEVHotelErrorResponse.builder()
-			.message(ex.getMessage())
+			.message(Strings.isNotEmpty(ex.getMessage()) ? ex.getMessage() : ex.getCause().getMessage())
 			.status(Objects.nonNull(ex.getStatus()) ? ex.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR)
 			.code(Objects.nonNull(ex.getHttpStatusCode()) ? ex.getHttpStatusCode() : HttpStatus.INTERNAL_SERVER_ERROR.value())
 			.timestamp(LocalDateTime.now())

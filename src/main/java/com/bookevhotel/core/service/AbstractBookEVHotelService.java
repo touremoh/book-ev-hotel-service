@@ -247,6 +247,11 @@ public abstract class AbstractBookEVHotelService<E extends BookEVHotelEntity, D 
 		return this.repository.deleteOne(this.mapper.map(dto));
 	}
 
+	@Override
+	public Boolean exists(D dto) throws BookEVHotelException {
+		return this.repository.exists(this.mapper.map(dto));
+	}
+
 	protected Pageable getDefaultPageSettings() {
 		return Pageable.ofSize(1000).withPage(0);
 	}
